@@ -27,7 +27,13 @@ export function LibraryFlyoutSettings({ searchQuery }: { searchQuery?: string })
         titleKey="library_flyout.settings.enabled_title"
         descKey="library_flyout.settings.enabled_description"
         searchQuery={searchQuery}
-        control={<ToggleSwitch checked={enabled} onChange={setEnabled} />}
+        control={
+          <ToggleSwitch
+            ariaLabel={t("library_flyout.settings.enabled_title")}
+            checked={enabled}
+            onChange={setEnabled}
+          />
+        }
       />
       <SettingRow
         title={t("library_flyout.settings.count_title")}

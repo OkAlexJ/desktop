@@ -167,8 +167,9 @@ function LibraryPlaylistContent() {
     };
   })();
 
+  // Liked Songs has a translated title, so a saved entry would keep the old language
   useRecordRecentItem(
-    viewData && decodedId && !isLoading
+    viewData && decodedId && !isLoading && !isLikesMode
       ? {
           type: "playlist",
           id: decodedId,

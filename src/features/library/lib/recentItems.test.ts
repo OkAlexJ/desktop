@@ -1,6 +1,17 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import { addRecentItem, RECENT_ITEMS_CAP, selectRecentItems, type RecentItem } from "./recentItems";
-import { useLibraryFlyoutSettings, useRecentItemsStore } from "../store/recentItemsStore";
+import {
+  addRecentItem,
+  normalizeRecentItems,
+  normalizeRecentItemTypes,
+  RECENT_ITEMS_CAP,
+  selectRecentItems,
+  type RecentItem,
+} from "./recentItems";
+import {
+  normalizeLibraryFlyoutSettings,
+  useLibraryFlyoutSettings,
+  useRecentItemsStore,
+} from "../store/recentItemsStore";
 
 const item = (type: RecentItem["type"], id: string, openedAt: number, title = id): RecentItem => ({
   type,
@@ -79,6 +90,69 @@ describe("selectRecentItems", () => {
   });
 });
 
+describe("normalizeRecentItems", () => {
+  it("returns an empty list for anything that is not an array", () => {
+    expect(normalizeRecentItems(undefined)).toEqual([]);
+    expect(normalizeRecentItems({ items: [] })).toEqual([]);
+    expect(normalizeRecentItems("x")).toEqual([]);
+  });
+
+  it("drops malformed entries and keeps the rest in order", () => {
+    const saved = [
+      item("artist", "a", 3),
+      null,
+      { type: "podcast", id: "p", title: "P", href: "/p", openedAt: 1 },
+      { type: "album", id: "", title: "B", href: "/b", openedAt: 1 },
+      { type: "album", id: "b", title: "B", openedAt: 1 },
+      { type: "playlist", id: "c", title: "C", href: "/c", coverUrl: 5 },
+      item("artist", "a", 1),
+    ];
+    expect(normalizeRecentItems(saved)).toEqual([
+      item("artist", "a", 3),
+      { type: "playlist", id: "c", title: "C", href: "/c", coverUrl: undefined, openedAt: 0 },
+    ]);
+  });
+
+  it("caps the list", () => {
+    const saved = Array.from({ length: RECENT_ITEMS_CAP + 5 }, (_, i) => item("album", String(i), i));
+    expect(normalizeRecentItems(saved)).toHaveLength(RECENT_ITEMS_CAP);
+  });
+});
+
+describe("normalizeRecentItemTypes", () => {
+  it("keeps valid types in canonical order", () => {
+    expect(normalizeRecentItemTypes(["album", "nope", "playlist"])).toEqual(["playlist", "album"]);
+  });
+
+  it("falls back to every type when nothing valid is saved", () => {
+    expect(normalizeRecentItemTypes([])).toEqual(["playlist", "artist", "album"]);
+    expect(normalizeRecentItemTypes("artist")).toEqual(["playlist", "artist", "album"]);
+  });
+});
+
+describe("normalizeLibraryFlyoutSettings", () => {
+  it("keeps valid saved settings", () => {
+    expect(normalizeLibraryFlyoutSettings({ enabled: false, count: 5, types: ["artist"] })).toEqual({
+      enabled: false,
+      count: 5,
+      types: ["artist"],
+    });
+  });
+
+  it("replaces missing or out-of-range values with defaults", () => {
+    expect(normalizeLibraryFlyoutSettings({ enabled: "yes", count: 42, types: null })).toEqual({
+      enabled: true,
+      count: 8,
+      types: ["playlist", "artist", "album"],
+    });
+    expect(normalizeLibraryFlyoutSettings(undefined)).toEqual({
+      enabled: true,
+      count: 8,
+      types: ["playlist", "artist", "album"],
+    });
+  });
+});
+
 describe("recent items stores", () => {
   beforeEach(() => {
     useRecentItemsStore.setState({ items: [] });
@@ -103,5 +177,31 @@ describe("recent items stores", () => {
     expect(useLibraryFlyoutSettings.getState().types).toEqual(["playlist"]);
     toggleType("album");
     expect(useLibraryFlyoutSettings.getState().types).toEqual(["playlist", "album"]);
+  });
+
+  it("normalizes malformed saved data when rehydrating", async () => {
+    localStorage.setItem(
+      "liner_recent_items_v1",
+      JSON.stringify({ state: { items: [item("album", "x", 1), { id: 3 }], record: "nope" }, version: 0 }),
+    );
+    localStorage.setItem(
+      "liner_library_flyout_v1",
+      JSON.stringify({ state: { enabled: false, count: 99, types: "album" }, version: 0 }),
+    );
+    await useRecentItemsStore.persist.rehydrate();
+    await useLibraryFlyoutSettings.persist.rehydrate();
+    expect(useRecentItemsStore.getState().items.map((i) => i.id)).toEqual(["x"]);
+    expect(typeof useRecentItemsStore.getState().record).toBe("function");
+    const settings = useLibraryFlyoutSettings.getState();
+    expect([settings.enabled, settings.count, settings.types]).toEqual([false, 8, ["playlist", "artist", "album"]]);
+  });
+
+  it("persists only the durable fields", () => {
+    useRecentItemsStore.getState().record({ type: "artist", id: "a", title: "A", href: "/artist?id=a" });
+    useLibraryFlyoutSettings.getState().setCount(5);
+    const recent = JSON.parse(localStorage.getItem("liner_recent_items_v1") ?? "{}").state;
+    const flyout = JSON.parse(localStorage.getItem("liner_library_flyout_v1") ?? "{}").state;
+    expect(Object.keys(recent)).toEqual(["items"]);
+    expect(Object.keys(flyout).sort()).toEqual(["count", "enabled", "types"]);
   });
 });

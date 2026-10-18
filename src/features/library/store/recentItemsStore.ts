@@ -3,6 +3,8 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import {
   addRecentItem,
+  normalizeRecentItems,
+  normalizeRecentItemTypes,
   RECENT_ITEM_TYPES,
   type RecentItem,
   type RecentItemType,
@@ -24,17 +26,45 @@ export const useRecentItemsStore = create<RecentItemsState>()(
       },
       clear: () => set({ items: [] }),
     }),
-    { name: "liner_recent_items_v1" },
+    {
+      name: "liner_recent_items_v1",
+      partialize: ({ items }) => ({ items }),
+      merge: (persisted, current) => ({
+        ...current,
+        items: normalizeRecentItems((persisted as { items?: unknown } | undefined)?.items),
+      }),
+    },
   ),
 );
 
 export type LibraryFlyoutCount = 5 | 8 | 10;
 export const LIBRARY_FLYOUT_COUNTS: readonly LibraryFlyoutCount[] = [5, 8, 10];
 
-interface LibraryFlyoutSettingsState {
+interface LibraryFlyoutSettings {
   enabled: boolean;
   count: LibraryFlyoutCount;
   types: RecentItemType[];
+}
+
+const DEFAULT_LIBRARY_FLYOUT_SETTINGS: LibraryFlyoutSettings = {
+  enabled: true,
+  count: 8,
+  types: [...RECENT_ITEM_TYPES],
+};
+
+/** Fills in defaults for anything missing or out of range in the saved settings. */
+export function normalizeLibraryFlyoutSettings(value: unknown): LibraryFlyoutSettings {
+  const saved = (value && typeof value === "object" ? value : {}) as Record<string, unknown>;
+  return {
+    enabled: typeof saved.enabled === "boolean" ? saved.enabled : DEFAULT_LIBRARY_FLYOUT_SETTINGS.enabled,
+    count: LIBRARY_FLYOUT_COUNTS.includes(saved.count as LibraryFlyoutCount)
+      ? (saved.count as LibraryFlyoutCount)
+      : DEFAULT_LIBRARY_FLYOUT_SETTINGS.count,
+    types: normalizeRecentItemTypes(saved.types),
+  };
+}
+
+interface LibraryFlyoutSettingsState extends LibraryFlyoutSettings {
   setEnabled: (enabled: boolean) => void;
   setCount: (count: LibraryFlyoutCount) => void;
   toggleType: (type: RecentItemType) => void;
@@ -43,9 +73,8 @@ interface LibraryFlyoutSettingsState {
 export const useLibraryFlyoutSettings = create<LibraryFlyoutSettingsState>()(
   persist(
     (set, get) => ({
-      enabled: true,
-      count: 8,
-      types: [...RECENT_ITEM_TYPES],
+      ...DEFAULT_LIBRARY_FLYOUT_SETTINGS,
+      types: [...DEFAULT_LIBRARY_FLYOUT_SETTINGS.types],
       setEnabled: (enabled) => set({ enabled }),
       setCount: (count) => set({ count }),
       toggleType: (type) => {
@@ -57,7 +86,11 @@ export const useLibraryFlyoutSettings = create<LibraryFlyoutSettingsState>()(
         if (next.length > 0) set({ types: next });
       },
     }),
-    { name: "liner_library_flyout_v1" },
+    {
+      name: "liner_library_flyout_v1",
+      partialize: ({ enabled, count, types }) => ({ enabled, count, types }),
+      merge: (persisted, current) => ({ ...current, ...normalizeLibraryFlyoutSettings(persisted) }),
+    },
   ),
 );
 
