@@ -2,6 +2,7 @@ import {
   useCallback,
   useEffect,
   createElement,
+  useMemo,
   useRef,
   useState,
 } from "react";
@@ -13,6 +14,8 @@ import {
   LyricsProviderIsland,
   braccatoThemeCss,
   hasSyncedLyricsSources,
+  useLyricsExtras,
+  applyBraccatoExtras,
 } from "@/features/lyrics";
 import { AnimatePresence, motion } from "framer-motion";
 import { PlayerUiElements } from "./PlayerUiElements";
@@ -29,12 +32,16 @@ const BRACCATO_TAG = "braccato-lyrics";
 
 interface BraccatoLyricsViewProps {
   lyrics: any[];
+  romanized: (string | null)[];
+  translated: (string | null)[];
 }
 
-function BraccatoLyricsView({ lyrics }: BraccatoLyricsViewProps) {
+function BraccatoLyricsView({ lyrics, romanized, translated }: BraccatoLyricsViewProps) {
   const player = usePlayerState();
   const elementRef = useRef<any>(null);
   const latestLyricsRef = useRef(lyrics);
+  const latestExtrasRef = useRef({ romanized, translated });
+  latestExtrasRef.current = { romanized, translated };
   const freeScrollTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const lastWheelTimeRef = useRef(0);
   const isInFreeSearchRef = useRef(false);
@@ -172,6 +179,8 @@ function BraccatoLyricsView({ lyrics }: BraccatoLyricsViewProps) {
     };
 
     const onLyricsLoaded = () => {
+      const extras = latestExtrasRef.current;
+      applyBraccatoExtras(el, extras.romanized, extras.translated);
       if (waitingForAudioAfterClickRef.current) return;
       requestAnimationFrame(() => {
         if (!waitingForAudioAfterClickRef.current) {
@@ -238,6 +247,18 @@ function BraccatoLyricsView({ lyrics }: BraccatoLyricsViewProps) {
     const element = elementRef.current;
     if (element) element.lyrics = lyrics;
   }, [lyrics]);
+
+  // retries for a few frames in case the element has not built the new lines yet
+  useEffect(() => {
+    let rafId = 0;
+    let attempts = 0;
+    const apply = () => {
+      if (applyBraccatoExtras(elementRef.current, romanized, translated) || ++attempts > 30) return;
+      rafId = requestAnimationFrame(apply);
+    };
+    apply();
+    return () => cancelAnimationFrame(rafId);
+  }, [lyrics, romanized, translated]);
 
   useEffect(() => {
     if (
@@ -344,6 +365,10 @@ export function FullscreenPlayer({
     !lyricsError &&
     plainLyrics === "[INSTRUMENTAL]";
 
+  // romanized/translated lines are hung onto the built braccato lines by index
+  const braccatoTexts = useMemo(() => braccatoLyrics.map((l) => l.words ?? ""), [braccatoLyrics]);
+  const lyricsExtras = useLyricsExtras(isMatchingTrack ? currentTrackId : null, braccatoTexts);
+
   return (
     <div
       data-theme="dark"
@@ -374,9 +399,9 @@ export function FullscreenPlayer({
         </div>
 
         <div className="flex-1 h-full min-h-0 pl-2 pr-6 flex flex-col relative">
-          {showProviderIsland && (
+          {(showProviderIsland || (hasLyrics && lyricsExtras.hasText)) && (
             <div className="absolute top-[12px] left-1/2 -translate-x-1/2 z-30 pointer-events-none flex justify-center">
-              <LyricsProviderIsland />
+              <LyricsProviderIsland extras={hasLyrics ? lyricsExtras : undefined} />
             </div>
           )}
 
@@ -396,7 +421,11 @@ export function FullscreenPlayer({
                   transition={{ duration: 0.22, ease: "easeInOut" }}
                   className="absolute inset-0 flex flex-col"
                 >
-                  <BraccatoLyricsView lyrics={braccatoLyrics} />
+                  <BraccatoLyricsView
+                    lyrics={braccatoLyrics}
+                    romanized={lyricsExtras.romanized}
+                    translated={lyricsExtras.translated}
+                  />
                 </motion.div>
               )}
             </AnimatePresence>

@@ -976,5 +976,37 @@
     "count": "{count} z {total}",
     "no_results": "Brak utworów dla „{query}”",
     "clear": "Wyczyść wyszukiwanie"
+  },
+  "lyrics_extras": {
+    "romanize": "Latynizacja",
+    "romanize_hint": "Pokaż każdy wiersz alfabetem łacińskim",
+    "translate": "Tłumacz",
+    "translate_hint": "Pokaż tłumaczenie pod każdym wierszem",
+    "translate_to": "Tłumacz na",
+    "auto_language": "Język aplikacji ({lang})",
+    "translating": "Tłumaczenie…",
+    "same_language": "Tekst jest już w języku: {lang}",
+    "error_network": "Tłumaczenie jest teraz niedostępne",
+    "error_quota": "Dzisiejszy darmowy limit tłumaczeń został wykorzystany",
+    "error_config": "Ustaw serwer LibreTranslate w Ustawieniach",
+    "roman_unsupported": "Wiersze, których nie da się zlatynizować: {count}. Znaki chińskie i kanji wymagają słownika.",
+    "roman_nothing": "Ten tekst jest już zapisany alfabetem łacińskim",
+    "settings": {
+      "section": "Tłumaczenie tekstów",
+      "romanize_title": "Latynizacja tekstów",
+      "romanize_desc": "Pokazuje cyrylicę, grekę, koreański i japońskie kana alfabetem łacińskim. Działa offline.",
+      "translate_title": "Tłumacz teksty",
+      "translate_desc": "Pokazuje przetłumaczony wiersz pod każdym wierszem.",
+      "target_title": "Tłumacz na",
+      "target_desc": "Domyślnie język aplikacji.",
+      "provider_title": "Usługa tłumaczenia",
+      "provider_desc": "Tekst piosenki jest wysyłany do wybranej usługi w celu tłumaczenia. Latynizacja działa na urządzeniu.",
+      "email_title": "E-mail kontaktowy dla MyMemory (opcjonalnie)",
+      "email_desc": "MyMemory pozwala na 5000 znaków dziennie bez e-maila i 50 000 z e-mailem.",
+      "libre_url_title": "Serwer LibreTranslate",
+      "libre_url_desc": "Własny serwer lub hostowany.",
+      "libre_key_title": "Klucz API LibreTranslate",
+      "libre_key_desc": "Wymagany przez serwery hostowane. Zapisany tylko na tym urządzeniu."
+    }
   }
 }

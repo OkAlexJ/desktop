@@ -1025,5 +1025,37 @@
     "count": "{count} de {total}",
     "no_results": "Ninguna canción coincide con «{query}»",
     "clear": "Borrar búsqueda"
+  },
+  "lyrics_extras": {
+    "romanize": "Romanizar",
+    "romanize_hint": "Mostrar cada línea en letras latinas",
+    "translate": "Traducir",
+    "translate_hint": "Mostrar una traducción bajo cada línea",
+    "translate_to": "Traducir a",
+    "auto_language": "Idioma de la app ({lang})",
+    "translating": "Traduciendo…",
+    "same_language": "La letra ya está en {lang}",
+    "error_network": "La traducción no está disponible ahora",
+    "error_quota": "Se agotó el límite gratuito de traducción de hoy",
+    "error_config": "Configura un servidor de LibreTranslate en Ajustes",
+    "roman_unsupported": "Líneas que no se pueden romanizar: {count}. Los caracteres chinos y kanji necesitan un diccionario.",
+    "roman_nothing": "Esta letra ya está en letras latinas",
+    "settings": {
+      "section": "Traducción de letras",
+      "romanize_title": "Romanizar letras",
+      "romanize_desc": "Muestra cirílico, griego, coreano y kana japonés en letras latinas. Funciona sin conexión.",
+      "translate_title": "Traducir letras",
+      "translate_desc": "Muestra una línea traducida bajo cada línea.",
+      "target_title": "Traducir al",
+      "target_desc": "Por defecto, el idioma de la app.",
+      "provider_title": "Servicio de traducción",
+      "provider_desc": "El texto de la letra se envía al servicio elegido para traducirlo. La romanización no sale de tu dispositivo.",
+      "email_title": "Correo de contacto para MyMemory (opcional)",
+      "email_desc": "MyMemory permite 5.000 caracteres al día sin correo y 50.000 con él.",
+      "libre_url_title": "Servidor de LibreTranslate",
+      "libre_url_desc": "Tu propio servidor o uno alojado.",
+      "libre_key_title": "Clave API de LibreTranslate",
+      "libre_key_desc": "La piden los servidores alojados. Se guarda solo en este dispositivo."
+    }
   }
 }

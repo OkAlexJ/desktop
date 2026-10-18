@@ -974,5 +974,37 @@
     "count": "{count} sur {total}",
     "no_results": "Aucun titre ne correspond à « {query} »",
     "clear": "Effacer la recherche"
+  },
+  "lyrics_extras": {
+    "romanize": "Romaniser",
+    "romanize_hint": "Afficher chaque ligne en lettres latines",
+    "translate": "Traduire",
+    "translate_hint": "Afficher une traduction sous chaque ligne",
+    "translate_to": "Traduire en",
+    "auto_language": "Langue de l'app ({lang})",
+    "translating": "Traduction…",
+    "same_language": "Les paroles sont déjà en {lang}",
+    "error_network": "La traduction n'est pas disponible pour le moment",
+    "error_quota": "La limite gratuite de traduction du jour est atteinte",
+    "error_config": "Indiquez un serveur LibreTranslate dans les Réglages",
+    "roman_unsupported": "Lignes impossibles à romaniser : {count}. Les caractères chinois et les kanji demandent un dictionnaire.",
+    "roman_nothing": "Ces paroles sont déjà en lettres latines",
+    "settings": {
+      "section": "Traduction des paroles",
+      "romanize_title": "Romaniser les paroles",
+      "romanize_desc": "Affiche le cyrillique, le grec, le coréen et les kana japonais en lettres latines. Fonctionne hors ligne.",
+      "translate_title": "Traduire les paroles",
+      "translate_desc": "Affiche une ligne traduite sous chaque ligne.",
+      "target_title": "Traduire en",
+      "target_desc": "Par défaut, la langue de l'app.",
+      "provider_title": "Service de traduction",
+      "provider_desc": "Le texte des paroles est envoyé au service choisi pour être traduit. La romanisation reste sur votre appareil.",
+      "email_title": "E-mail de contact pour MyMemory (facultatif)",
+      "email_desc": "MyMemory autorise 5 000 caractères par jour sans e-mail et 50 000 avec.",
+      "libre_url_title": "Serveur LibreTranslate",
+      "libre_url_desc": "Votre propre serveur ou un serveur hébergé.",
+      "libre_key_title": "Clé API LibreTranslate",
+      "libre_key_desc": "Demandée par les serveurs hébergés. Enregistrée sur cet appareil uniquement."
+    }
   }
 }

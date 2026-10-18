@@ -1058,5 +1058,37 @@
     "count": "{count} з {total}",
     "no_results": "Немає треків за запитом «{query}»",
     "clear": "Очистити пошук"
+  },
+  "lyrics_extras": {
+    "romanize": "Латиниця",
+    "romanize_hint": "Показати рядки латиницею",
+    "translate": "Переклад",
+    "translate_hint": "Показати переклад під кожним рядком",
+    "translate_to": "Перекласти на",
+    "auto_language": "Мова застосунку ({lang})",
+    "translating": "Перекладаю…",
+    "same_language": "Текст уже мовою: {lang}",
+    "error_network": "Переклад зараз недоступний",
+    "error_quota": "Безкоштовний ліміт перекладу на сьогодні вичерпано",
+    "error_config": "Вкажіть сервер LibreTranslate у налаштуваннях",
+    "roman_unsupported": "Рядків без латиниці: {count}. Для китайських ієрогліфів і кандзі потрібен словник.",
+    "roman_nothing": "Текст уже написано латиницею",
+    "settings": {
+      "section": "Переклад текстів",
+      "romanize_title": "Латиниця в текстах",
+      "romanize_desc": "Показувати кирилицю, грецьку, корейську та японську кану латиницею. Працює офлайн.",
+      "translate_title": "Перекладати тексти",
+      "translate_desc": "Показувати переклад під кожним рядком.",
+      "target_title": "Мова перекладу",
+      "target_desc": "Типово — мова застосунку.",
+      "provider_title": "Сервіс перекладу",
+      "provider_desc": "Текст пісні надсилається до вибраного сервісу для перекладу. Латиниця рахується на пристрої.",
+      "email_title": "Email для MyMemory (необов'язково)",
+      "email_desc": "Без email MyMemory дає 5 000 символів на день, з email — 50 000.",
+      "libre_url_title": "Сервер LibreTranslate",
+      "libre_url_desc": "Власний сервер або публічний.",
+      "libre_key_title": "API-ключ LibreTranslate",
+      "libre_key_desc": "Потрібен публічним серверам. Зберігається лише на цьому пристрої."
+    }
   }
 }

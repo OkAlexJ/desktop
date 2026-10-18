@@ -972,5 +972,37 @@
     "count": "{count} / {total}",
     "no_results": "“{query}” ile eşleşen parça yok",
     "clear": "Aramayı temizle"
+  },
+  "lyrics_extras": {
+    "romanize": "Latin harfleri",
+    "romanize_hint": "Her satırı Latin harfleriyle göster",
+    "translate": "Çevir",
+    "translate_hint": "Her satırın altında çeviri göster",
+    "translate_to": "Şu dile çevir",
+    "auto_language": "Uygulama dili ({lang})",
+    "translating": "Çevriliyor…",
+    "same_language": "Sözler zaten {lang}",
+    "error_network": "Çeviri şu anda kullanılamıyor",
+    "error_quota": "Bugünkü ücretsiz çeviri sınırı doldu",
+    "error_config": "Ayarlar'dan bir LibreTranslate sunucusu girin",
+    "roman_unsupported": "Latin harflerine çevrilemeyen satırlar: {count}. Çince karakterler ve kanji için sözlük gerekir.",
+    "roman_nothing": "Bu sözler zaten Latin harfleriyle",
+    "settings": {
+      "section": "Söz çevirisi",
+      "romanize_title": "Sözleri Latin harfleriyle göster",
+      "romanize_desc": "Kiril, Yunan, Korece ve Japon kana yazısını Latin harfleriyle gösterir. Çevrimdışı çalışır.",
+      "translate_title": "Sözleri çevir",
+      "translate_desc": "Her satırın altında çevrilmiş bir satır gösterir.",
+      "target_title": "Çeviri dili",
+      "target_desc": "Varsayılan olarak uygulama dili.",
+      "provider_title": "Çeviri hizmeti",
+      "provider_desc": "Şarkı sözleri çeviri için seçilen hizmete gönderilir. Latin harfine dönüştürme cihazda yapılır.",
+      "email_title": "MyMemory için iletişim e-postası (isteğe bağlı)",
+      "email_desc": "MyMemory e-posta olmadan günde 5.000, e-postayla 50.000 karaktere izin verir.",
+      "libre_url_title": "LibreTranslate sunucusu",
+      "libre_url_desc": "Kendi sunucunuz veya barındırılan bir sunucu.",
+      "libre_key_title": "LibreTranslate API anahtarı",
+      "libre_key_desc": "Barındırılan sunucular ister. Yalnızca bu cihazda saklanır."
+    }
   }
 }

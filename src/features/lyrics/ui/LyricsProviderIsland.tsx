@@ -9,8 +9,11 @@ import {
   AddLine,
   MinimizeLine,
   Refresh1Line,
+  TranslateLine,
 } from "@mingcute/react";
 import { useLyricsStore, hasSyncedLyricsSources } from "../store/lyricsStore";
+import type { LyricsExtras } from "../extras/useLyricsExtras";
+import { LyricsExtrasPanel } from "./LyricsExtrasControls";
 import { useTranslation } from "@/languages";
 
 function formatOffsetBadge(ms: number): string {
@@ -23,7 +26,7 @@ function formatOffsetBadge(ms: number): string {
   return `${sign}${(ms / 1000).toFixed(2)}s`;
 }
 
-export function LyricsProviderIsland() {
+export function LyricsProviderIsland({ extras }: { extras?: LyricsExtras } = {}) {
   const { t } = useTranslation();
   const {
     availableProviders,
@@ -39,6 +42,7 @@ export function LyricsProviderIsland() {
 
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [offsetOpen, setOffsetOpen] = useState(false);
+  const [extrasOpen, setExtrasOpen] = useState(false);
   const [unit, setUnit] = useState<"ms" | "s">("ms");
   const [inputValue, setInputValue] = useState(String(offsetMs));
   const isInputFocusedRef = useRef(false);
@@ -56,7 +60,7 @@ export function LyricsProviderIsland() {
   }, [offsetMs, unit]);
 
   useEffect(() => {
-    if (!dropdownOpen && !offsetOpen) return;
+    if (!dropdownOpen && !offsetOpen && !extrasOpen) return;
     const onMouseDown = (e: MouseEvent) => {
       if (
         containerRef.current &&
@@ -64,12 +68,14 @@ export function LyricsProviderIsland() {
       ) {
         setDropdownOpen(false);
         setOffsetOpen(false);
+        setExtrasOpen(false);
       }
     };
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         setDropdownOpen(false);
         setOffsetOpen(false);
+        setExtrasOpen(false);
       }
     };
     document.addEventListener("mousedown", onMouseDown);
@@ -78,7 +84,7 @@ export function LyricsProviderIsland() {
       document.removeEventListener("mousedown", onMouseDown);
       document.removeEventListener("keydown", onKeyDown);
     };
-  }, [dropdownOpen, offsetOpen]);
+  }, [dropdownOpen, offsetOpen, extrasOpen]);
 
   const handleInputChange = useCallback(
     (val: string) => {
@@ -108,11 +114,14 @@ export function LyricsProviderIsland() {
         (l) => (l.startTimeMs ?? 0) === 0 && (l.durationMs ?? 0) === 0,
       ));
 
-  if (
+  const showProviderControls = !(
     availableProviders.length === 0 ||
     braccatoLyrics.length === 0 ||
     (!hasSyncedSources && availableProviders.length <= 1)
-  ) {
+  );
+  const showExtras = Boolean(extras?.hasText);
+
+  if (!showProviderControls && !showExtras) {
     return null;
   }
 
@@ -149,13 +158,15 @@ export function LyricsProviderIsland() {
       ref={containerRef}
       className="relative inline-flex items-center pointer-events-auto select-none"
     >
-      <div className="inline-flex items-center h-[32px] min-h-[32px] max-h-[32px] box-border rounded-lg bg-black/50 backdrop-blur-xl px-[3px] gap-[2px] text-white">
+      <div className="inline-flex items-center h-[32px] min-h-[32px] max-h-[32px] box-border rounded-lg bg-bg-canvas/50 backdrop-blur-xl px-[3px] gap-[2px] text-text-primary">
+        {showProviderControls && currentProvider && (
+        <>
         {hasMultiple && (
           <button
             type="button"
             onClick={handlePrev}
             aria-label="Previous provider"
-            className="w-[26px] h-[26px] min-w-[26px] min-h-[26px] max-h-[26px] rounded-md flex items-center justify-center text-white/70 hover:text-white hover:bg-white/10 active:scale-95 transition-all border-none bg-transparent cursor-pointer"
+            className="w-[26px] h-[26px] min-w-[26px] min-h-[26px] max-h-[26px] rounded-md flex items-center justify-center text-text-primary/70 hover:text-text-primary hover:bg-text-primary/10 active:scale-95 transition-all border-none bg-transparent cursor-pointer"
           >
             <LeftLine size={14} />
           </button>
@@ -169,9 +180,9 @@ export function LyricsProviderIsland() {
               setDropdownOpen((v) => !v);
             }
           }}
-          className={`flex items-center gap-[6px] h-[26px] min-h-[26px] max-h-[26px] px-[8px] rounded-md text-[12px] font-[500] text-white transition-all border-none bg-transparent ${
+          className={`flex items-center gap-[6px] h-[26px] min-h-[26px] max-h-[26px] px-[8px] rounded-md text-[12px] font-[500] text-text-primary transition-all border-none bg-transparent ${
             hasMultiple
-              ? "hover:bg-white/10 cursor-pointer"
+              ? "hover:bg-text-primary/10 cursor-pointer"
               : "cursor-default"
           }`}
           style={{ fontFamily: "var(--font-inter), sans-serif" }}
@@ -180,14 +191,14 @@ export function LyricsProviderIsland() {
             {currentProvider.provider}
           </span>
           {hasMultiple && (
-            <span className="text-[10px] font-mono text-white/50">
+            <span className="text-[10px] font-mono text-text-primary/50">
               {currentIndex + 1}/{availableProviders.length}
             </span>
           )}
           {hasMultiple && (
             <DownLine
               size={12}
-              className={`text-white/50 transition-transform duration-150 ${
+              className={`text-text-primary/50 transition-transform duration-150 ${
                 dropdownOpen ? "rotate-180" : ""
               }`}
             />
@@ -199,7 +210,7 @@ export function LyricsProviderIsland() {
             type="button"
             onClick={handleNext}
             aria-label="Next provider"
-            className="w-[26px] h-[26px] min-w-[26px] min-h-[26px] max-h-[26px] rounded-md flex items-center justify-center text-white/70 hover:text-white hover:bg-white/10 active:scale-95 transition-all border-none bg-transparent cursor-pointer"
+            className="w-[26px] h-[26px] min-w-[26px] min-h-[26px] max-h-[26px] rounded-md flex items-center justify-center text-text-primary/70 hover:text-text-primary hover:bg-text-primary/10 active:scale-95 transition-all border-none bg-transparent cursor-pointer"
           >
             <RightLine size={14} />
           </button>
@@ -207,7 +218,7 @@ export function LyricsProviderIsland() {
 
         {!isCurrentPlain && (
           <>
-            <div className="w-[1px] h-[14px] bg-white/15 mx-[1px]" />
+            <div className="w-[1px] h-[14px] bg-text-primary/15 mx-[1px]" />
 
             <button
               type="button"
@@ -217,7 +228,7 @@ export function LyricsProviderIsland() {
               }}
               aria-label={`${t("player.earlier")} (-0.1s)`}
               title={`${t("player.earlier")} (-0.1s)`}
-              className="w-[26px] h-[26px] min-w-[26px] min-h-[26px] max-h-[26px] rounded-md flex items-center justify-center text-white/70 hover:text-white hover:bg-white/10 active:scale-95 transition-all border-none bg-transparent cursor-pointer"
+              className="w-[26px] h-[26px] min-w-[26px] min-h-[26px] max-h-[26px] rounded-md flex items-center justify-center text-text-primary/70 hover:text-text-primary hover:bg-text-primary/10 active:scale-95 transition-all border-none bg-transparent cursor-pointer"
             >
               <MinimizeLine size={12} />
             </button>
@@ -228,17 +239,17 @@ export function LyricsProviderIsland() {
                 setDropdownOpen(false);
                 setOffsetOpen((v) => !v);
               }}
-              className={`flex items-center gap-[4px] h-[26px] min-h-[26px] max-h-[26px] px-[6px] rounded-md text-[12px] font-mono transition-all border-none bg-transparent hover:bg-white/10 cursor-pointer ${
+              className={`flex items-center gap-[4px] h-[26px] min-h-[26px] max-h-[26px] px-[6px] rounded-md text-[12px] font-mono transition-all border-none bg-transparent hover:bg-text-primary/10 cursor-pointer ${
                 offsetMs !== 0
-                  ? "text-white font-[600]"
-                  : "text-white/80 font-[500]"
+                  ? "text-text-primary font-[600]"
+                  : "text-text-primary/80 font-[500]"
               }`}
               style={{ fontFamily: "var(--font-inter), sans-serif" }}
               title={t("player.lyrics_offset")}
             >
               <TimeLine
                 size={12}
-                className={offsetMs !== 0 ? "text-white" : "text-white/50"}
+                className={offsetMs !== 0 ? "text-text-primary" : "text-text-primary/50"}
               />
               <span>{formatOffsetBadge(offsetMs)}</span>
             </button>
@@ -251,22 +262,63 @@ export function LyricsProviderIsland() {
               }}
               aria-label={`${t("player.later")} (+0.1s)`}
               title={`${t("player.later")} (+0.1s)`}
-              className="w-[26px] h-[26px] min-w-[26px] min-h-[26px] max-h-[26px] rounded-md flex items-center justify-center text-white/70 hover:text-white hover:bg-white/10 active:scale-95 transition-all border-none bg-transparent cursor-pointer"
+              className="w-[26px] h-[26px] min-w-[26px] min-h-[26px] max-h-[26px] rounded-md flex items-center justify-center text-text-primary/70 hover:text-text-primary hover:bg-text-primary/10 active:scale-95 transition-all border-none bg-transparent cursor-pointer"
             >
               <AddLine size={12} />
+            </button>
+          </>
+        )}
+        </>
+        )}
+
+        {showExtras && extras && (
+          <>
+            {showProviderControls && <div className="w-[1px] h-[14px] bg-text-primary/15 mx-[1px]" />}
+            <button
+              type="button"
+              onClick={() => {
+                setDropdownOpen(false);
+                setOffsetOpen(false);
+                setExtrasOpen((v) => !v);
+              }}
+              aria-label={t("lyrics_extras.settings.section")}
+              aria-expanded={extrasOpen}
+              title={t("lyrics_extras.settings.section")}
+              className={`relative w-[26px] h-[26px] min-w-[26px] min-h-[26px] max-h-[26px] rounded-md flex items-center justify-center transition-all border-none cursor-pointer active:scale-95 ${
+                extras.showRomanization || extras.showTranslation
+                  ? "bg-text-primary/15 text-text-primary"
+                  : "bg-transparent text-text-primary/70 hover:text-text-primary hover:bg-text-primary/10"
+              }`}
+            >
+              <TranslateLine size={14} />
+              {extras.showTranslation && extras.translationStatus === "loading" && (
+                <span className="absolute -top-[1px] -right-[1px] w-[7px] h-[7px] rounded-full bg-text-primary animate-pulse" />
+              )}
             </button>
           </>
         )}
       </div>
 
       <AnimatePresence>
-        {dropdownOpen && hasMultiple && (
+        {extrasOpen && showExtras && extras && (
           <motion.div
             initial={{ opacity: 0, scale: 0.95, y: -4 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: -4 }}
             transition={{ duration: 0.12, ease: "easeOut" }}
-            className="absolute top-full left-0 mt-[6px] min-w-[140px] rounded-lg border border-white/10 bg-black/80 backdrop-blur-2xl p-[4px] z-50 flex flex-col gap-[2px] text-white"
+            className="absolute top-full right-0 mt-[6px] w-[270px] rounded-xl bg-bg-canvas/80 backdrop-blur-2xl p-[12px] z-50 text-text-primary"
+          >
+            <LyricsExtrasPanel extras={extras} />
+          </motion.div>
+        )}
+
+        {dropdownOpen && hasMultiple && showProviderControls && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95, y: -4 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: -4 }}
+            transition={{ duration: 0.12, ease: "easeOut" }}
+            className="absolute top-full left-0 mt-[6px] min-w-[140px] rounded-lg border border-text-primary/10 bg-bg-canvas/80 backdrop-blur-2xl p-[4px] z-50 flex flex-col gap-[2px] text-text-primary"
           >
             {availableProviders.map((option, idx) => {
               const isActive = option.provider === currentProvider.provider;
@@ -280,8 +332,8 @@ export function LyricsProviderIsland() {
                   }}
                   className={`flex items-center justify-between gap-[8px] w-full px-[8px] py-[6px] rounded-md text-[12px] transition-colors border-none cursor-pointer text-left ${
                     isActive
-                      ? "bg-white/15 text-white font-[500]"
-                      : "bg-transparent text-white/70 hover:bg-white/10 hover:text-white font-[400]"
+                      ? "bg-text-primary/15 text-text-primary font-[500]"
+                      : "bg-transparent text-text-primary/70 hover:bg-text-primary/10 hover:text-text-primary font-[400]"
                   }`}
                   style={{ fontFamily: "var(--font-inter), sans-serif" }}
                 >
@@ -289,10 +341,10 @@ export function LyricsProviderIsland() {
                   {isActive ? (
                     <CheckFill
                       size={14}
-                      className="text-white shrink-0"
+                      className="text-text-primary shrink-0"
                     />
                   ) : (
-                    <span className="text-[10px] font-mono text-white/40 shrink-0">
+                    <span className="text-[10px] font-mono text-text-primary/40 shrink-0">
                       {idx + 1}
                     </span>
                   )}
@@ -302,19 +354,19 @@ export function LyricsProviderIsland() {
           </motion.div>
         )}
 
-        {offsetOpen && !isCurrentPlain && (
+        {offsetOpen && !isCurrentPlain && showProviderControls && (
           <motion.div
             initial={{ opacity: 0, scale: 0.95, y: -4 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: -4 }}
             transition={{ duration: 0.12, ease: "easeOut" }}
-            className="absolute top-full right-0 mt-[6px] w-[260px] rounded-xl bg-black/80 backdrop-blur-2xl p-[12px] z-50 flex flex-col gap-[10px] text-white"
+            className="absolute top-full right-0 mt-[6px] w-[260px] rounded-xl bg-bg-canvas/80 backdrop-blur-2xl p-[12px] z-50 flex flex-col gap-[10px] text-text-primary"
           >
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-[6px]">
-                <TimeLine size={14} className="text-white" />
+                <TimeLine size={14} className="text-text-primary" />
                 <span
-                  className="text-[12px] font-[600] text-white"
+                  className="text-[12px] font-[600] text-text-primary"
                   style={{ fontFamily: "var(--font-inter), sans-serif" }}
                 >
                   {t("player.lyrics_offset")}
@@ -324,7 +376,7 @@ export function LyricsProviderIsland() {
                 <button
                   type="button"
                   onClick={resetOffset}
-                  className="inline-flex items-center gap-[4px] px-[6px] py-[2px] rounded-md text-[11px] font-[500] text-white/70 hover:text-white hover:bg-white/10 border-none bg-transparent cursor-pointer transition-colors"
+                  className="inline-flex items-center gap-[4px] px-[6px] py-[2px] rounded-md text-[11px] font-[500] text-text-primary/70 hover:text-text-primary hover:bg-text-primary/10 border-none bg-transparent cursor-pointer transition-colors"
                   style={{ fontFamily: "var(--font-inter), sans-serif" }}
                 >
                   <Refresh1Line size={11} />
@@ -333,12 +385,12 @@ export function LyricsProviderIsland() {
               )}
             </div>
 
-            <div className="flex items-center gap-[6px] bg-white/[0.06] rounded-lg p-[4px]">
+            <div className="flex items-center gap-[6px] bg-text-primary/[0.06] rounded-lg p-[4px]">
               <button
                 type="button"
                 onClick={() => adjustOffset(unit === "ms" ? -50 : -100)}
                 aria-label="Decrease offset"
-                className="w-[26px] h-[26px] rounded-md flex items-center justify-center text-white/70 hover:text-white hover:bg-white/10 active:scale-95 transition-all border-none bg-transparent cursor-pointer shrink-0"
+                className="w-[26px] h-[26px] rounded-md flex items-center justify-center text-text-primary/70 hover:text-text-primary hover:bg-text-primary/10 active:scale-95 transition-all border-none bg-transparent cursor-pointer shrink-0"
               >
                 <MinimizeLine size={12} />
               </button>
@@ -371,7 +423,7 @@ export function LyricsProviderIsland() {
                     }
                   }}
                   placeholder="0"
-                  className="w-full text-center text-[13px] font-mono font-[600] text-white bg-transparent border-none outline-none p-0"
+                  className="w-full text-center text-[13px] font-mono font-[600] text-text-primary bg-transparent border-none outline-none p-0"
                 />
               </div>
 
@@ -379,19 +431,19 @@ export function LyricsProviderIsland() {
                 type="button"
                 onClick={() => adjustOffset(unit === "ms" ? 50 : 100)}
                 aria-label="Increase offset"
-                className="w-[26px] h-[26px] rounded-md flex items-center justify-center text-white/70 hover:text-white hover:bg-white/10 active:scale-95 transition-all border-none bg-transparent cursor-pointer shrink-0"
+                className="w-[26px] h-[26px] rounded-md flex items-center justify-center text-text-primary/70 hover:text-text-primary hover:bg-text-primary/10 active:scale-95 transition-all border-none bg-transparent cursor-pointer shrink-0"
               >
                 <AddLine size={12} />
               </button>
 
-              <div className="flex items-center bg-white/10 rounded-md p-[2px] shrink-0">
+              <div className="flex items-center bg-text-primary/10 rounded-md p-[2px] shrink-0">
                 <button
                   type="button"
                   onClick={() => setUnit("ms")}
                   className={`px-[5px] py-[2px] text-[10px] font-mono rounded-[4px] border-none cursor-pointer transition-all ${
                     unit === "ms"
-                      ? "bg-white/20 text-white font-[600]"
-                      : "bg-transparent text-white/50 hover:text-white/80"
+                      ? "bg-text-primary/20 text-text-primary font-[600]"
+                      : "bg-transparent text-text-primary/50 hover:text-text-primary/80"
                   }`}
                 >
                   ms
@@ -401,8 +453,8 @@ export function LyricsProviderIsland() {
                   onClick={() => setUnit("s")}
                   className={`px-[5px] py-[2px] text-[10px] font-mono rounded-[4px] border-none cursor-pointer transition-all ${
                     unit === "s"
-                      ? "bg-white/20 text-white font-[600]"
-                      : "bg-transparent text-white/50 hover:text-white/80"
+                      ? "bg-text-primary/20 text-text-primary font-[600]"
+                      : "bg-transparent text-text-primary/50 hover:text-text-primary/80"
                   }`}
                 >
                   s
@@ -411,7 +463,7 @@ export function LyricsProviderIsland() {
             </div>
 
             <div className="flex flex-col gap-[6px]">
-              <div className="flex items-center justify-between text-[10px] font-[500] text-white/50 px-[2px]">
+              <div className="flex items-center justify-between text-[10px] font-[500] text-text-primary/50 px-[2px]">
                 <span>{t("player.earlier")} (-)</span>
                 <span>{t("player.later")} (+)</span>
               </div>
@@ -421,7 +473,7 @@ export function LyricsProviderIsland() {
                     key={delta}
                     type="button"
                     onClick={() => adjustOffset(delta)}
-                    className="py-[4px] text-[11px] font-mono rounded-md bg-white/[0.08] hover:bg-white/15 text-white/70 hover:text-white transition-all active:scale-95 text-center border-none cursor-pointer"
+                    className="py-[4px] text-[11px] font-mono rounded-md bg-text-primary/[0.08] hover:bg-text-primary/15 text-text-primary/70 hover:text-text-primary transition-all active:scale-95 text-center border-none cursor-pointer"
                   >
                     {delta / 1000}s
                   </button>
@@ -431,7 +483,7 @@ export function LyricsProviderIsland() {
                     key={delta}
                     type="button"
                     onClick={() => adjustOffset(delta)}
-                    className="py-[4px] text-[11px] font-mono rounded-md bg-white/[0.08] hover:bg-white/15 text-white/70 hover:text-white transition-all active:scale-95 text-center border-none cursor-pointer"
+                    className="py-[4px] text-[11px] font-mono rounded-md bg-text-primary/[0.08] hover:bg-text-primary/15 text-text-primary/70 hover:text-text-primary transition-all active:scale-95 text-center border-none cursor-pointer"
                   >
                     +{delta / 1000}s
                   </button>

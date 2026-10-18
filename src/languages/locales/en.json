@@ -1030,5 +1030,37 @@
     "count": "{count} of {total}",
     "no_results": "No tracks match “{query}”",
     "clear": "Clear search"
+  },
+  "lyrics_extras": {
+    "romanize": "Romanize",
+    "romanize_hint": "Show each line in Latin letters",
+    "translate": "Translate",
+    "translate_hint": "Show a translation under each line",
+    "translate_to": "Translate to",
+    "auto_language": "App language ({lang})",
+    "translating": "Translating…",
+    "same_language": "Lyrics are already in {lang}",
+    "error_network": "Translation isn't available right now",
+    "error_quota": "Today's free translation limit is used up",
+    "error_config": "Set a LibreTranslate server in Settings",
+    "roman_unsupported": "Lines that can't be romanized: {count}. Chinese characters and kanji need a dictionary.",
+    "roman_nothing": "These lyrics are already in Latin letters",
+    "settings": {
+      "section": "Lyrics translation",
+      "romanize_title": "Romanize lyrics",
+      "romanize_desc": "Show Cyrillic, Greek, Korean and Japanese kana in Latin letters. Works offline.",
+      "translate_title": "Translate lyrics",
+      "translate_desc": "Show a translated line under each lyric line.",
+      "target_title": "Translate into",
+      "target_desc": "Defaults to the app language.",
+      "provider_title": "Translation service",
+      "provider_desc": "Lyrics text is sent to the chosen service to be translated. Romanization never leaves your device.",
+      "email_title": "Contact email for MyMemory (optional)",
+      "email_desc": "MyMemory allows 5,000 characters a day without an email and 50,000 with one.",
+      "libre_url_title": "LibreTranslate server",
+      "libre_url_desc": "Your own server or a hosted one.",
+      "libre_key_title": "LibreTranslate API key",
+      "libre_key_desc": "Needed by hosted servers. Stored on this device only."
+    }
   }
 }

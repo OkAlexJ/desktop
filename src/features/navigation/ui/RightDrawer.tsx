@@ -2,7 +2,14 @@ import { useState, useEffect, useRef, memo, useCallback, useMemo } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { usePlayerState, playerEngine } from "@/features/player";
 import SongCardWithMenu from "@/features/player/ui/SongCardWithMenu";
-import { useLyricsStore, type WordData, useLyricsAnimator } from "@/features/lyrics";
+import {
+  useLyricsStore,
+  type WordData,
+  useLyricsAnimator,
+  useLyricsExtras,
+  LyricsProviderIsland,
+  LyricLineExtras,
+} from "@/features/lyrics";
 import { useTranslation } from "@/languages";
 import { useToast, ReorderDropPlaceholder, FloatingDragCard } from "@/shared/ui";
 import { useListReorder } from "@/shared/hooks";
@@ -326,6 +333,21 @@ function RightDrawer({ activeTab, onTabChange, onClose }: RightDrawerProps) {
   const effectiveSyncedLines = isMatchingTrack ? syncedLines : [];
   const effectivePlainLyrics = isMatchingTrack ? plainLyrics : null;
   const effectiveLoading = lyricsLoading || !isMatchingTrack;
+
+  // same line list both lyric branches below render, so extras line up by index
+  const lyricsDisplayTexts = useMemo(
+    () =>
+      effectiveSyncedLines.length > 0
+        ? effectiveSyncedLines.map((l) => l.text)
+        : effectivePlainLyrics && effectivePlainLyrics !== "[INSTRUMENTAL]"
+          ? effectivePlainLyrics.split("\n")
+          : [],
+    [effectiveSyncedLines, effectivePlainLyrics],
+  );
+  const lyricsExtras = useLyricsExtras(
+    isMatchingTrack ? player.currentTrack?.id : null,
+    lyricsDisplayTexts,
+  );
 
   useEffect(() => {
     const trackId = player.currentTrack?.id || null;
@@ -875,6 +897,10 @@ function RightDrawer({ activeTab, onTabChange, onClose }: RightDrawerProps) {
               </span>
             </div>
           ) : (
+            <>
+            <div className="absolute top-[10px] left-1/2 -translate-x-1/2 z-20 pointer-events-none flex justify-center">
+              <LyricsProviderIsland extras={lyricsExtras} />
+            </div>
             <div
               className="absolute inset-0 overflow-y-auto p-[32px]"
               style={{
@@ -1028,6 +1054,11 @@ function RightDrawer({ activeTab, onTabChange, onClose }: RightDrawerProps) {
                         ) : (
                           "•••"
                         )}
+                        <LyricLineExtras
+                          romanized={lyricsExtras.romanized[i]}
+                          translated={lyricsExtras.translated[i]}
+                          align={isRight ? "right" : isCenter ? "center" : undefined}
+                        />
                       </div>
                     );
                   })}
@@ -1126,6 +1157,11 @@ function RightDrawer({ activeTab, onTabChange, onClose }: RightDrawerProps) {
                         style={customStyle}
                       >
                         {displayText || "\n"}
+                        <LyricLineExtras
+                          romanized={lyricsExtras.romanized[i]}
+                          translated={lyricsExtras.translated[i]}
+                          align={isRight ? "right" : isCenter ? "center" : undefined}
+                        />
                       </div>
                     );
                   })}
@@ -1137,6 +1173,7 @@ function RightDrawer({ activeTab, onTabChange, onClose }: RightDrawerProps) {
               )}
             </div>
           </div>
+            </>
         ))}
       </div>
     </div>

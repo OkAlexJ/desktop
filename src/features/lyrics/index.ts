@@ -24,3 +24,8 @@ export {
   type SyncedLine,
 } from "./hooks/useLyricsAnimator";
 export { LyricsProviderIsland } from "./ui/LyricsProviderIsland";
+export { useLyricsExtras, type LyricsExtras } from "./extras/useLyricsExtras";
+export { useLyricsExtrasStore } from "./extras/extrasStore";
+export { LyricsExtrasPanel, LyricLineExtras } from "./ui/LyricsExtrasControls";
+export { LyricsTranslationSettings } from "./ui/LyricsTranslationSettings";
+export { applyBraccatoExtras } from "./extras/braccatoExtras";

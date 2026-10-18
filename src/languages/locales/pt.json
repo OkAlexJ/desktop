@@ -909,5 +909,37 @@
     "count": "{count} de {total}",
     "no_results": "Nenhuma faixa corresponde a “{query}”",
     "clear": "Limpar pesquisa"
+  },
+  "lyrics_extras": {
+    "romanize": "Romanizar",
+    "romanize_hint": "Mostrar cada linha em letras latinas",
+    "translate": "Traduzir",
+    "translate_hint": "Mostrar uma tradução abaixo de cada linha",
+    "translate_to": "Traduzir para",
+    "auto_language": "Idioma do app ({lang})",
+    "translating": "Traduzindo…",
+    "same_language": "A letra já está em {lang}",
+    "error_network": "A tradução não está disponível agora",
+    "error_quota": "O limite gratuito de tradução de hoje acabou",
+    "error_config": "Defina um servidor LibreTranslate nas Configurações",
+    "roman_unsupported": "Linhas que não podem ser romanizadas: {count}. Caracteres chineses e kanji precisam de um dicionário.",
+    "roman_nothing": "Esta letra já está em letras latinas",
+    "settings": {
+      "section": "Tradução de letras",
+      "romanize_title": "Romanizar letras",
+      "romanize_desc": "Mostra cirílico, grego, coreano e kana japonês em letras latinas. Funciona offline.",
+      "translate_title": "Traduzir letras",
+      "translate_desc": "Mostra uma linha traduzida abaixo de cada linha.",
+      "target_title": "Traduzir para",
+      "target_desc": "Por padrão, o idioma do app.",
+      "provider_title": "Serviço de tradução",
+      "provider_desc": "O texto da letra é enviado ao serviço escolhido para ser traduzido. A romanização fica no seu dispositivo.",
+      "email_title": "E-mail de contato para o MyMemory (opcional)",
+      "email_desc": "O MyMemory permite 5.000 caracteres por dia sem e-mail e 50.000 com e-mail.",
+      "libre_url_title": "Servidor LibreTranslate",
+      "libre_url_desc": "Seu próprio servidor ou um hospedado.",
+      "libre_key_title": "Chave de API do LibreTranslate",
+      "libre_key_desc": "Exigida por servidores hospedados. Salva apenas neste dispositivo."
+    }
   }
 }

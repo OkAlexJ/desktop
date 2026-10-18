@@ -913,5 +913,37 @@
     "count": "{count} von {total}",
     "no_results": "Keine Titel für „{query}“",
     "clear": "Suche löschen"
+  },
+  "lyrics_extras": {
+    "romanize": "Lateinisch",
+    "romanize_hint": "Jede Zeile in lateinischen Buchstaben zeigen",
+    "translate": "Übersetzen",
+    "translate_hint": "Unter jeder Zeile eine Übersetzung zeigen",
+    "translate_to": "Übersetzen nach",
+    "auto_language": "App-Sprache ({lang})",
+    "translating": "Wird übersetzt…",
+    "same_language": "Der Text ist bereits auf {lang}",
+    "error_network": "Übersetzung ist gerade nicht verfügbar",
+    "error_quota": "Das kostenlose Übersetzungslimit für heute ist aufgebraucht",
+    "error_config": "Lege in den Einstellungen einen LibreTranslate-Server fest",
+    "roman_unsupported": "Zeilen ohne Umschrift: {count}. Chinesische Schriftzeichen und Kanji brauchen ein Wörterbuch.",
+    "roman_nothing": "Dieser Text ist bereits in lateinischen Buchstaben",
+    "settings": {
+      "section": "Songtext-Übersetzung",
+      "romanize_title": "Songtexte umschreiben",
+      "romanize_desc": "Zeigt Kyrillisch, Griechisch, Koreanisch und japanische Kana in lateinischen Buchstaben. Funktioniert offline.",
+      "translate_title": "Songtexte übersetzen",
+      "translate_desc": "Zeigt unter jeder Zeile eine übersetzte Zeile.",
+      "target_title": "Übersetzen nach",
+      "target_desc": "Standard ist die App-Sprache.",
+      "provider_title": "Übersetzungsdienst",
+      "provider_desc": "Der Songtext wird zur Übersetzung an den gewählten Dienst gesendet. Die Umschrift bleibt auf deinem Gerät.",
+      "email_title": "Kontakt-E-Mail für MyMemory (optional)",
+      "email_desc": "MyMemory erlaubt ohne E-Mail 5.000 Zeichen pro Tag, mit E-Mail 50.000.",
+      "libre_url_title": "LibreTranslate-Server",
+      "libre_url_desc": "Eigener Server oder ein gehosteter.",
+      "libre_key_title": "LibreTranslate-API-Schlüssel",
+      "libre_key_desc": "Für gehostete Server nötig. Wird nur auf diesem Gerät gespeichert."
+    }
   }
 }

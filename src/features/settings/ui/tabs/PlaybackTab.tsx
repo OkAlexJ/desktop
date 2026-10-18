@@ -3,6 +3,7 @@ import { useTranslation } from "@/languages";
 import { usePlayerStore } from "@/features/player";
 import { ToggleSwitch } from "@/shared/ui";
 import { SettingRow, SettingSection, SegmentedControl } from "../controls";
+import { LyricsTranslationSettings } from "@/features/lyrics/ui/LyricsTranslationSettings";
 
 export function PlaybackTab({ searchQuery }: { searchQuery?: string }) {
   const { t } = useTranslation();
@@ -35,6 +36,7 @@ export function PlaybackTab({ searchQuery }: { searchQuery?: string }) {
   }, []);
 
   return (
+    <div className="flex flex-col gap-[18px]">
     <SettingSection>
 
       <SettingRow
@@ -123,5 +125,7 @@ export function PlaybackTab({ searchQuery }: { searchQuery?: string }) {
         }
       />
     </SettingSection>
+    <LyricsTranslationSettings searchQuery={searchQuery} />
+    </div>
   );
 }

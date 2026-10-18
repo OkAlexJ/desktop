@@ -1058,5 +1058,37 @@
     "count": "{count} из {total}",
     "no_results": "Нет треков по запросу «{query}»",
     "clear": "Очистить поиск"
+  },
+  "lyrics_extras": {
+    "romanize": "Латиница",
+    "romanize_hint": "Показать строки латиницей",
+    "translate": "Перевод",
+    "translate_hint": "Показать перевод под каждой строкой",
+    "translate_to": "Перевести на",
+    "auto_language": "Язык приложения ({lang})",
+    "translating": "Перевожу…",
+    "same_language": "Текст уже на языке: {lang}",
+    "error_network": "Перевод сейчас недоступен",
+    "error_quota": "Бесплатный лимит перевода на сегодня исчерпан",
+    "error_config": "Укажите сервер LibreTranslate в настройках",
+    "roman_unsupported": "Строк без латиницы: {count}. Для китайских иероглифов и кандзи нужен словарь.",
+    "roman_nothing": "Текст уже написан латиницей",
+    "settings": {
+      "section": "Перевод текстов",
+      "romanize_title": "Латиница в текстах",
+      "romanize_desc": "Показывать кириллицу, греческий, корейский и японскую кану латиницей. Работает офлайн.",
+      "translate_title": "Переводить тексты",
+      "translate_desc": "Показывать перевод под каждой строкой.",
+      "target_title": "Язык перевода",
+      "target_desc": "По умолчанию — язык приложения.",
+      "provider_title": "Сервис перевода",
+      "provider_desc": "Текст песни отправляется в выбранный сервис для перевода. Латиница считается на устройстве.",
+      "email_title": "Email для MyMemory (необязательно)",
+      "email_desc": "Без email MyMemory даёт 5 000 символов в день, с email — 50 000.",
+      "libre_url_title": "Сервер LibreTranslate",
+      "libre_url_desc": "Свой сервер или публичный.",
+      "libre_key_title": "API-ключ LibreTranslate",
+      "libre_key_desc": "Нужен публичным серверам. Хранится только на этом устройстве."
+    }
   }
 }
