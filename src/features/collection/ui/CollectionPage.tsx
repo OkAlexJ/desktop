@@ -36,6 +36,7 @@ import { useModalStore } from "@/features/library";
 import { buildShareUrl } from "@/shared/utils/share";
 import { useExternalItems } from "@/features/library/hooks";
 import { useCollection } from "../hooks/useCollection";
+import { useRecordRecentItem } from "@/features/library/store/recentItemsStore";
 import { useIsContentTransparent } from "@/features/settings/store/customizationStore";
 import {
   useTrackSearch,
@@ -56,6 +57,17 @@ function CollectionContent() {
   const hasCustomBg = useIsContentTransparent();
 
   const { data, loading } = useCollection(type, id);
+  useRecordRecentItem(
+    data && id && !loading
+      ? {
+          type: type === "playlist" ? "playlist" : "album",
+          id,
+          title: data.title,
+          coverUrl: data.coverUrl,
+          href: `/collection?type=${type}&id=${encodeURIComponent(id)}`,
+        }
+      : null,
+  );
   const entityType = type === "playlist" ? "playlist" : "album";
   const decodedId = id ? decodeURIComponent(id) : "";
   const isDailyMix = Boolean(

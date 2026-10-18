@@ -234,6 +234,28 @@
     "no_artists_desc": "Salve artistas para acessar a discografia rapidamente",
     "search_music": "Pesquisar música"
   },
+  "library_flyout": {
+    "title": "Abertos recentemente",
+    "show_all": "Ver tudo na biblioteca",
+    "empty": "As playlists, artistas e álbuns que você abrir aparecerão aqui.",
+    "type_playlist": "Playlist",
+    "type_artist": "Artista",
+    "type_album": "Álbum",
+    "types_plural": {
+      "playlist": "Playlists",
+      "artist": "Artistas",
+      "album": "Álbuns"
+    },
+    "settings": {
+      "section": "Menu suspenso da biblioteca",
+      "enabled_title": "Mostrar menu suspenso da biblioteca",
+      "enabled_description": "Passar o cursor sobre o ícone da biblioteca mostra as playlists, artistas e álbuns abertos recentemente.",
+      "count_title": "Itens exibidos",
+      "count_description": "Quantos itens recentes o menu exibe.",
+      "types_title": "Incluir",
+      "types_description": "Quais tipos de itens aparecem no menu."
+    }
+  },
   "login": {
     "welcome_back": "Bem-vindo de volta",
     "sign_in_to_account": "Entre na sua conta",

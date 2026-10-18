@@ -234,6 +234,28 @@
     "no_artists_desc": "Salva gli artisti per accedere velocemente alla loro discografia",
     "search_music": "Cerca musica"
   },
+  "library_flyout": {
+    "title": "Aperti di recente",
+    "show_all": "Mostra tutto nella libreria",
+    "empty": "Qui compariranno le playlist, gli artisti e gli album che apri.",
+    "type_playlist": "Playlist",
+    "type_artist": "Artista",
+    "type_album": "Album",
+    "types_plural": {
+      "playlist": "Playlist",
+      "artist": "Artisti",
+      "album": "Album"
+    },
+    "settings": {
+      "section": "Menu al passaggio sulla libreria",
+      "enabled_title": "Mostra il menu della libreria al passaggio",
+      "enabled_description": "Passando sull’icona Libreria vedi le playlist, gli artisti e gli album aperti di recente.",
+      "count_title": "Elementi mostrati",
+      "count_description": "Quanti elementi recenti mostra il menu.",
+      "types_title": "Includi",
+      "types_description": "Quali tipi di elementi compaiono nel menu."
+    }
+  },
   "login": {
     "welcome_back": "Bentornato",
     "sign_in_to_account": "Accedi al tuo account",

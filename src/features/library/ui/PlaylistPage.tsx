@@ -35,6 +35,7 @@ import type { Track } from "@/shared/types";
 import { useTranslation } from "@/languages";
 import { api } from "@/shared/api";
 import { useIsContentTransparent } from "@/features/settings/store/customizationStore";
+import { useRecordRecentItem } from "../store/recentItemsStore";
 import {
   useTrackSearch,
   useTrackSearchButtonLabel,
@@ -165,6 +166,18 @@ function LibraryPlaylistContent() {
       revision: playlistDetail.revision,
     };
   })();
+
+  useRecordRecentItem(
+    viewData && decodedId && !isLoading
+      ? {
+          type: "playlist",
+          id: decodedId,
+          title: viewData.title,
+          coverUrl: viewData.coverUrls[0] || viewData.coverUrl,
+          href: `/library/playlist?id=${encodeURIComponent(decodedId)}`,
+        }
+      : null,
+  );
 
   useEffect(() => {
     if (isEditingTitle && titleRef.current) {

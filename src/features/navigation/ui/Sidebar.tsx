@@ -2,6 +2,7 @@ import { memo } from "react";
 import AppImage from "@/features/covers/ui/AppImage";
 import { Link, useLocation } from "react-router-dom";
 import { sidebarNavItems } from "../data/navigation";
+import LibraryNavItem from "./LibraryNavItem";
 import logo from "@/assets/logo.svg";
 import spotifyLogo from "@/assets/branding/logo-spotify.svg";
 import discordLogo from "@/assets/branding/logo-discord.svg";
@@ -96,6 +97,19 @@ function Sidebar({ searchOpen, onSearchToggle }: SidebarProps) {
               />
             </button>
           </Tooltip>
+        );
+      }
+
+      if (item.id === "library") {
+        return (
+          <LibraryNavItem key={item.id} href={item.href!} active={active} label={tooltipLabel}>
+            <Icon
+              size={26}
+              className={`relative z-10 text-text-primary transition-opacity duration-150 ease-out ${
+                active ? "opacity-100" : "opacity-55 group-hover:opacity-90"
+              }`}
+            />
+          </LibraryNavItem>
         );
       }
 

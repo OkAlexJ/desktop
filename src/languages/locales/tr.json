@@ -234,6 +234,28 @@
     "no_artists_desc": "Diskografilerine hızlıca ulaşmak için sanatçıları kaydet",
     "search_music": "Müzik ara"
   },
+  "library_flyout": {
+    "title": "Son açılanlar",
+    "show_all": "Kitaplıkta tümünü göster",
+    "empty": "Açtığın çalma listeleri, sanatçılar ve albümler burada görünür.",
+    "type_playlist": "Çalma listesi",
+    "type_artist": "Sanatçı",
+    "type_album": "Albüm",
+    "types_plural": {
+      "playlist": "Çalma listeleri",
+      "artist": "Sanatçılar",
+      "album": "Albümler"
+    },
+    "settings": {
+      "section": "Kitaplık üzerine gelme menüsü",
+      "enabled_title": "Kitaplık üzerine gelme menüsünü göster",
+      "enabled_description": "Kitaplık simgesinin üzerine gelince son açtığın çalma listeleri, sanatçılar ve albümler listelenir.",
+      "count_title": "Gösterilen öğe",
+      "count_description": "Menünün kaç son öğe listeleyeceği.",
+      "types_title": "Dahil et",
+      "types_description": "Menüde hangi öğe türlerinin görüneceği."
+    }
+  },
   "login": {
     "welcome_back": "Tekrar hoş geldin",
     "sign_in_to_account": "Hesabına giriş yap",

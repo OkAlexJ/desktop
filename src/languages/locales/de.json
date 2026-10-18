@@ -234,6 +234,28 @@
     "no_artists_desc": "Speichere Künstler, um schnell auf ihre Diskografie zuzugreifen",
     "search_music": "Musik suchen"
   },
+  "library_flyout": {
+    "title": "Zuletzt geöffnet",
+    "show_all": "Alles in der Mediathek anzeigen",
+    "empty": "Playlists, Künstler und Alben, die du öffnest, erscheinen hier.",
+    "type_playlist": "Playlist",
+    "type_artist": "Künstler",
+    "type_album": "Album",
+    "types_plural": {
+      "playlist": "Playlists",
+      "artist": "Künstler",
+      "album": "Alben"
+    },
+    "settings": {
+      "section": "Mediathek-Hover-Menü",
+      "enabled_title": "Mediathek-Hover-Menü anzeigen",
+      "enabled_description": "Wenn du mit der Maus über das Mediathek-Symbol fährst, werden deine zuletzt geöffneten Playlists, Künstler und Alben angezeigt.",
+      "count_title": "Angezeigte Einträge",
+      "count_description": "Wie viele zuletzt geöffnete Einträge das Menü anzeigt.",
+      "types_title": "Einbeziehen",
+      "types_description": "Welche Arten von Einträgen im Menü erscheinen."
+    }
+  },
   "login": {
     "welcome_back": "Willkommen zurück!",
     "sign_in_to_account": "Melde dich bei deinem Konto an",

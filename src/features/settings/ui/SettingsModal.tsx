@@ -28,6 +28,7 @@ import {
   OverlayTab,
   DiscordTab,
 } from "./tabs";
+import { LibraryFlyoutSettings } from "@/features/navigation/ui/LibraryFlyoutSettings";
 
 type TabId = "Playback" | "Shortcuts" | "Overlay" | "Discord" | "Appearance" | "Customization" | "Audio" | "Storage" | "About";
 
@@ -85,6 +86,9 @@ const SETTING_ITEMS: { tabId: TabId; titleKey: string; descKey?: string }[] = [
   // Appearance
   { tabId: "Appearance", titleKey: "settings.language.label", descKey: "settings.language.description" },
   { tabId: "Appearance", titleKey: "settings.theme.title", descKey: "settings.theme.description" },
+  { tabId: "Appearance", titleKey: "library_flyout.settings.enabled_title", descKey: "library_flyout.settings.enabled_description" },
+  { tabId: "Appearance", titleKey: "library_flyout.settings.count_title", descKey: "library_flyout.settings.count_description" },
+  { tabId: "Appearance", titleKey: "library_flyout.settings.types_title", descKey: "library_flyout.settings.types_description" },
   { tabId: "Appearance", titleKey: "settings.branding.title", descKey: "settings.branding.description" },
 
   // Customization
@@ -415,7 +419,12 @@ export default function SettingsModal() {
             {activeTab === "Shortcuts" && <ShortcutsTab searchQuery={searchQuery} />}
             {activeTab === "Overlay" && <OverlayTab searchQuery={searchQuery} />}
             {activeTab === "Discord" && <DiscordTab searchQuery={searchQuery} />}
-            {activeTab === "Appearance" && <AppearanceTab searchQuery={searchQuery} />}
+            {activeTab === "Appearance" && (
+              <div className="flex flex-col gap-[18px]">
+                <AppearanceTab searchQuery={searchQuery} />
+                <LibraryFlyoutSettings searchQuery={searchQuery} />
+              </div>
+            )}
             {activeTab === "Customization" && <CustomizationTab searchQuery={searchQuery} />}
             {activeTab === "Audio" && <AudioTab searchQuery={searchQuery} />}
             {activeTab === "Storage" && <StorageTab searchQuery={searchQuery} />}

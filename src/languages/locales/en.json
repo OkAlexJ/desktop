@@ -236,6 +236,28 @@
     "no_artists_desc": "Save artists to quickly access their discography",
     "search_music": "Search music"
   },
+  "library_flyout": {
+    "title": "Recently opened",
+    "show_all": "Show all in Library",
+    "empty": "Playlists, artists and albums you open will show up here.",
+    "type_playlist": "Playlist",
+    "type_artist": "Artist",
+    "type_album": "Album",
+    "types_plural": {
+      "playlist": "Playlists",
+      "artist": "Artists",
+      "album": "Albums"
+    },
+    "settings": {
+      "section": "Library hover menu",
+      "enabled_title": "Show library hover menu",
+      "enabled_description": "Hovering the Library icon lists your recently opened playlists, artists and albums.",
+      "count_title": "Items shown",
+      "count_description": "How many recent items the menu lists.",
+      "types_title": "Include",
+      "types_description": "Which kinds of items appear in the menu."
+    }
+  },
   "login": {
     "welcome_back": "Welcome back",
     "sign_in_to_account": "Sign in to your account",

@@ -236,6 +236,28 @@
     "no_artists_desc": "Enregistrez des artistes pour accéder rapidement à leur discographie",
     "search_music": "Rechercher de la musique"
   },
+  "library_flyout": {
+    "title": "Ouverts récemment",
+    "show_all": "Tout voir dans la bibliothèque",
+    "empty": "Les playlists, artistes et albums que vous ouvrez apparaîtront ici.",
+    "type_playlist": "Playlist",
+    "type_artist": "Artiste",
+    "type_album": "Album",
+    "types_plural": {
+      "playlist": "Playlists",
+      "artist": "Artistes",
+      "album": "Albums"
+    },
+    "settings": {
+      "section": "Menu de survol de la bibliothèque",
+      "enabled_title": "Afficher le menu de survol de la bibliothèque",
+      "enabled_description": "Survoler l’icône Bibliothèque affiche les playlists, artistes et albums ouverts récemment.",
+      "count_title": "Éléments affichés",
+      "count_description": "Nombre d’éléments récents listés dans le menu.",
+      "types_title": "Inclure",
+      "types_description": "Types d’éléments affichés dans le menu."
+    }
+  },
   "login": {
     "welcome_back": "Bon retour",
     "sign_in_to_account": "Connectez-vous à votre compte",

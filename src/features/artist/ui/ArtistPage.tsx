@@ -40,6 +40,7 @@ interface ArtistReleaseViewModel extends ArtistAlbumViewModel {
 }
 
 import { useArtist } from "../hooks/useArtist";
+import { useRecordRecentItem } from "@/features/library/store/recentItemsStore";
 
 function stripMarkdown(text: string): string {
   return text
@@ -60,6 +61,11 @@ function ArtistContent() {
   const id = searchParams.get("id");
 
   const { data, loading } = useArtist(id);
+  useRecordRecentItem(
+    data && id && !loading
+      ? { type: "artist", id, title: data.title, coverUrl: data.coverUrl, href: `/artist?id=${encodeURIComponent(id)}` }
+      : null,
+  );
   const [showAllTracks, setShowAllTracks] = useState(false);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
   const [imagesLoaded, setImagesLoaded] = useState(false);
