@@ -51,7 +51,8 @@
       "home": "Home",
       "search": "Cerca",
       "library": "Libreria",
-      "settings": "Impostazioni"
+      "settings": "Impostazioni",
+      "stats": "Statistiche"
     },
     "loading": "Caricamento",
     "signed_in": "Accesso effettuato",
@@ -822,6 +823,20 @@
       "never_run": "I controlli non sono ancora stati eseguiti.",
       "last_run": "{ok}/{total} controlli ok · {time}",
       "open_folder": "Apri la posizione di salvataggio"
+    },
+    "stats": {
+      "section": "Statistiche di ascolto",
+      "pause_title": "Metti in pausa la cronologia",
+      "pause_description": "Smette di registrare gli ascolti. Quanto già registrato resta.",
+      "export_title": "Esporta la cronologia di ascolto",
+      "export_description": "{count} ascolti registrati. Salva un file; non viene inviato nulla.",
+      "export_description_one": "{count} ascolto registrato. Salva un file; non viene inviato nulla.",
+      "nothing_to_export": "Ancora nessun ascolto da esportare",
+      "clear_title": "Cancella la cronologia di ascolto",
+      "clear_description": "Elimina tutti gli ascolti registrati su questo dispositivo.",
+      "clear_button": "Cancella",
+      "clear_confirm": "Clicca di nuovo per cancellare",
+      "cleared": "Cronologia di ascolto cancellata"
     }
   },
   "toast": {
@@ -972,5 +987,69 @@
     "count": "{count} di {total}",
     "no_results": "Nessun brano corrisponde a “{query}”",
     "clear": "Cancella ricerca"
+  },
+  "stats": {
+    "title": "Statistiche",
+    "private": "Salvate solo su questo dispositivo. Non viene inviato nulla.",
+    "empty": "Ancora nessun ascolto. Un brano conta dopo 30 secondi, o metà se dura meno di un minuto.",
+    "nothing_in_range": "Nessun ascolto in questo periodo.",
+    "paused_banner": "La cronologia di ascolto è in pausa. I nuovi ascolti non vengono registrati.",
+    "resume": "Riprendi",
+    "total_time": "Tempo di ascolto",
+    "per_day_average": "{time} al giorno in media",
+    "plays": "Ascolti",
+    "unique_tracks": "Brani",
+    "unique_artists": "Artisti",
+    "streak": "Serie",
+    "days_count": "{count} giorni",
+    "days_count_one": "{count} giorno",
+    "longest_streak": "Record: {count} giorni",
+    "longest_streak_one": "Record: {count} giorno",
+    "plays_count": "{count} ascolti",
+    "plays_count_one": "{count} ascolto",
+    "top_tracks": "Brani più ascoltati",
+    "top_artists": "Artisti più ascoltati",
+    "top_albums": "Album più ascoltati",
+    "play_track": "Riproduci {title}",
+    "ranges": {
+      "7d": "7 giorni",
+      "4w": "4 settimane",
+      "6m": "6 mesi",
+      "1y": "Anno",
+      "all": "Sempre"
+    },
+    "units": {
+      "minutes": "{m} min",
+      "hours": "{h} h",
+      "hours_minutes": "{h} h {m} min"
+    },
+    "chart": {
+      "title": "Ascolto nel tempo",
+      "per_day": "Per giorno",
+      "per_week": "Per settimana",
+      "per_month": "Per mese"
+    },
+    "heatmap": {
+      "title": "Quando ascolti",
+      "hint": "Tempo di ascolto per giorno della settimana e ora"
+    },
+    "recap": {
+      "open": "Riepilogo {year}",
+      "title": "Il tuo {year} in musica",
+      "eyebrow": "Il tuo anno in musica",
+      "intro": "Scorri per vedere cosa hai ascoltato.",
+      "minutes_title": "Minuti ascoltati",
+      "minutes_caption": "È quanto hai ascoltato quest'anno.",
+      "top_month": "soprattutto a {month}",
+      "top_artist": "Il tuo artista preferito",
+      "top_song": "Il tuo brano preferito",
+      "top_genre": "Il tuo genere preferito",
+      "outro_title": "Il tuo anno in numeri",
+      "longest_streak": "Serie più lunga",
+      "empty": "Ancora niente da riepilogare per il {year}. Continua ad ascoltare!",
+      "prev": "Precedente",
+      "next": "Successivo",
+      "close": "Chiudi"
+    }
   }
 }

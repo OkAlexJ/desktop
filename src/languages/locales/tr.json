@@ -51,7 +51,8 @@
       "home": "Ana sayfa",
       "search": "Ara",
       "library": "Kitaplık",
-      "settings": "Ayarlar"
+      "settings": "Ayarlar",
+      "stats": "İstatistikler"
     },
     "loading": "Yükleniyor",
     "signed_in": "Giriş yapıldı",
@@ -822,6 +823,20 @@
       "never_run": "Testler henüz çalıştırılmadı.",
       "last_run": "{ok}/{total} test başarılı · {time}",
       "open_folder": "Kaydedilen konumu aç"
+    },
+    "stats": {
+      "section": "Dinleme istatistikleri",
+      "pause_title": "Dinleme geçmişini duraklat",
+      "pause_description": "Dinlemeleri kaydetmeyi durdurur. Kaydedilenler kalır.",
+      "export_title": "Dinleme geçmişini dışa aktar",
+      "export_description": "{count} dinleme kayıtlı. Bir dosya kaydeder; hiçbir şey gönderilmez.",
+      "nothing_to_export": "Henüz dışa aktarılacak dinleme yok",
+      "clear_title": "Dinleme geçmişini temizle",
+      "clear_description": "Bu cihazdaki tüm kayıtlı dinlemeleri siler.",
+      "clear_button": "Temizle",
+      "clear_confirm": "Temizlemek için tekrar tıkla",
+      "cleared": "Dinleme geçmişi temizlendi",
+      "export_description_one": "{count} play recorded. Saves a file; nothing is sent anywhere."
     }
   },
   "toast": {
@@ -972,5 +987,69 @@
     "count": "{count} / {total}",
     "no_results": "“{query}” ile eşleşen parça yok",
     "clear": "Aramayı temizle"
+  },
+  "stats": {
+    "title": "İstatistikler",
+    "private": "Yalnızca bu cihazda tutulur. Hiçbir yere gönderilmez.",
+    "empty": "Henüz dinleme yok. Bir şarkı 30 saniye dinlenince sayılır; bir dakikadan kısaysa yarısı yeterlidir.",
+    "nothing_in_range": "Bu dönemde hiçbir şey dinlenmedi.",
+    "paused_banner": "Dinleme geçmişi duraklatıldı. Yeni dinlemeler kaydedilmiyor.",
+    "resume": "Devam et",
+    "total_time": "Dinleme süresi",
+    "per_day_average": "günde ortalama {time}",
+    "plays": "Dinlemeler",
+    "unique_tracks": "Şarkılar",
+    "unique_artists": "Sanatçılar",
+    "streak": "Seri",
+    "days_count": "{count} gün",
+    "longest_streak": "En uzun: {count} gün",
+    "plays_count": "{count} dinleme",
+    "top_tracks": "En çok dinlenen şarkılar",
+    "top_artists": "En çok dinlenen sanatçılar",
+    "top_albums": "En çok dinlenen albümler",
+    "play_track": "{title} çal",
+    "ranges": {
+      "7d": "7 gün",
+      "4w": "4 hafta",
+      "6m": "6 ay",
+      "1y": "Yıl",
+      "all": "Tüm zamanlar"
+    },
+    "units": {
+      "minutes": "{m} dk",
+      "hours": "{h} sa",
+      "hours_minutes": "{h} sa {m} dk"
+    },
+    "chart": {
+      "title": "Zamana göre dinleme",
+      "per_day": "Günlük",
+      "per_week": "Haftalık",
+      "per_month": "Aylık"
+    },
+    "heatmap": {
+      "title": "Ne zaman dinliyorsun",
+      "hint": "Haftanın günü ve saate göre dinleme süresi"
+    },
+    "recap": {
+      "open": "{year} özeti",
+      "title": "Müzikte {year} yılın",
+      "eyebrow": "Müzikte yılın",
+      "intro": "Neler dinlediğini görmek için kaydır.",
+      "minutes_title": "Dinlenen dakika",
+      "minutes_caption": "Bu yıl bu kadar müzik dinledin.",
+      "top_month": "en çok {month} ayında",
+      "top_artist": "En çok dinlediğin sanatçı",
+      "top_song": "En çok dinlediğin şarkı",
+      "top_genre": "En çok dinlediğin tür",
+      "outro_title": "Rakamlarla yılın",
+      "longest_streak": "En uzun seri",
+      "empty": "{year} için henüz özetlenecek bir şey yok. Dinlemeye devam!",
+      "prev": "Önceki",
+      "next": "Sonraki",
+      "close": "Kapat"
+    },
+    "days_count_one": "{count} day",
+    "longest_streak_one": "Longest: {count} day",
+    "plays_count_one": "{count} play"
   }
 }

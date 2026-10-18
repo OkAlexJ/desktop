@@ -51,7 +51,8 @@
       "home": "Accueil",
       "search": "Rechercher",
       "library": "Bibliothèque",
-      "settings": "Paramètres"
+      "settings": "Paramètres",
+      "stats": "Statistiques"
     },
     "loading": "Chargement",
     "signed_in": "Connecté",
@@ -824,6 +825,20 @@
       "never_run": "Les tests n'ont pas encore été lancés.",
       "last_run": "{ok}/{total} tests réussis · {time}",
       "open_folder": "Ouvrir l'emplacement"
+    },
+    "stats": {
+      "section": "Statistiques d'écoute",
+      "pause_title": "Mettre l'historique en pause",
+      "pause_description": "Arrête d'enregistrer les écoutes. Ce qui est déjà enregistré est conservé.",
+      "export_title": "Exporter l'historique d'écoute",
+      "export_description": "{count} écoutes enregistrées. Enregistre un fichier ; rien n'est envoyé.",
+      "export_description_one": "{count} écoute enregistrée. Enregistre un fichier ; rien n'est envoyé.",
+      "nothing_to_export": "Aucune écoute à exporter pour l'instant",
+      "clear_title": "Effacer l'historique d'écoute",
+      "clear_description": "Supprime toutes les écoutes enregistrées sur cet appareil.",
+      "clear_button": "Effacer",
+      "clear_confirm": "Cliquez à nouveau pour effacer",
+      "cleared": "Historique d'écoute effacé"
     }
   },
   "toast": {
@@ -974,5 +989,69 @@
     "count": "{count} sur {total}",
     "no_results": "Aucun titre ne correspond à « {query} »",
     "clear": "Effacer la recherche"
+  },
+  "stats": {
+    "title": "Statistiques",
+    "private": "Enregistrées uniquement sur cet appareil. Rien n'est envoyé.",
+    "empty": "Aucune écoute pour l'instant. Un titre compte après 30 secondes, ou la moitié s'il dure moins d'une minute.",
+    "nothing_in_range": "Rien d'écouté sur cette période.",
+    "paused_banner": "L'historique d'écoute est en pause. Les nouvelles écoutes ne sont pas enregistrées.",
+    "resume": "Reprendre",
+    "total_time": "Temps d'écoute",
+    "per_day_average": "{time} par jour en moyenne",
+    "plays": "Écoutes",
+    "unique_tracks": "Titres",
+    "unique_artists": "Artistes",
+    "streak": "Série",
+    "days_count": "{count} jours",
+    "days_count_one": "{count} jour",
+    "longest_streak": "Record : {count} jours",
+    "longest_streak_one": "Record : {count} jour",
+    "plays_count": "{count} écoutes",
+    "plays_count_one": "{count} écoute",
+    "top_tracks": "Titres les plus écoutés",
+    "top_artists": "Artistes les plus écoutés",
+    "top_albums": "Albums les plus écoutés",
+    "play_track": "Écouter {title}",
+    "ranges": {
+      "7d": "7 jours",
+      "4w": "4 semaines",
+      "6m": "6 mois",
+      "1y": "Année",
+      "all": "Depuis le début"
+    },
+    "units": {
+      "minutes": "{m} min",
+      "hours": "{h} h",
+      "hours_minutes": "{h} h {m} min"
+    },
+    "chart": {
+      "title": "Écoute dans le temps",
+      "per_day": "Par jour",
+      "per_week": "Par semaine",
+      "per_month": "Par mois"
+    },
+    "heatmap": {
+      "title": "Quand vous écoutez",
+      "hint": "Temps d'écoute par jour de la semaine et par heure"
+    },
+    "recap": {
+      "open": "Bilan {year}",
+      "title": "Votre {year} en musique",
+      "eyebrow": "Votre année en musique",
+      "intro": "Faites défiler pour revoir vos écoutes.",
+      "minutes_title": "Minutes écoutées",
+      "minutes_caption": "C'est le temps que vous avez passé à écouter cette année.",
+      "top_month": "surtout en {month}",
+      "top_artist": "Votre artiste n° 1",
+      "top_song": "Votre titre n° 1",
+      "top_genre": "Votre genre n° 1",
+      "outro_title": "Votre année en chiffres",
+      "longest_streak": "Plus longue série",
+      "empty": "Rien à résumer pour {year} pour l'instant. Continuez d'écouter !",
+      "prev": "Précédent",
+      "next": "Suivant",
+      "close": "Fermer"
+    }
   }
 }

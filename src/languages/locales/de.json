@@ -51,7 +51,8 @@
       "home": "Startseite",
       "search": "Suche",
       "library": "Mediathek",
-      "settings": "Einstellungen"
+      "settings": "Einstellungen",
+      "stats": "Statistiken"
     },
     "minimize": "Minimieren",
     "exitFullscreen": "Vollbild beenden",
@@ -764,6 +765,20 @@
       "never_run": "Die Prüfungen wurden noch nicht ausgeführt.",
       "last_run": "{ok}/{total} Prüfungen ok · {time}",
       "open_folder": "Speicherort öffnen"
+    },
+    "stats": {
+      "section": "Hörstatistiken",
+      "pause_title": "Hörverlauf pausieren",
+      "pause_description": "Keine neuen Wiedergaben speichern. Bereits Gespeichertes bleibt erhalten.",
+      "export_title": "Hörverlauf exportieren",
+      "export_description": "{count} Wiedergaben gespeichert. Speichert eine Datei; es wird nichts gesendet.",
+      "export_description_one": "{count} Wiedergabe gespeichert. Speichert eine Datei; es wird nichts gesendet.",
+      "nothing_to_export": "Noch keine Wiedergaben zum Exportieren",
+      "clear_title": "Hörverlauf löschen",
+      "clear_description": "Löscht alle auf diesem Gerät gespeicherten Wiedergaben.",
+      "clear_button": "Löschen",
+      "clear_confirm": "Zum Löschen erneut klicken",
+      "cleared": "Hörverlauf gelöscht"
     }
   },
   "toast": {
@@ -913,5 +928,69 @@
     "count": "{count} von {total}",
     "no_results": "Keine Titel für „{query}“",
     "clear": "Suche löschen"
+  },
+  "stats": {
+    "title": "Statistiken",
+    "private": "Wird nur auf diesem Gerät gespeichert. Es wird nichts gesendet.",
+    "empty": "Noch keine Wiedergaben. Ein Titel zählt, sobald du ihn 30 Sekunden lang gehört hast, oder zur Hälfte, wenn er kürzer als eine Minute ist.",
+    "nothing_in_range": "In diesem Zeitraum wurde nichts gehört.",
+    "paused_banner": "Der Hörverlauf ist pausiert. Neue Wiedergaben werden nicht gespeichert.",
+    "resume": "Fortsetzen",
+    "total_time": "Hörzeit",
+    "per_day_average": "Im Schnitt {time} pro Tag",
+    "plays": "Wiedergaben",
+    "unique_tracks": "Titel",
+    "unique_artists": "Künstler",
+    "streak": "Serie",
+    "days_count": "{count} Tage",
+    "days_count_one": "{count} Tag",
+    "longest_streak": "Längste: {count} Tage",
+    "longest_streak_one": "Längste: {count} Tag",
+    "plays_count": "{count} Wiedergaben",
+    "plays_count_one": "{count} Wiedergabe",
+    "top_tracks": "Top-Titel",
+    "top_artists": "Top-Künstler",
+    "top_albums": "Top-Alben",
+    "play_track": "{title} abspielen",
+    "ranges": {
+      "7d": "7 Tage",
+      "4w": "4 Wochen",
+      "6m": "6 Monate",
+      "1y": "Jahr",
+      "all": "Gesamt"
+    },
+    "units": {
+      "minutes": "{m} Min.",
+      "hours": "{h} Std.",
+      "hours_minutes": "{h} Std. {m} Min."
+    },
+    "chart": {
+      "title": "Hörzeit im Verlauf",
+      "per_day": "Pro Tag",
+      "per_week": "Pro Woche",
+      "per_month": "Pro Monat"
+    },
+    "heatmap": {
+      "title": "Wann du hörst",
+      "hint": "Hörzeit nach Wochentag und Uhrzeit"
+    },
+    "recap": {
+      "open": "Rückblick {year}",
+      "title": "Dein Musikjahr {year}",
+      "eyebrow": "Dein Musikjahr",
+      "intro": "Wisch durch das, was du gehört hast.",
+      "minutes_title": "Gehörte Minuten",
+      "minutes_caption": "So lange hast du dieses Jahr Musik gehört.",
+      "top_month": "am meisten im {month}",
+      "top_artist": "Dein Top-Künstler",
+      "top_song": "Dein Top-Titel",
+      "top_genre": "Dein Top-Genre",
+      "outro_title": "Dein Jahr in Zahlen",
+      "longest_streak": "Längste Serie",
+      "empty": "Für {year} gibt es noch keinen Rückblick. Hör einfach weiter!",
+      "prev": "Zurück",
+      "next": "Weiter",
+      "close": "Schließen"
+    }
   }
 }

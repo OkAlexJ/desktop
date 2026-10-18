@@ -51,7 +51,8 @@
       "home": "Головна",
       "search": "Пошук",
       "library": "Бібліотека",
-      "settings": "Налаштування"
+      "settings": "Налаштування",
+      "stats": "Статистика"
     },
     "loading": "Завантаження",
     "signed_in": "У системі",
@@ -908,6 +909,20 @@
       "never_run": "Перевірки ще не запускались.",
       "last_run": "{ok}/{total} перевірок ок · {time}",
       "open_folder": "Відкрити папку з звітом"
+    },
+    "stats": {
+      "section": "Статистика прослуховувань",
+      "pause_title": "Призупинити історію",
+      "pause_description": "Не записувати прослуховування. Уже записане залишиться.",
+      "export_title": "Експорт історії",
+      "export_description": "Записано прослуховувань: {count}. Зберігає файл, нічого не надсилається.",
+      "nothing_to_export": "Поки нічого експортувати",
+      "clear_title": "Очистити історію",
+      "clear_description": "Видаляє всі записані прослуховування на цьому пристрої.",
+      "clear_button": "Очистити",
+      "clear_confirm": "Натисніть ще раз",
+      "cleared": "Історію прослуховувань очищено",
+      "export_description_one": "{count} play recorded. Saves a file; nothing is sent anywhere."
     }
   },
   "toast": {
@@ -1058,5 +1073,75 @@
     "count": "{count} з {total}",
     "no_results": "Немає треків за запитом «{query}»",
     "clear": "Очистити пошук"
+  },
+  "stats": {
+    "title": "Статистика",
+    "private": "Зберігається лише на цьому пристрої. Нічого нікуди не надсилається.",
+    "empty": "Ще немає прослуховувань. Трек зараховується після 30 секунд або половини, якщо він коротший за хвилину.",
+    "nothing_in_range": "За цей період нічого не прослухано.",
+    "paused_banner": "Історію прослуховувань призупинено. Нові прослуховування не записуються.",
+    "resume": "Продовжити",
+    "total_time": "Час прослуховування",
+    "per_day_average": "у середньому {time} на день",
+    "plays": "Прослуховування",
+    "unique_tracks": "Треки",
+    "unique_artists": "Виконавці",
+    "streak": "Серія",
+    "days_count": "{count} дня",
+    "days_count_one": "{count} день",
+    "days_count_few": "{count} дні",
+    "days_count_many": "{count} днів",
+    "longest_streak": "Рекорд: {count} дня",
+    "longest_streak_one": "Рекорд: {count} день",
+    "longest_streak_few": "Рекорд: {count} дні",
+    "longest_streak_many": "Рекорд: {count} днів",
+    "plays_count": "{count} прослуховування",
+    "plays_count_one": "{count} прослуховування",
+    "plays_count_few": "{count} прослуховування",
+    "plays_count_many": "{count} прослуховувань",
+    "top_tracks": "Топ треків",
+    "top_artists": "Топ виконавців",
+    "top_albums": "Топ альбомів",
+    "play_track": "Слухати «{title}»",
+    "ranges": {
+      "7d": "7 днів",
+      "4w": "4 тижні",
+      "6m": "6 місяців",
+      "1y": "Рік",
+      "all": "Весь час"
+    },
+    "units": {
+      "minutes": "{m} хв",
+      "hours": "{h} год",
+      "hours_minutes": "{h} год {m} хв"
+    },
+    "chart": {
+      "title": "Прослуховування в часі",
+      "per_day": "По днях",
+      "per_week": "По тижнях",
+      "per_month": "По місяцях"
+    },
+    "heatmap": {
+      "title": "Коли ви слухаєте",
+      "hint": "Час прослуховування за днями тижня та годинами"
+    },
+    "recap": {
+      "open": "Підсумки {year}",
+      "title": "Ваш {year} у музиці",
+      "eyebrow": "Ваш рік у музиці",
+      "intro": "Гортайте, щоб побачити, що ви слухали.",
+      "minutes_title": "Хвилин прослухано",
+      "minutes_caption": "Стільки ви слухали музику цього року.",
+      "top_month": "найактивніший місяць: {month}",
+      "top_artist": "Ваш головний виконавець",
+      "top_song": "Ваш головний трек",
+      "top_genre": "Ваш головний жанр",
+      "outro_title": "Ваш рік у цифрах",
+      "longest_streak": "Найдовша серія",
+      "empty": "Поки що нема чого підсумовувати за {year}. Слухайте далі!",
+      "prev": "Назад",
+      "next": "Далі",
+      "close": "Закрити"
+    }
   }
 }

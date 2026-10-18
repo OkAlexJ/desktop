@@ -11,6 +11,7 @@ import { useThemeCustomizationSync } from "@/features/settings";
 import { useTouchBarSync } from "@/features/touchbar";
 import { OverlayPlayer, useOverlaySync } from "@/features/overlay";
 import { useDiscordSync } from "@/features/discord";
+import { useListeningTracker } from "@/features/stats";
 import { AppRoutes } from "./routes";
 import DeeplinkHandler from "./DeeplinkHandler";
 import EnvironmentWarning from "./EnvironmentWarning";
@@ -40,6 +41,11 @@ function TouchBarSync() {
 
 function OverlaySync() {
   useOverlaySync();
+  return null;
+}
+
+function ListeningStatsSync() {
+  useListeningTracker();
   return null;
 }
 
@@ -88,6 +94,7 @@ export default function App() {
         <TouchBarSync />
         <OverlaySync />
         <DiscordSync />
+        <ListeningStatsSync />
         <AppleEmojiProvider>
           <I18nProvider>
             <ToastProvider>

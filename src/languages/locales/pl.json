@@ -51,7 +51,8 @@
       "home": "Start",
       "search": "Szukaj",
       "library": "Biblioteka",
-      "settings": "Ustawienia"
+      "settings": "Ustawienia",
+      "stats": "Statystyki"
     },
     "loading": "Ładowanie",
     "signed_in": "Zalogowano",
@@ -826,6 +827,20 @@
       "never_run": "Testy nie zostały jeszcze uruchomione.",
       "last_run": "Testy OK: {ok}/{total} · {time}",
       "open_folder": "Otwórz lokalizację zapisu"
+    },
+    "stats": {
+      "section": "Statystyki słuchania",
+      "pause_title": "Wstrzymaj historię słuchania",
+      "pause_description": "Przestaje zapisywać odtworzenia. To, co już zapisane, zostaje.",
+      "export_title": "Eksportuj historię słuchania",
+      "export_description": "Zapisane odtworzenia: {count}. Zapisuje plik; nic nie jest wysyłane.",
+      "nothing_to_export": "Brak odtworzeń do eksportu",
+      "clear_title": "Wyczyść historię słuchania",
+      "clear_description": "Usuwa wszystkie zapisane odtworzenia na tym urządzeniu.",
+      "clear_button": "Wyczyść",
+      "clear_confirm": "Kliknij ponownie, aby wyczyścić",
+      "cleared": "Historia słuchania wyczyszczona",
+      "export_description_one": "{count} play recorded. Saves a file; nothing is sent anywhere."
     }
   },
   "toast": {
@@ -976,5 +991,75 @@
     "count": "{count} z {total}",
     "no_results": "Brak utworów dla „{query}”",
     "clear": "Wyczyść wyszukiwanie"
+  },
+  "stats": {
+    "title": "Statystyki",
+    "private": "Zapisywane tylko na tym urządzeniu. Nic nie jest wysyłane.",
+    "empty": "Brak odtworzeń. Utwór liczy się po 30 sekundach albo po połowie, jeśli trwa krócej niż minutę.",
+    "nothing_in_range": "W tym okresie nic nie odtworzono.",
+    "paused_banner": "Historia słuchania jest wstrzymana. Nowe odtworzenia nie są zapisywane.",
+    "resume": "Wznów",
+    "total_time": "Czas słuchania",
+    "per_day_average": "średnio {time} dziennie",
+    "plays": "Odtworzenia",
+    "unique_tracks": "Utwory",
+    "unique_artists": "Wykonawcy",
+    "streak": "Seria",
+    "days_count": "{count} dnia",
+    "days_count_one": "{count} dzień",
+    "days_count_few": "{count} dni",
+    "days_count_many": "{count} dni",
+    "longest_streak": "Rekord: {count} dnia",
+    "longest_streak_one": "Rekord: {count} dzień",
+    "longest_streak_few": "Rekord: {count} dni",
+    "longest_streak_many": "Rekord: {count} dni",
+    "plays_count": "{count} odtworzenia",
+    "plays_count_one": "{count} odtworzenie",
+    "plays_count_few": "{count} odtworzenia",
+    "plays_count_many": "{count} odtworzeń",
+    "top_tracks": "Najczęściej słuchane utwory",
+    "top_artists": "Najczęściej słuchani wykonawcy",
+    "top_albums": "Najczęściej słuchane albumy",
+    "play_track": "Odtwórz {title}",
+    "ranges": {
+      "7d": "7 dni",
+      "4w": "4 tygodnie",
+      "6m": "6 miesięcy",
+      "1y": "Rok",
+      "all": "Cały czas"
+    },
+    "units": {
+      "minutes": "{m} min",
+      "hours": "{h} godz.",
+      "hours_minutes": "{h} godz. {m} min"
+    },
+    "chart": {
+      "title": "Słuchanie w czasie",
+      "per_day": "Dziennie",
+      "per_week": "Tygodniowo",
+      "per_month": "Miesięcznie"
+    },
+    "heatmap": {
+      "title": "Kiedy słuchasz",
+      "hint": "Czas słuchania według dnia tygodnia i godziny"
+    },
+    "recap": {
+      "open": "Podsumowanie {year}",
+      "title": "Twój {year} w muzyce",
+      "eyebrow": "Twój rok w muzyce",
+      "intro": "Przesuń, aby zobaczyć, czego słuchałeś.",
+      "minutes_title": "Minuty słuchania",
+      "minutes_caption": "Tyle słuchałeś muzyki w tym roku.",
+      "top_month": "najwięcej: {month}",
+      "top_artist": "Twój najczęstszy wykonawca",
+      "top_song": "Twój najczęstszy utwór",
+      "top_genre": "Twój najczęstszy gatunek",
+      "outro_title": "Twój rok w liczbach",
+      "longest_streak": "Najdłuższa seria",
+      "empty": "Na razie nie ma czego podsumować za {year}. Słuchaj dalej!",
+      "prev": "Wstecz",
+      "next": "Dalej",
+      "close": "Zamknij"
+    }
   }
 }

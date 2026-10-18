@@ -51,7 +51,8 @@
       "home": "Inicio",
       "search": "Buscar",
       "library": "Biblioteca",
-      "settings": "Ajustes"
+      "settings": "Ajustes",
+      "stats": "Estadísticas"
     },
     "loading": "Cargando",
     "signed_in": "Sesión iniciada",
@@ -874,6 +875,20 @@
       "scope_main_app": "App principal",
       "scope_overlay": "Superposición",
       "reset_section": "Restablecer sección"
+    },
+    "stats": {
+      "section": "Estadísticas de escucha",
+      "pause_title": "Pausar el historial de escucha",
+      "pause_description": "Deja de registrar reproducciones. Lo ya registrado se mantiene.",
+      "export_title": "Exportar historial de escucha",
+      "export_description": "{count} reproducciones registradas. Guarda un archivo; no se envía nada.",
+      "export_description_one": "{count} reproducción registrada. Guarda un archivo; no se envía nada.",
+      "nothing_to_export": "Aún no hay reproducciones para exportar",
+      "clear_title": "Borrar historial de escucha",
+      "clear_description": "Elimina todas las reproducciones registradas en este dispositivo.",
+      "clear_button": "Borrar",
+      "clear_confirm": "Pulsa de nuevo para borrar",
+      "cleared": "Historial de escucha borrado"
     }
   },
   "toast": {
@@ -1025,5 +1040,69 @@
     "count": "{count} de {total}",
     "no_results": "Ninguna canción coincide con «{query}»",
     "clear": "Borrar búsqueda"
+  },
+  "stats": {
+    "title": "Estadísticas",
+    "private": "Se guarda solo en este dispositivo. No se envía nada.",
+    "empty": "Aún no hay reproducciones. Una canción cuenta tras 30 segundos, o la mitad si dura menos de un minuto.",
+    "nothing_in_range": "No se reprodujo nada en este periodo.",
+    "paused_banner": "El historial de escucha está en pausa. No se registran nuevas reproducciones.",
+    "resume": "Reanudar",
+    "total_time": "Tiempo de escucha",
+    "per_day_average": "{time} al día de media",
+    "plays": "Reproducciones",
+    "unique_tracks": "Canciones",
+    "unique_artists": "Artistas",
+    "streak": "Racha",
+    "days_count": "{count} días",
+    "days_count_one": "{count} día",
+    "longest_streak": "Récord: {count} días",
+    "longest_streak_one": "Récord: {count} día",
+    "plays_count": "{count} reproducciones",
+    "plays_count_one": "{count} reproducción",
+    "top_tracks": "Canciones más escuchadas",
+    "top_artists": "Artistas más escuchados",
+    "top_albums": "Álbumes más escuchados",
+    "play_track": "Reproducir {title}",
+    "ranges": {
+      "7d": "7 días",
+      "4w": "4 semanas",
+      "6m": "6 meses",
+      "1y": "Año",
+      "all": "Siempre"
+    },
+    "units": {
+      "minutes": "{m} min",
+      "hours": "{h} h",
+      "hours_minutes": "{h} h {m} min"
+    },
+    "chart": {
+      "title": "Escucha a lo largo del tiempo",
+      "per_day": "Por día",
+      "per_week": "Por semana",
+      "per_month": "Por mes"
+    },
+    "heatmap": {
+      "title": "Cuándo escuchas",
+      "hint": "Tiempo de escucha por día de la semana y hora"
+    },
+    "recap": {
+      "open": "Resumen {year}",
+      "title": "Tu {year} en música",
+      "eyebrow": "Tu año en música",
+      "intro": "Desliza para ver lo que escuchaste.",
+      "minutes_title": "Minutos escuchados",
+      "minutes_caption": "Es lo que escuchaste este año.",
+      "top_month": "sobre todo en {month}",
+      "top_artist": "Tu artista principal",
+      "top_song": "Tu canción principal",
+      "top_genre": "Tu género principal",
+      "outro_title": "Tu año en cifras",
+      "longest_streak": "Racha más larga",
+      "empty": "Aún no hay nada que resumir de {year}. ¡Sigue escuchando!",
+      "prev": "Anterior",
+      "next": "Siguiente",
+      "close": "Cerrar"
+    }
   }
 }

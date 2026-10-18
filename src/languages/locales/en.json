@@ -51,7 +51,8 @@
       "home": "Home",
       "search": "Search",
       "library": "Library",
-      "settings": "Settings"
+      "settings": "Settings",
+      "stats": "Stats"
     },
     "minimize": "Minimize",
     "exitFullscreen": "Exit fullscreen",
@@ -880,6 +881,20 @@
       "never_run": "Checks have not been run yet.",
       "last_run": "{ok}/{total} checks ok · {time}",
       "open_folder": "Open saved location"
+    },
+    "stats": {
+      "section": "Listening stats",
+      "pause_title": "Pause listening history",
+      "pause_description": "Stop recording plays. What's already recorded stays.",
+      "export_title": "Export listening history",
+      "export_description": "{count} plays recorded. Saves a file; nothing is sent anywhere.",
+      "export_description_one": "{count} play recorded. Saves a file; nothing is sent anywhere.",
+      "nothing_to_export": "No plays to export yet",
+      "clear_title": "Clear listening history",
+      "clear_description": "Deletes every recorded play on this device.",
+      "clear_button": "Clear",
+      "clear_confirm": "Click again to clear",
+      "cleared": "Listening history cleared"
     }
   },
   "toast": {
@@ -1030,5 +1045,69 @@
     "count": "{count} of {total}",
     "no_results": "No tracks match “{query}”",
     "clear": "Clear search"
+  },
+  "stats": {
+    "title": "Stats",
+    "private": "Recorded only on this device. Nothing is sent anywhere.",
+    "empty": "No plays yet. A song counts once you've listened for 30 seconds, or half of it if it's shorter than a minute.",
+    "nothing_in_range": "Nothing played in this period.",
+    "paused_banner": "Listening history is paused. New plays are not recorded.",
+    "resume": "Resume",
+    "total_time": "Listening time",
+    "per_day_average": "{time} a day on average",
+    "plays": "Plays",
+    "unique_tracks": "Songs",
+    "unique_artists": "Artists",
+    "streak": "Streak",
+    "days_count": "{count} days",
+    "days_count_one": "{count} day",
+    "longest_streak": "Longest: {count} days",
+    "longest_streak_one": "Longest: {count} day",
+    "plays_count": "{count} plays",
+    "plays_count_one": "{count} play",
+    "top_tracks": "Top songs",
+    "top_artists": "Top artists",
+    "top_albums": "Top albums",
+    "play_track": "Play {title}",
+    "ranges": {
+      "7d": "7 days",
+      "4w": "4 weeks",
+      "6m": "6 months",
+      "1y": "Year",
+      "all": "All time"
+    },
+    "units": {
+      "minutes": "{m} min",
+      "hours": "{h} h",
+      "hours_minutes": "{h} h {m} min"
+    },
+    "chart": {
+      "title": "Listening over time",
+      "per_day": "Per day",
+      "per_week": "Per week",
+      "per_month": "Per month"
+    },
+    "heatmap": {
+      "title": "When you listen",
+      "hint": "Listening time by weekday and hour"
+    },
+    "recap": {
+      "open": "Recap {year}",
+      "title": "Your {year} in music",
+      "eyebrow": "Your year in music",
+      "intro": "Swipe through what you listened to.",
+      "minutes_title": "Minutes listened",
+      "minutes_caption": "That's how long you listened this year.",
+      "top_month": "most in {month}",
+      "top_artist": "Your top artist",
+      "top_song": "Your top song",
+      "top_genre": "Your top genre",
+      "outro_title": "Your year in numbers",
+      "longest_streak": "Longest streak",
+      "empty": "Nothing to recap for {year} yet. Keep listening!",
+      "prev": "Previous",
+      "next": "Next",
+      "close": "Close"
+    }
   }
 }

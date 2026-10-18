@@ -51,7 +51,8 @@
       "home": "Главная",
       "search": "Поиск",
       "library": "Библиотека",
-      "settings": "Настройки"
+      "settings": "Настройки",
+      "stats": "Статистика"
     },
     "loading": "Загрузка",
     "signed_in": "В системе",
@@ -908,6 +909,20 @@
       "never_run": "Проверки ещё не запускались.",
       "last_run": "{ok}/{total} проверок ок · {time}",
       "open_folder": "Открыть папку с отчётом"
+    },
+    "stats": {
+      "section": "Статистика прослушиваний",
+      "pause_title": "Приостановить историю",
+      "pause_description": "Не записывать прослушивания. Уже записанное останется.",
+      "export_title": "Экспорт истории",
+      "export_description": "Записано прослушиваний: {count}. Сохраняет файл, ничего не отправляется.",
+      "nothing_to_export": "Пока нечего экспортировать",
+      "clear_title": "Очистить историю",
+      "clear_description": "Удаляет все записанные прослушивания на этом устройстве.",
+      "clear_button": "Очистить",
+      "clear_confirm": "Нажмите ещё раз",
+      "cleared": "История прослушиваний очищена",
+      "export_description_one": "{count} play recorded. Saves a file; nothing is sent anywhere."
     }
   },
   "toast": {
@@ -1058,5 +1073,75 @@
     "count": "{count} из {total}",
     "no_results": "Нет треков по запросу «{query}»",
     "clear": "Очистить поиск"
+  },
+  "stats": {
+    "title": "Статистика",
+    "private": "Хранится только на этом устройстве. Ничего никуда не отправляется.",
+    "empty": "Пока нет прослушиваний. Трек засчитывается после 30 секунд или половины, если он короче минуты.",
+    "nothing_in_range": "За этот период ничего не прослушано.",
+    "paused_banner": "История прослушиваний на паузе. Новые прослушивания не записываются.",
+    "resume": "Продолжить",
+    "total_time": "Время прослушивания",
+    "per_day_average": "в среднем {time} в день",
+    "plays": "Прослушивания",
+    "unique_tracks": "Треки",
+    "unique_artists": "Исполнители",
+    "streak": "Серия",
+    "days_count": "{count} дня",
+    "days_count_one": "{count} день",
+    "days_count_few": "{count} дня",
+    "days_count_many": "{count} дней",
+    "longest_streak": "Рекорд: {count} дня",
+    "longest_streak_one": "Рекорд: {count} день",
+    "longest_streak_few": "Рекорд: {count} дня",
+    "longest_streak_many": "Рекорд: {count} дней",
+    "plays_count": "{count} прослушивания",
+    "plays_count_one": "{count} прослушивание",
+    "plays_count_few": "{count} прослушивания",
+    "plays_count_many": "{count} прослушиваний",
+    "top_tracks": "Топ треков",
+    "top_artists": "Топ исполнителей",
+    "top_albums": "Топ альбомов",
+    "play_track": "Слушать «{title}»",
+    "ranges": {
+      "7d": "7 дней",
+      "4w": "4 недели",
+      "6m": "6 месяцев",
+      "1y": "Год",
+      "all": "Всё время"
+    },
+    "units": {
+      "minutes": "{m} мин",
+      "hours": "{h} ч",
+      "hours_minutes": "{h} ч {m} мин"
+    },
+    "chart": {
+      "title": "Прослушивание по времени",
+      "per_day": "По дням",
+      "per_week": "По неделям",
+      "per_month": "По месяцам"
+    },
+    "heatmap": {
+      "title": "Когда вы слушаете",
+      "hint": "Время прослушивания по дням недели и часам"
+    },
+    "recap": {
+      "open": "Итоги {year}",
+      "title": "Ваш {year} в музыке",
+      "eyebrow": "Ваш год в музыке",
+      "intro": "Листайте, чтобы увидеть, что вы слушали.",
+      "minutes_title": "Минут прослушано",
+      "minutes_caption": "Столько вы слушали музыку в этом году.",
+      "top_month": "самый активный месяц: {month}",
+      "top_artist": "Ваш главный исполнитель",
+      "top_song": "Ваш главный трек",
+      "top_genre": "Ваш главный жанр",
+      "outro_title": "Ваш год в цифрах",
+      "longest_streak": "Самая длинная серия",
+      "empty": "Пока нечего подводить за {year}. Слушайте дальше!",
+      "prev": "Назад",
+      "next": "Далее",
+      "close": "Закрыть"
+    }
   }
 }

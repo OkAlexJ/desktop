@@ -55,6 +55,9 @@ const SETTING_ITEMS: { tabId: TabId; titleKey: string; descKey?: string }[] = [
   { tabId: "Playback", titleKey: "settings.track_double_click.title", descKey: "settings.track_double_click.description" },
   { tabId: "Playback", titleKey: "settings.default_playback_context.title", descKey: "settings.default_playback_context.description" },
   { tabId: "Playback", titleKey: "settings.audio.pause_on_device_change.title", descKey: "settings.audio.pause_on_device_change.description" },
+  { tabId: "Playback", titleKey: "settings.stats.pause_title", descKey: "settings.stats.pause_description" },
+  { tabId: "Playback", titleKey: "settings.stats.export_title", descKey: "settings.stats.export_description" },
+  { tabId: "Playback", titleKey: "settings.stats.clear_title", descKey: "settings.stats.clear_description" },
 
   // Shortcuts
   { tabId: "Shortcuts", titleKey: "settings.shortcuts.global_section", descKey: "settings.shortcuts.global_desc" },
