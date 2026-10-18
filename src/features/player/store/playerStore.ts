@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import type { Track } from "@/shared/types";
 import { debouncedStorage } from "@/shared/utils/storage";
+import { clampCrossfade } from "../engine/transitions";
 
 export { debouncedStorage };
 
@@ -63,6 +64,8 @@ export interface SessionState {
   keepSpeedAcrossTracks: boolean;
   isReverbEnabled: boolean;
   reverbLevel: number;
+  crossfadeSec: number;
+  gaplessPlayback: boolean;
 }
 
 export type PlayerState = TransportState &
@@ -117,6 +120,8 @@ export interface PlayerStore extends PlayerState {
   setKeepSpeedAcrossTracks: (keep: boolean) => void;
   setIsReverbEnabled: (enabled: boolean) => void;
   setReverbLevel: (level: number) => void;
+  setCrossfadeSec: (sec: number) => void;
+  setGaplessPlayback: (enabled: boolean) => void;
   resetSpeedAndPitch: () => void;
   clearQueue: () => void;
 }
@@ -160,6 +165,8 @@ export const usePlayerStore = create<PlayerStore>()(
       keepSpeedAcrossTracks: true,
       isReverbEnabled: false,
       reverbLevel: 0.35,
+      crossfadeSec: 0,
+      gaplessPlayback: false,
 
       dispatch: () => {
         // Implementation injected by PlayerEngine
@@ -210,6 +217,8 @@ export const usePlayerStore = create<PlayerStore>()(
       setIsReverbEnabled: (isReverbEnabled: boolean) => set({ isReverbEnabled }),
       setReverbLevel: (reverbLevel: number) =>
         set({ reverbLevel: Math.max(0, Math.min(1, reverbLevel)) }),
+      setCrossfadeSec: (sec: number) => set({ crossfadeSec: clampCrossfade(sec) }),
+      setGaplessPlayback: (gaplessPlayback: boolean) => set({ gaplessPlayback }),
       resetSpeedAndPitch: () => set({ playbackRate: 1, pitchSemitones: 0 }),
       clearQueue: () => {
         const state = get();
@@ -279,6 +288,12 @@ export const usePlayerStore = create<PlayerStore>()(
           if (typeof state.reverbLevel !== "number" || isNaN(state.reverbLevel)) {
             state.reverbLevel = 0.35;
           }
+          state.crossfadeSec = clampCrossfade(
+            typeof state.crossfadeSec === "number" ? state.crossfadeSec : 0,
+          );
+          if (typeof state.gaplessPlayback !== "boolean") {
+            state.gaplessPlayback = false;
+          }
         }
       },
       partialize: (state) => ({
@@ -310,6 +325,8 @@ export const usePlayerStore = create<PlayerStore>()(
         keepSpeedAcrossTracks: state.keepSpeedAcrossTracks,
         isReverbEnabled: state.isReverbEnabled,
         reverbLevel: state.reverbLevel,
+        crossfadeSec: state.crossfadeSec,
+        gaplessPlayback: state.gaplessPlayback,
       }),
     },
   ),

@@ -279,6 +279,16 @@ class PlayerEngine {
         this.telemetry.onTrackCompleted(isRepeatOne);
       };
       playerRuntime.onError = (info) => this.handlePlaybackError(info);
+      playerRuntime.getUpcomingTrack = () => {
+        const store = usePlayerStore.getState();
+        if (store.repeat === "one") return null;
+        const index = this.computeNextIndex(true);
+        if (index === null || index === store.currentIndex) return null;
+        const track = store.queue[index];
+        return track ? { track, index } : null;
+      };
+      playerRuntime.onTransitionStarted = (track, index) =>
+        this.handleTransitionStarted(track, index);
     }
 
     if (typeof window !== "undefined") {
@@ -662,6 +672,26 @@ class PlayerEngine {
         void playerRuntime.loadAndPlay(nextTrack);
       }
       this.maybeExtendQueue(mySession, nextTrack.id, nextIndex, store.queue.length);
+    }
+  }
+
+  /** Crossfade/gapless already started `track` on the standby element: advance without loading. */
+  private handleTransitionStarted(track: Track, index: number): void {
+    const store = usePlayerStore.getState();
+    const resolvedIndex =
+      store.queue[index]?.id === track.id
+        ? index
+        : store.queue.findIndex((t) => t.id === track.id);
+    if (resolvedIndex < 0) return;
+
+    this.sessionId += 1;
+    const mySession = this.sessionId;
+    store.setCurrentTrack(track, resolvedIndex);
+    store.setPosition(0);
+    store.setDuration(track.durationMs ?? 0);
+    store.setStatus("playing", null);
+    if (resolvedIndex === store.queue.length - 1) {
+      this.scheduleAppendSimilarTracks(mySession, track.id);
     }
   }
 

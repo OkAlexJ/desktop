@@ -29,6 +29,8 @@ const EMPTY_STATE: PlayerState = {
   keepSpeedAcrossTracks: true,
   isReverbEnabled: false,
   reverbLevel: 0.35,
+  crossfadeSec: 0,
+  gaplessPlayback: false,
 };
 
 export function usePlayerState(): PlayerState {

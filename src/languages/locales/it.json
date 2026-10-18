@@ -822,6 +822,14 @@
       "never_run": "I controlli non sono ancora stati eseguiti.",
       "last_run": "{ok}/{total} controlli ok · {time}",
       "open_folder": "Apri la posizione di salvataggio"
+    },
+    "transitions": {
+      "title": "Transizioni",
+      "crossfade_title": "Dissolvenza incrociata",
+      "crossfade_description": "Fa entrare il brano successivo mentre quello attuale sfuma. Funziona con i brani già precaricati.",
+      "gapless_title": "Riproduzione senza pause",
+      "gapless_description": "Avvia il brano successivo appena finisce quello attuale, senza pause.",
+      "off": "Off"
     }
   },
   "toast": {

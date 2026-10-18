@@ -874,6 +874,14 @@
       "scope_main_app": "App principal",
       "scope_overlay": "Superposición",
       "reset_section": "Restablecer sección"
+    },
+    "transitions": {
+      "title": "Transiciones",
+      "crossfade_title": "Fundido cruzado",
+      "crossfade_description": "Funde la siguiente canción mientras la actual se desvanece. Funciona con canciones ya precargadas.",
+      "gapless_title": "Reproducción sin pausas",
+      "gapless_description": "Inicia la siguiente canción justo cuando termina la actual, sin silencio.",
+      "off": "No"
     }
   },
   "toast": {

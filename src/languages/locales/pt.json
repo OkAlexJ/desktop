@@ -760,6 +760,14 @@
       "never_run": "As verificações ainda não foram executadas.",
       "last_run": "{ok}/{total} verificações OK · {time}",
       "open_folder": "Abrir local salvo"
+    },
+    "transitions": {
+      "title": "Transições",
+      "crossfade_title": "Crossfade",
+      "crossfade_description": "Faz a próxima música entrar enquanto a atual vai sumindo. Funciona com músicas já pré-carregadas.",
+      "gapless_title": "Reprodução contínua",
+      "gapless_description": "Inicia a próxima música assim que a atual termina, sem pausa.",
+      "off": "Desativado"
     }
   },
   "toast": {

@@ -880,6 +880,14 @@
       "never_run": "Checks have not been run yet.",
       "last_run": "{ok}/{total} checks ok · {time}",
       "open_folder": "Open saved location"
+    },
+    "transitions": {
+      "title": "Transitions",
+      "crossfade_title": "Crossfade",
+      "crossfade_description": "Fade the next song in while the current one fades out. Works with songs already preloaded.",
+      "gapless_title": "Gapless playback",
+      "gapless_description": "Start the next song right as the current one ends, without a pause.",
+      "off": "Off"
     }
   },
   "toast": {

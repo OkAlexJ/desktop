@@ -764,6 +764,14 @@
       "never_run": "Die Prüfungen wurden noch nicht ausgeführt.",
       "last_run": "{ok}/{total} Prüfungen ok · {time}",
       "open_folder": "Speicherort öffnen"
+    },
+    "transitions": {
+      "title": "Übergänge",
+      "crossfade_title": "Überblenden",
+      "crossfade_description": "Blendet den nächsten Titel ein, während der aktuelle ausblendet. Funktioniert mit bereits vorgeladenen Titeln.",
+      "gapless_title": "Lückenlose Wiedergabe",
+      "gapless_description": "Startet den nächsten Titel direkt, wenn der aktuelle endet, ohne Pause.",
+      "off": "Aus"
     }
   },
   "toast": {

@@ -826,6 +826,14 @@
       "never_run": "Testy nie zostały jeszcze uruchomione.",
       "last_run": "Testy OK: {ok}/{total} · {time}",
       "open_folder": "Otwórz lokalizację zapisu"
+    },
+    "transitions": {
+      "title": "Przejścia",
+      "crossfade_title": "Płynne przejście",
+      "crossfade_description": "Wycisza bieżący utwór, jednocześnie wprowadzając następny. Działa z utworami już wczytanymi.",
+      "gapless_title": "Odtwarzanie bez przerw",
+      "gapless_description": "Uruchamia następny utwór dokładnie w chwili zakończenia bieżącego.",
+      "off": "Wył."
     }
   },
   "toast": {

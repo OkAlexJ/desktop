@@ -6,8 +6,20 @@ import { linerDb, audioCache } from "@/shared/storage";
 import { isStandaloneAudioFile } from "@/shared/storage/audioFormat";
 import type { Track } from "@/shared/types";
 import { pitchShifter } from "./pitchShifter";
+import {
+  ARM_WINDOW_SEC,
+  crossfadeGains,
+  planTransition,
+  transitionsEnabled,
+  type TransitionSettings,
+} from "./transitions";
 import { resolvePlaybackStream, type PlaybackStream } from "./streamResolver";
 import { downloadAudioBytes } from "@/shared/media/innertube";
+
+const PRIMARY_AUDIO_ID = "liner-audio";
+const STANDBY_AUDIO_ID = "liner-audio-standby";
+const FADING_AUDIO_ID = "liner-audio-fading";
+export const PRIMARY_AUDIO_CHANGED_EVENT = "liner:primary-audio-changed";
 
 export class PlayerRuntime {
   private audio: HTMLAudioElement;
@@ -27,8 +39,23 @@ export class PlayerRuntime {
   private backgroundCacheAbortController: AbortController | null = null;
   private currentSessionExpiresAt: number | null = null;
   private recoveryAttempts = 0;
+  // Track transitions: a second element ping-pongs with `audio` (see startTransition).
+  private standby: HTMLAudioElement | null = null;
+  private standbyTrack: Track | null = null;
+  private standbyIndex = -1;
+  private standbyBlobUrl: string | null = null;
+  private standbyReady = false;
+  private standbyGeneration = 0;
+  private standbyAttempt: { trackId: string; at: number } | null = null;
+  private transitionStartTimer: ReturnType<typeof setTimeout> | null = null;
+  private crossfadeTimer: ReturnType<typeof setTimeout> | null = null;
+  private fadingOut: { el: HTMLAudioElement; blobUrl: string | null } | null = null;
   public onEnded?: () => void;
   public onError?: (info: { trackId: string; message: string }) => void;
+  /** Next track an automatic advance would play, or null (repeat-one, end of queue). */
+  public getUpcomingTrack?: () => { track: Track; index: number } | null;
+  /** The standby element took over: the engine advances the queue without loading. */
+  public onTransitionStarted?: (track: Track, index: number) => void;
 
   constructor() {
     const win = typeof window !== "undefined" ? (window as any) : null;
@@ -166,6 +193,7 @@ export class PlayerRuntime {
 
       const posMs = Math.round(audioEl.currentTime * 1000);
       usePlayerStore.getState().setPosition(posMs);
+      this.checkTransition();
     });
 
     audioEl.addEventListener("durationchange", () => {
@@ -321,6 +349,8 @@ export class PlayerRuntime {
       const reverbLevel = store.reverbLevel ?? 0.35;
       const needsEffects = isReverbEnabled || (!isPitchLinked && Math.abs(pitchSemitones) >= 0.05);
       if (!needsEffects && !pitchShifter.isAttached()) return;
+      // Join the partner element first so a later crossfade stays on the effects chain.
+      if (this.standby) pitchShifter.attach(this.standby);
       pitchShifter.attach(this.audio);
       pitchShifter.update({
         pitchSemitones,
@@ -330,6 +360,262 @@ export class PlayerRuntime {
       });
     } catch (err) {
       console.error("[PlayerRuntime] applyPlaybackRateAndPitch error:", err);
+    }
+  }
+
+  private transitionSettings(): TransitionSettings {
+    const s = usePlayerStore.getState();
+    return { crossfadeSec: s.crossfadeSec ?? 0, gapless: s.gaplessPlayback ?? false };
+  }
+
+  /** Polled from the primary element's timeupdate. A no-op while transitions are off. */
+  private checkTransition(): void {
+    const settings = this.transitionSettings();
+    if (!transitionsEnabled(settings)) {
+      if (this.standbyTrack || this.transitionStartTimer) this.discardStandby();
+      return;
+    }
+    const store = usePlayerStore.getState();
+    if (store.status !== "playing" || this.audio.paused || this.fadingOut) return;
+
+    const upcoming = this.getUpcomingTrack?.() ?? null;
+    if (!upcoming || upcoming.track.id === this.currentTrackId) {
+      if (this.standbyTrack) this.discardStandby();
+      return;
+    }
+    if (this.standbyTrack && this.standbyTrack.id !== upcoming.track.id) {
+      // Queue changed under us; prepare the new next track instead.
+      this.discardStandby();
+    }
+
+    const plan = planTransition({
+      durationSec: this.audio.duration,
+      positionSec: this.audio.currentTime,
+      playbackRate: this.audio.playbackRate,
+      settings,
+      nextDurationSec: upcoming.track.durationMs ? upcoming.track.durationMs / 1000 : null,
+    });
+    if (!plan) return;
+
+    if (plan.secondsUntilPrepare <= 0 && !this.standbyTrack) {
+      void this.prepareStandby(upcoming.track, upcoming.index);
+    }
+
+    if (plan.secondsUntilStart <= ARM_WINDOW_SEC) {
+      this.clearTransitionTimer();
+      const epoch = this.loadEpoch;
+      this.transitionStartTimer = setTimeout(() => {
+        this.transitionStartTimer = null;
+        if (epoch !== this.loadEpoch) return;
+        void this.startTransition(plan.fadeSec);
+      }, plan.secondsUntilStart * 1000);
+    }
+  }
+
+  private ensureStandbyElement(): HTMLAudioElement {
+    if (this.standby) return this.standby;
+    const el = new Audio();
+    el.id = STANDBY_AUDIO_ID;
+    el.crossOrigin = "anonymous";
+    el.preload = "auto";
+    if (typeof document !== "undefined") document.body.appendChild(el);
+    this.setupAudioListeners(el);
+    this.standby = el;
+    return el;
+  }
+
+  /** Loads the next track (already cached by preloadTrack) into the standby element. */
+  private async prepareStandby(track: Track, index: number): Promise<void> {
+    const now = Date.now();
+    if (this.standbyAttempt?.trackId === track.id && now - this.standbyAttempt.at < 2000) return;
+    this.standbyAttempt = { trackId: track.id, at: now };
+    const generation = ++this.standbyGeneration;
+    const epoch = this.loadEpoch;
+
+    try {
+      if (this.preloadingTrackId === track.id && this.preloadingPromise) {
+        await this.preloadingPromise;
+      }
+      const cached = await linerDb.getAudio(track.id);
+      if (generation !== this.standbyGeneration || epoch !== this.loadEpoch) return;
+      const blob = cached?.blob;
+      if (!blob || blob.size === 0 || (blob.type && !blob.type.startsWith("audio/"))) return;
+
+      const el = this.ensureStandbyElement();
+      const url = URL.createObjectURL(blob);
+      this.standbyBlobUrl = url;
+      this.standbyTrack = track;
+      this.standbyIndex = index;
+      this.standbyReady = false;
+      el.addEventListener(
+        "canplay",
+        () => {
+          if (this.standby === el && this.standbyBlobUrl === url) this.standbyReady = true;
+        },
+        { once: true },
+      );
+      el.volume = 0;
+      el.src = url;
+      el.load();
+      if (pitchShifter.isAttached()) pitchShifter.attach(el);
+      log("cyan", "transition", `standby ready to load: ${track.title}`);
+    } catch {
+      // Transition is best-effort; the normal ended → SKIP_NEXT path still runs.
+    }
+  }
+
+  private clearTransitionTimer(): void {
+    if (this.transitionStartTimer !== null) {
+      clearTimeout(this.transitionStartTimer);
+      this.transitionStartTimer = null;
+    }
+  }
+
+  private discardStandby(): void {
+    this.clearTransitionTimer();
+    this.standbyGeneration += 1;
+    const el = this.standby;
+    if (el && el.getAttribute("src")) {
+      try {
+        el.pause();
+        el.removeAttribute("src");
+        el.load();
+      } catch {}
+    }
+    if (this.standbyBlobUrl) {
+      URL.revokeObjectURL(this.standbyBlobUrl);
+      this.standbyBlobUrl = null;
+    }
+    this.standbyTrack = null;
+    this.standbyIndex = -1;
+    this.standbyReady = false;
+  }
+
+  /** Cuts any running crossfade short and drops a prepared standby track. */
+  private abortTransitions(keepStandby = false): void {
+    this.clearTransitionTimer();
+    this.finishFadeOut();
+    if (!keepStandby) this.discardStandby();
+  }
+
+  private async startTransition(fadeSec: number): Promise<void> {
+    const el = this.standby;
+    const track = this.standbyTrack;
+    const index = this.standbyIndex;
+    const blobUrl = this.standbyBlobUrl;
+    if (!el || !track || !this.standbyReady || this.fadingOut) return;
+    const store = usePlayerStore.getState();
+    if (store.status !== "playing" || this.audio.paused) return;
+
+    const old = this.audio;
+    const generation = this.standbyGeneration;
+    const epoch = this.loadEpoch;
+    const remainingWallSec = Math.max(
+      0,
+      (old.duration - old.currentTime) / (old.playbackRate || 1),
+    );
+    const fade = Math.min(fadeSec, remainingWallSec);
+
+    el.playbackRate = old.playbackRate;
+    el.defaultPlaybackRate = old.playbackRate;
+    el.preservesPitch = old.preservesPitch;
+    el.volume = fade > 0 ? 0 : store.volume;
+
+    try {
+      await el.play();
+    } catch (err) {
+      log("yellow", "transition", `standby play failed: ${String(err)}`);
+      if (generation === this.standbyGeneration) this.discardStandby();
+      return;
+    }
+    if (
+      generation !== this.standbyGeneration ||
+      epoch !== this.loadEpoch ||
+      this.audio !== old ||
+      this.standby !== el
+    ) {
+      el.pause();
+      return;
+    }
+
+    // Swap roles: the standby becomes primary, the old primary fades out.
+    this.cancelFade();
+    this.standby = null;
+    this.standbyTrack = null;
+    this.standbyIndex = -1;
+    this.standbyBlobUrl = null;
+    this.standbyReady = false;
+    old.id = FADING_AUDIO_ID;
+    el.id = PRIMARY_AUDIO_ID;
+    this.audio = el;
+    if (typeof window !== "undefined") (window as any).__liner_audio = el;
+    this.fadingOut = { el: old, blobUrl: this.activeBlobUrl };
+    this.activeBlobUrl = blobUrl;
+    this.currentTrackId = track.id;
+    this.currentSessionExpiresAt = null;
+    this.recoveryAttempts = 0;
+    this.pendingStartPositionMs = 0;
+    this.updateMediaSessionMetadata(track);
+
+    this.onEnded?.();
+    if (!store.keepSpeedAcrossTracks) store.resetSpeedAndPitch();
+    this.applyPlaybackRateAndPitch();
+    this.onTransitionStarted?.(track, index);
+    if (Number.isFinite(el.duration) && el.duration > 0) {
+      usePlayerStore.getState().setDuration(Math.round(el.duration * 1000));
+    }
+    if (typeof window !== "undefined") {
+      window.dispatchEvent(new CustomEvent(PRIMARY_AUDIO_CHANGED_EVENT));
+    }
+    log(
+      "green",
+      "transition",
+      fade > 0 ? `crossfading ${fade.toFixed(1)}s into ${track.title}` : `gapless start: ${track.title}`,
+    );
+
+    if (fade <= 0) {
+      // Let the old element play out its last few milliseconds, then recycle it.
+      this.crossfadeTimer = setTimeout(() => this.finishFadeOut(), remainingWallSec * 1000 + 250);
+      return;
+    }
+
+    const startedAt = performance.now();
+    const oldStartVolume = old.volume;
+    const tick = () => {
+      const progress = Math.min(1, (performance.now() - startedAt) / (fade * 1000));
+      const gains = crossfadeGains(progress);
+      const target = usePlayerStore.getState().volume;
+      old.volume = Math.max(0, Math.min(1, oldStartVolume * gains.out));
+      el.volume = Math.max(0, Math.min(1, target * gains.in));
+      if (progress < 1) {
+        this.crossfadeTimer = setTimeout(tick, 16);
+      } else {
+        this.crossfadeTimer = null;
+        this.finishFadeOut();
+      }
+    };
+    this.crossfadeTimer = setTimeout(tick, 16);
+  }
+
+  /** Stops the outgoing element and recycles it as the next standby. */
+  private finishFadeOut(): void {
+    if (this.crossfadeTimer !== null) {
+      clearTimeout(this.crossfadeTimer);
+      this.crossfadeTimer = null;
+    }
+    const fading = this.fadingOut;
+    if (!fading) return;
+    this.fadingOut = null;
+    try {
+      fading.el.pause();
+      fading.el.removeAttribute("src");
+      fading.el.load();
+    } catch {}
+    if (fading.blobUrl) URL.revokeObjectURL(fading.blobUrl);
+    fading.el.id = STANDBY_AUDIO_ID;
+    if (!this.standby) this.standby = fading.el;
+    if (!this.audio.paused && usePlayerStore.getState().status === "playing" && this.fadeTimer === null) {
+      this.audio.volume = usePlayerStore.getState().volume;
     }
   }
 
@@ -396,6 +682,7 @@ export class PlayerRuntime {
   }
 
   public cancelPendingLoad(): void {
+    this.abortTransitions();
     this.loadEpoch += 1;
     this.loadAbortController?.abort();
     this.loadAbortController = null;
@@ -452,6 +739,7 @@ export class PlayerRuntime {
   private pendingStartPositionMs = 0;
 
   public setPendingSeek(positionMs: number): void {
+    this.abortTransitions(true);
     this.pendingStartPositionMs = positionMs;
     usePlayerStore.getState().setPosition(positionMs);
     if (this.audio.src && this.audio.src !== window.location.href) {
@@ -478,6 +766,7 @@ export class PlayerRuntime {
     startPositionMs: number = 0,
     bypassCache: boolean = false,
   ) {
+    this.abortTransitions();
     this.cancelFade();
     this.pendingStartPositionMs = startPositionMs;
     const epoch = ++this.loadEpoch;
@@ -724,6 +1013,7 @@ export class PlayerRuntime {
   }
 
   public pause() {
+    this.abortTransitions(true);
     const epoch = ++this.loadEpoch;
     this.loadAbortController?.abort();
     this.loadAbortController = null;
@@ -800,6 +1090,7 @@ export class PlayerRuntime {
   }
 
   public seek(positionMs: number) {
+    this.abortTransitions(true);
     if (!this.audio.src || this.audio.src === window.location.href) return;
     try {
       if (this.audio.readyState >= 1) {

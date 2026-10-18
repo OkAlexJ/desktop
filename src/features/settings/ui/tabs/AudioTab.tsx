@@ -7,6 +7,7 @@ import { usePlayerStore, type AudioQuality } from "@/features/player";
 import { Select } from "@/shared/ui";
 import { useConnectivityStore } from "@/features/connectivity";
 import { SettingRow, SettingSection } from "../controls";
+import { TransitionsSection } from "./TransitionsSection";
 
 export function AudioTab({ searchQuery }: { searchQuery?: string }) {
   const { t } = useTranslation();
@@ -56,6 +57,8 @@ export function AudioTab({ searchQuery }: { searchQuery?: string }) {
           }
         />
       </SettingSection>
+
+      <TransitionsSection searchQuery={searchQuery} />
 
       <SettingSection label={t("settings.connection.title")}>
         <SettingRow

@@ -824,6 +824,14 @@
       "never_run": "Les tests n'ont pas encore été lancés.",
       "last_run": "{ok}/{total} tests réussis · {time}",
       "open_folder": "Ouvrir l'emplacement"
+    },
+    "transitions": {
+      "title": "Transitions",
+      "crossfade_title": "Fondu enchaîné",
+      "crossfade_description": "Fait entrer le titre suivant pendant que le titre actuel s'estompe. Fonctionne avec les titres déjà préchargés.",
+      "gapless_title": "Lecture sans blanc",
+      "gapless_description": "Lance le titre suivant dès la fin du titre actuel, sans pause.",
+      "off": "Désactivé"
     }
   },
   "toast": {

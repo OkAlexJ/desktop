@@ -13,6 +13,9 @@
  * and progressive high-frequency air damping. Filtered with a 120Hz highpass
  * to protect sub-bass/808s.
  * Perfectly tuned for the authentic "Slowed + Reverb" aesthetic.
+ *
+ * Every media element source connects to a shared input bus, so a second element
+ * (used for crossfades) goes through the same pitch/reverb chain.
  */
 
 const GRAIN_PERIOD = 0.038; // 38ms grain window
@@ -201,6 +204,8 @@ function createReverbImpulseResponse(context: AudioContext): AudioBuffer {
 interface AudioEffectsGraph {
   ctx: AudioContext;
   sourceNode: MediaElementAudioSourceNode;
+  sources: Set<MediaElementAudioSourceNode>;
+  inputBus: GainNode;
   pitchDryGain: GainNode;
   pitchWetGain: GainNode;
   pitchStageOutput: GainNode;
@@ -218,6 +223,33 @@ export interface AudioEffectsParams {
   isPitchLinked?: boolean;
   isReverbEnabled?: boolean;
   reverbLevel?: number;
+}
+
+function getOrCreateSourceNode(ctx: AudioContext, audio: HTMLAudioElement): MediaElementAudioSourceNode | undefined {
+  const win = window as any;
+  const audioObj = audio as any;
+  let sourceNode = audioObj.__liner_source_node as MediaElementAudioSourceNode | undefined;
+  if (sourceNode) return sourceNode;
+
+  const isPrimary = audio.id === "liner-audio";
+  if (isPrimary && win.__liner_media_source_node && win.__liner_media_source_node.mediaElement === audio) {
+    sourceNode = win.__liner_media_source_node as MediaElementAudioSourceNode;
+    audioObj.__liner_source_node = sourceNode;
+    return sourceNode;
+  }
+  try {
+    sourceNode = ctx.createMediaElementSource(audio);
+    audioObj.__liner_source_node = sourceNode;
+    if (isPrimary) win.__liner_media_source_node = sourceNode;
+  } catch (sourceErr: any) {
+    if (isPrimary && win.__liner_media_source_node) {
+      sourceNode = win.__liner_media_source_node as MediaElementAudioSourceNode;
+      audioObj.__liner_source_node = sourceNode;
+    } else {
+      throw sourceErr;
+    }
+  }
+  return sourceNode;
 }
 
 export class PitchShifterController {
@@ -249,27 +281,7 @@ export class PitchShifterController {
       }
 
       const audioObj = audio as any;
-      let sourceNode = audioObj.__liner_source_node as MediaElementAudioSourceNode | undefined;
-
-      if (!sourceNode) {
-        if (win.__liner_media_source_node && win.__liner_media_source_node.mediaElement === audio) {
-          sourceNode = win.__liner_media_source_node;
-          audioObj.__liner_source_node = sourceNode;
-        } else {
-          try {
-            sourceNode = ctx.createMediaElementSource(audio);
-            audioObj.__liner_source_node = sourceNode;
-            win.__liner_media_source_node = sourceNode;
-          } catch (sourceErr: any) {
-            if (win.__liner_media_source_node) {
-              sourceNode = win.__liner_media_source_node;
-              audioObj.__liner_source_node = sourceNode;
-            } else {
-              throw sourceErr;
-            }
-          }
-        }
-      }
+      const sourceNode = getOrCreateSourceNode(ctx, audio);
 
       if (!sourceNode) {
         return;
@@ -279,7 +291,9 @@ export class PitchShifterController {
       const isCompleteGraph = (g: any): g is AudioEffectsGraph => {
         return Boolean(
           g &&
-          g.sourceNode === sourceNode &&
+          g.ctx === ctx &&
+          g.sources instanceof Set &&
+          g.inputBus &&
           g.convolver &&
           g.reverbWetGain &&
           g.reverbSendGain &&
@@ -293,8 +307,20 @@ export class PitchShifterController {
       let graph = (audioObj.__liner_pitch_graph || win.__liner_pitch_graph) as AudioEffectsGraph | undefined;
 
       if (!isCompleteGraph(graph)) {
+        // Sources from a stale graph must be re-routed into the new one.
+        const carriedSources = new Set<MediaElementAudioSourceNode>([sourceNode]);
         // Disconnect any legacy/stale nodes from the old graph
         if (graph) {
+          const stale = graph as any;
+          if (stale.sources instanceof Set) {
+            for (const src of stale.sources as Set<MediaElementAudioSourceNode>) {
+              carriedSources.add(src);
+            }
+          }
+          if (stale.sourceNode) carriedSources.add(stale.sourceNode);
+          try {
+            stale.inputBus?.disconnect();
+          } catch {}
           try {
             (graph as any).sourceNode?.disconnect();
             (graph as any).dryGain?.disconnect();
@@ -314,9 +340,16 @@ export class PitchShifterController {
         delete audioObj.__liner_pitch_graph;
         delete win.__liner_pitch_graph;
 
-        try {
-          sourceNode.disconnect();
-        } catch {}
+        for (const src of carriedSources) {
+          try {
+            src.disconnect();
+          } catch {}
+        }
+
+        const inputBus = ctx.createGain();
+        for (const src of carriedSources) {
+          src.connect(inputBus);
+        }
 
         const pitchDryGain = ctx.createGain();
         const pitchWetGain = ctx.createGain();
@@ -333,8 +366,8 @@ export class PitchShifterController {
         const shifter = new HannPitchShifter(ctx);
 
         // Pitch stage routing
-        sourceNode.connect(pitchDryGain);
-        sourceNode.connect(pitchWetGain);
+        inputBus.connect(pitchDryGain);
+        inputBus.connect(pitchWetGain);
 
         pitchDryGain.connect(pitchStageOutput);
         pitchWetGain.connect(shifter.input);
@@ -372,6 +405,8 @@ export class PitchShifterController {
         graph = {
           ctx,
           sourceNode,
+          sources: carriedSources,
+          inputBus,
           pitchDryGain,
           pitchWetGain,
           pitchStageOutput,
@@ -386,10 +421,18 @@ export class PitchShifterController {
 
         audioObj.__liner_pitch_graph = graph;
         win.__liner_pitch_graph = graph;
+      } else if (!graph.sources.has(sourceNode)) {
+        // Another element (crossfade partner) joins the existing chain exactly once.
+        try {
+          sourceNode.disconnect();
+        } catch {}
+        sourceNode.connect(graph.inputBus);
+        graph.sources.add(sourceNode);
+        audioObj.__liner_pitch_graph = graph;
       }
 
       this.context = graph.ctx;
-      this.sourceNode = graph.sourceNode;
+      this.sourceNode = sourceNode;
       this.graph = graph;
       this.isConnected = true;
     } catch (err) {

@@ -8,6 +8,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { usePlayerState } from "../hooks/usePlayerState";
 import { playerEngine } from "../engine/playerEngine";
+import { PRIMARY_AUDIO_CHANGED_EVENT } from "../engine/playerRuntime";
 import {
   useLyricsStore,
   LyricsProviderIsland,
@@ -125,6 +126,17 @@ function BraccatoLyricsView({ lyrics }: BraccatoLyricsViewProps) {
 
   const handleUserInteractionRef = useRef(handleUserInteraction);
   handleUserInteractionRef.current = handleUserInteraction;
+
+  // Crossfades swap which <audio> is primary; keep the lyrics element following it.
+  useEffect(() => {
+    const onPrimaryChanged = () => {
+      const el = elementRef.current as any;
+      const audio = document.getElementById("liner-audio");
+      if (el && audio) el.source = audio;
+    };
+    window.addEventListener(PRIMARY_AUDIO_CHANGED_EVENT, onPrimaryChanged);
+    return () => window.removeEventListener(PRIMARY_AUDIO_CHANGED_EVENT, onPrimaryChanged);
+  }, []);
 
   const setElement = useCallback((el: any) => {
     elementRef.current = el;
