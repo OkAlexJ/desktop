@@ -7,6 +7,7 @@ import {
   LuPlus,
   LuTrash2,
   LuFolderPlus,
+  LuQrCode,
 } from "react-icons/lu";
 import type { DropdownMenuItem } from "@/shared/ui/DropdownMenu";
 import { playerEngine } from "../engine/playerEngine";
@@ -19,6 +20,7 @@ import {
 } from "@/features/library";
 import { useTranslation } from "@/languages";
 import { showToast } from "@/shared/ui";
+import { openQrShare } from "@/features/share/store/qrShareStore";
 
 export interface SongMenuContext {
   id?: string;
@@ -56,6 +58,22 @@ export function useSongMenuItems(ctx: SongMenuContext): DropdownMenuItem[] {
   const unlikeMutation = useUnlikeTrack();
 
   const liked = useIsTrackLiked(id);
+
+  const qrItem = useCallback(
+    (type: "track" | "album" | "artist" | "playlist"): DropdownMenuItem[] => {
+      if (!id) return [];
+      return [
+        {
+          id: "show-qr",
+          label: t("qr_share.show_qr"),
+          icon: <LuQrCode size={15} />,
+          onClick: () =>
+            openQrShare({ type, id, title, subtitle: artists || undefined, coverUrl }),
+        },
+      ];
+    },
+    [id, title, artists, coverUrl, t],
+  );
 
   const handleLike = useCallback(async () => {
     if (!id) return;
@@ -152,6 +170,7 @@ export function useSongMenuItems(ctx: SongMenuContext): DropdownMenuItem[] {
               });
             },
           },
+          ...qrItem("track"),
         ];
       }
 
@@ -234,6 +253,7 @@ export function useSongMenuItems(ctx: SongMenuContext): DropdownMenuItem[] {
             });
           },
         },
+        ...qrItem("track"),
       ];
     }
 
@@ -254,6 +274,7 @@ export function useSongMenuItems(ctx: SongMenuContext): DropdownMenuItem[] {
           });
         },
       },
+      ...qrItem((searchType as "album" | "artist" | "playlist") || "album"),
     ];
   }, [
     id,
@@ -270,6 +291,7 @@ export function useSongMenuItems(ctx: SongMenuContext): DropdownMenuItem[] {
     liked,
     handleLike,
     playlistsData,
+    qrItem,
     t,
   ]);
 

@@ -21,6 +21,8 @@ import { useTranslation } from "@/languages";
 import { useModalStore } from "@/features/library";
 import { api, mediaUrl, toMaxQualityAvatarUrl, toClientTrack, type ApiTrack } from "@/shared/api";
 import { buildShareUrl } from "@/shared/utils/share";
+import { openQrShare } from "@/features/share";
+import { LuQrCode } from "react-icons/lu";
 import { useExternalItems } from "@/features/library/hooks";
 import ArtistProfileModal from "./ArtistProfileModal";
 import ArtistPageSkeleton from "./ArtistPageSkeleton";
@@ -412,6 +414,27 @@ function ArtistContent() {
                       title={t("artist.share")}
                     >
                       <ShareForwardLine size={18} />
+                    </Button>
+
+                    <Button
+                      variant={hasCustomBg ? "glass-action" : "outline"}
+                      onClick={() =>
+                        decodedId &&
+                        openQrShare({
+                          type: "artist",
+                          id: decodedId,
+                          title: data.title,
+                          coverUrl: data.coverUrl,
+                        })
+                      }
+                      className={`!h-[38px] !w-[38px] !p-0 flex items-center justify-center transition-colors ${
+                        hasCustomBg
+                          ? ""
+                          : "text-text-secondary hover:text-text-primary bg-bg-panel/40 backdrop-blur-sm"
+                      }`}
+                      title={t("qr_share.show_qr")}
+                    >
+                      <LuQrCode size={17} />
                     </Button>
                   </div>
                 </div>

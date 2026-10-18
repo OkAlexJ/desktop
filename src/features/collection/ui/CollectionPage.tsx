@@ -17,7 +17,7 @@ import {
   ArrowLeftLine,
   Search2Line,
 } from "@mingcute/react";
-import { LuShuffle } from "react-icons/lu";
+import { LuQrCode, LuShuffle } from "react-icons/lu";
 import Button from "@/shared/ui/Button";
 import SongCardWithMenu from "@/features/player/ui/SongCardWithMenu";
 import CoverImage from "@/features/covers/ui/CoverImage";
@@ -34,6 +34,7 @@ import type { Track } from "@/shared/types";
 import { useTranslation } from "@/languages";
 import { useModalStore } from "@/features/library";
 import { buildShareUrl } from "@/shared/utils/share";
+import { openQrShare } from "@/features/share";
 import { useExternalItems } from "@/features/library/hooks";
 import { useCollection } from "../hooks/useCollection";
 import { useIsContentTransparent } from "@/features/settings/store/customizationStore";
@@ -221,6 +222,17 @@ function CollectionContent() {
         description: data?.title || undefined,
       });
     }
+  };
+
+  const handleShowQr = () => {
+    if (!decodedId || !data) return;
+    openQrShare({
+      type: entityType,
+      id: decodedId,
+      title: data.title,
+      subtitle: data.artists?.map((a) => a.name).join(", ") || data.author || undefined,
+      coverUrl: data.coverUrl,
+    });
   };
 
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -551,6 +563,12 @@ function CollectionContent() {
                                 icon: <ShareForwardLine size={16} />,
                                 label: t("common.share"),
                                 onClick: handleShare,
+                              },
+                              {
+                                id: "show-qr",
+                                icon: <LuQrCode size={16} />,
+                                label: t("qr_share.show_qr"),
+                                onClick: handleShowQr,
                               },
                             ]}
                           />

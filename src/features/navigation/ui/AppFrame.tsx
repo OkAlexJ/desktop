@@ -54,6 +54,7 @@ import {
 } from "@/features/library";
 import { SettingsModal, useCustomizationStore, getBlockStyle } from "@/features/settings";
 import { UpdateModal, UpdateToastBridge } from "@/features/updater";
+import { QrShareModal } from "@/features/share";
 
 
 interface AppFrameProps {
@@ -1065,6 +1066,7 @@ export default function AppFrame({ children }: AppFrameProps) {
       <ImportLikesModal />
       <CreatePlaylistModal />
       <ImportReviewModal />
+      <QrShareModal />
       <SettingsModal />
       <UpdateModal />
       <UpdateToastBridge />

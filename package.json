@@ -115,6 +115,7 @@
     "lottie-web": "^5.13.0",
     "morphicons": "^1.7.1",
     "next-themes": "^0.4.6",
+    "qrcode": "1.5.4",
     "react": "19.2.4",
     "react-apple-emojis": "^3.0.0",
     "react-dom": "19.2.4",
@@ -129,6 +130,7 @@
   "devDependencies": {
     "@tailwindcss/vite": "^4.3.3",
     "@types/node": "^20",
+    "@types/qrcode": "1.5.6",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@types/tar": "^7.0.87",
@@ -137,6 +139,7 @@
     "electron-builder": "^26.15.3",
     "eslint": "^9",
     "jsdom": "^30.0.1",
+    "jsqr": "1.4.0",
     "tailwindcss": "^4",
     "ts-node": "^10.9.2",
     "typescript": "^5",

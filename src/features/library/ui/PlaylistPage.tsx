@@ -17,8 +17,9 @@ import {
   Search2Line,
 } from "@mingcute/react";
 import { AnimatePresence, motion } from "framer-motion";
-import { LuPencil, LuTrash2, LuText, LuShuffle } from "react-icons/lu";
+import { LuPencil, LuTrash2, LuText, LuShuffle, LuQrCode } from "react-icons/lu";
 import { buildShareUrl } from "@/shared/utils/share";
+import { openQrShare } from "@/features/share";
 import Button from "@/shared/ui/Button";
 import DropdownMenu from "@/shared/ui/DropdownMenu";
 import SongCardWithMenu from "@/features/player/ui/SongCardWithMenu";
@@ -272,6 +273,18 @@ function LibraryPlaylistContent() {
       });
     }
   }, [decodedId, viewData?.title, toast, t]);
+
+  const handleShowQr = useCallback(() => {
+    if (!decodedId || !viewData) return;
+    // same as copying the link: the page behind the code has to be public
+    void api.updatePlaylist(decodedId, { isPublic: true }).catch(() => {});
+    openQrShare({
+      type: "playlist",
+      id: decodedId,
+      title: viewData.title,
+      coverUrl: viewData.coverUrl,
+    });
+  }, [decodedId, viewData]);
 
   const handleReorderCommit = useCallback(
     (fromIndex: number, toIndex: number, movingTrack: Track) => {
@@ -800,6 +813,12 @@ function LibraryPlaylistContent() {
                                 icon: <ShareForwardLine size={15} />,
                                 label: t("common.share"),
                                 onClick: handleShare,
+                              },
+                              {
+                                id: "show-qr",
+                                icon: <LuQrCode size={15} />,
+                                label: t("qr_share.show_qr"),
+                                onClick: handleShowQr,
                               },
                               {
                                 id: "delete",
