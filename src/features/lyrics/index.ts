@@ -24,3 +24,5 @@ export {
   type SyncedLine,
 } from "./hooks/useLyricsAnimator";
 export { LyricsProviderIsland } from "./ui/LyricsProviderIsland";
+export { initLrclibLyrics } from "./lrclib/lrclibSync";
+export { LRCLIB_PROVIDER, fetchLrclibLyrics } from "./lrclib/lrclibClient";
