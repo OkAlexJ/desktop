@@ -1,5 +1,5 @@
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { useCallback, useEffect, useMemo, useRef, useState, memo, Suspense } from "react";
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, memo, Suspense } from "react";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import PlaylistPageSkeleton from "./PlaylistPageSkeleton";
 import { useToast, ReorderDropPlaceholder, FloatingDragCard, EntitySidebar, SIDEBAR_TITLE_CLASS, SIDEBAR_SUBTITLE_CLASS } from "@/shared/ui";
@@ -338,8 +338,11 @@ function LibraryPlaylistContent() {
     orderedTracks.every((track) => track.playlistItemId);
 
   // the page stays mounted when only the playlist id changes, so a running apply checks this
+  // updated after commit, so a render that gets thrown away can't stop the current run
   const activePlaylistIdRef = useRef(decodedId);
-  activePlaylistIdRef.current = decodedId;
+  useLayoutEffect(() => {
+    activePlaylistIdRef.current = decodedId;
+  }, [decodedId]);
 
   const handleApplySort = useCallback(async () => {
     if (!decodedId || !viewData || !canApplySort || applyProgress) return;
