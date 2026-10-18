@@ -148,10 +148,12 @@ export default function StatsPage() {
   const artists = useMemo(() => topArtists(inRange, 10), [inRange]);
   const albums = useMemo(() => topAlbums(inRange, 10), [inRange]);
   const heatmap = useMemo(() => hourHeatmap(inRange), [inRange]);
-  const chart = useMemo(() => groupDaily(dailyListening(inRange, from, now), locale), [inRange, from, now, locale]);
+  const daily = useMemo(() => dailyListening(inRange, from, now), [inRange, from, now]);
+  const chart = useMemo(() => groupDaily(daily, locale), [daily, locale]);
   const streak = useMemo(() => listeningStreak(plays, now), [plays, now]);
   const recapYear = new Date(now).getFullYear();
-  const dayCount = Math.max(1, Math.round((now - from) / 86_400_000));
+  // one bucket per local day in the range, today included
+  const dayCount = Math.max(1, daily.length);
 
   const fmt = (ms: number) => formatListening(ms, t);
   const playsLabel = (count: number) => t("stats.plays_count", { count });

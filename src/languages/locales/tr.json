@@ -836,7 +836,8 @@
       "clear_button": "Temizle",
       "clear_confirm": "Temizlemek için tekrar tıkla",
       "cleared": "Dinleme geçmişi temizlendi",
-      "export_description_one": "{count} play recorded. Saves a file; nothing is sent anywhere."
+      "clear_failed": "Dinleme geçmişi temizlenemedi",
+      "export_description_one": "{count} dinleme kayıtlı. Bir dosya kaydeder; hiçbir şey gönderilmez."
     }
   },
   "toast": {
@@ -1048,8 +1049,8 @@
       "next": "Sonraki",
       "close": "Kapat"
     },
-    "days_count_one": "{count} day",
-    "longest_streak_one": "Longest: {count} day",
-    "plays_count_one": "{count} play"
+    "days_count_one": "{count} gün",
+    "longest_streak_one": "En uzun: {count} gün",
+    "plays_count_one": "{count} dinleme"
   }
 }

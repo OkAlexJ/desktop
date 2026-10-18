@@ -1,5 +1,6 @@
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { createJSONStorage, persist } from "zustand/middleware";
+import { debouncedStorage } from "@/shared/utils/storage";
 import type { PlayRecord } from "../types";
 import { statsDb } from "./statsDb";
 
@@ -14,7 +15,7 @@ export const useStatsSettingsStore = create<StatsSettingsState>()(
       trackingPaused: false,
       setTrackingPaused: (trackingPaused) => set({ trackingPaused }),
     }),
-    { name: "liner_stats_settings_v1" },
+    { name: "liner_stats_settings_v1", storage: createJSONStorage(() => debouncedStorage) },
   ),
 );
 
@@ -43,6 +44,10 @@ function upsert(plays: PlayRecord[], record: PlayRecord): PlayRecord[] {
 }
 
 let loading: Promise<void> | null = null;
+// plays that started before the last clear are dropped, so a session still running or a load
+// that was already in flight can't bring cleared history back
+let clearedAt = 0;
+const afterClear = (p: PlayRecord) => p.playedAt >= clearedAt;
 
 export const useStatsHistoryStore = create<StatsHistoryState>((set, get) => ({
   plays: [],
@@ -52,7 +57,7 @@ export const useStatsHistoryStore = create<StatsHistoryState>((set, get) => ({
     loading ??= statsDb
       .getAllPlays()
       .then((stored) => {
-        let plays = stored;
+        let plays = stored.filter(afterClear);
         // keep anything recorded while the read was in flight
         for (const p of get().plays) plays = upsert(plays, p);
         set({ plays, loaded: true });
@@ -63,10 +68,12 @@ export const useStatsHistoryStore = create<StatsHistoryState>((set, get) => ({
     return loading;
   },
   recordPlay: (record) => {
+    if (!afterClear(record)) return;
     set({ plays: upsert(get().plays, record) });
     void statsDb.putPlay(record);
   },
   clearHistory: async () => {
+    clearedAt = Date.now();
     set({ plays: [] });
     await statsDb.clear();
   },

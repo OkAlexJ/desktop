@@ -778,7 +778,8 @@
       "clear_description": "Löscht alle auf diesem Gerät gespeicherten Wiedergaben.",
       "clear_button": "Löschen",
       "clear_confirm": "Zum Löschen erneut klicken",
-      "cleared": "Hörverlauf gelöscht"
+      "cleared": "Hörverlauf gelöscht",
+      "clear_failed": "Hörverlauf konnte nicht gelöscht werden"
     }
   },
   "toast": {

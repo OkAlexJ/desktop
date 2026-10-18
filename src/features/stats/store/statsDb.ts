@@ -85,9 +85,12 @@ class StatsDb {
     return [...merged.values()].sort((a, b) => a.playedAt - b.playedAt);
   }
 
+  /** Rejects when the stored rows couldn't be deleted, so callers don't report a clear that didn't happen. */
   async clear(): Promise<void> {
     this.mem.clear();
-    await this.run("readwrite", (store) => store.clear());
+    if (!this.supported) return;
+    const result = await this.run("readwrite", (store) => store.clear());
+    if (result === null) throw new Error("Couldn't clear the listening history");
   }
 }
 

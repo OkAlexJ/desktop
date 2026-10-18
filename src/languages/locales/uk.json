@@ -922,7 +922,8 @@
       "clear_button": "Очистити",
       "clear_confirm": "Натисніть ще раз",
       "cleared": "Історію прослуховувань очищено",
-      "export_description_one": "{count} play recorded. Saves a file; nothing is sent anywhere."
+      "clear_failed": "Не вдалося очистити історію прослуховувань",
+      "export_description_one": "Записано прослуховувань: {count}. Зберігає файл, нічого не надсилається."
     }
   },
   "toast": {

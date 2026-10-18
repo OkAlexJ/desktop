@@ -888,7 +888,8 @@
       "clear_description": "Elimina todas las reproducciones registradas en este dispositivo.",
       "clear_button": "Borrar",
       "clear_confirm": "Pulsa de nuevo para borrar",
-      "cleared": "Historial de escucha borrado"
+      "cleared": "Historial de escucha borrado",
+      "clear_failed": "No se pudo borrar el historial de escucha"
     }
   },
   "toast": {

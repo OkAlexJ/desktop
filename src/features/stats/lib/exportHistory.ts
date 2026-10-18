@@ -14,7 +14,7 @@ const CSV_COLUMNS = [
 function csvCell(value: string | number | undefined): string {
   let text = value === undefined ? "" : String(value);
   // keep spreadsheets from running a title like "=HYPERLINK(...)" as a formula
-  if (typeof value === "string" && /^[=+@\t]/.test(text)) text = `'${text}`;
+  if (typeof value === "string" && /^[=+\-@\t\r\n]/.test(text)) text = `'${text}`;
   return /[",\r\n]/.test(text) ? `"${text.replace(/"/g, '""')}"` : text;
 }
 

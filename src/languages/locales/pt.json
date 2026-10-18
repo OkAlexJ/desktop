@@ -774,7 +774,8 @@
       "clear_description": "Apaga todas as reproduções registradas neste dispositivo.",
       "clear_button": "Limpar",
       "clear_confirm": "Clique de novo para limpar",
-      "cleared": "Histórico de reprodução limpo"
+      "cleared": "Histórico de reprodução limpo",
+      "clear_failed": "Não foi possível limpar o histórico de reprodução"
     }
   },
   "toast": {

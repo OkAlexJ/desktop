@@ -42,8 +42,12 @@ export function ListeningStatsSettings({ searchQuery }: { searchQuery?: string }
       return;
     }
     setConfirmClear(false);
-    await clearHistory();
-    toast(t("settings.stats.cleared"), "success");
+    try {
+      await clearHistory();
+      toast(t("settings.stats.cleared"), "success");
+    } catch {
+      toast(t("settings.stats.clear_failed"), "error");
+    }
   };
 
   return (

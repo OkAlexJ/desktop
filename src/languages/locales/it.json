@@ -836,7 +836,8 @@
       "clear_description": "Elimina tutti gli ascolti registrati su questo dispositivo.",
       "clear_button": "Cancella",
       "clear_confirm": "Clicca di nuovo per cancellare",
-      "cleared": "Cronologia di ascolto cancellata"
+      "cleared": "Cronologia di ascolto cancellata",
+      "clear_failed": "Impossibile cancellare la cronologia di ascolto"
     }
   },
   "toast": {

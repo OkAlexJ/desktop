@@ -94,4 +94,14 @@ describe("historyToCsv", () => {
     expect(header).toBe("playedAt,trackId,title,artists,album,durationMs,listenedMs,source");
     expect(row).toBe(`2026-01-02T03:04:05.000Z,t,"'=Hi, ""there""","A, B",,1,2,stream`);
   });
+
+  it("also defuses cells starting with a minus sign or a line break", () => {
+    const base = { id: "1", playedAt: 0, trackId: "t", durationMs: 1, listenedMs: 2, source: "stream" as const };
+    const csv = historyToCsv([
+      { ...base, title: "-1+2", artists: "\nA" },
+    ]);
+    const body = csv.split("\r\n").slice(1).join("\r\n");
+    expect(body).toContain(",'-1+2,");
+    expect(body).toContain(`"'\nA"`);
+  });
 });

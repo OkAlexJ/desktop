@@ -840,7 +840,8 @@
       "clear_button": "Wyczyść",
       "clear_confirm": "Kliknij ponownie, aby wyczyścić",
       "cleared": "Historia słuchania wyczyszczona",
-      "export_description_one": "{count} play recorded. Saves a file; nothing is sent anywhere."
+      "clear_failed": "Nie udało się wyczyścić historii słuchania",
+      "export_description_one": "Zapisane odtworzenia: {count}. Zapisuje plik; nic nie jest wysyłane."
     }
   },
   "toast": {

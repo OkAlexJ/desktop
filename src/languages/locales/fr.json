@@ -838,7 +838,8 @@
       "clear_description": "Supprime toutes les écoutes enregistrées sur cet appareil.",
       "clear_button": "Effacer",
       "clear_confirm": "Cliquez à nouveau pour effacer",
-      "cleared": "Historique d'écoute effacé"
+      "cleared": "Historique d'écoute effacé",
+      "clear_failed": "Impossible d'effacer l'historique d'écoute"
     }
   },
   "toast": {
