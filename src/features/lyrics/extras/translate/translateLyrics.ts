@@ -66,13 +66,19 @@ export interface TranslateRequest {
   cache?: TranslationCacheLike;
 }
 
+// different LibreTranslate servers can translate differently, so each keeps its own cache entries
+export function cacheProviderId(settings: TranslationSettings): string {
+  if (settings.provider !== "libretranslate") return settings.provider;
+  return `libretranslate@${settings.libreUrl.trim().replace(/\/+$/, "").toLowerCase()}`;
+}
+
 const inflight = new Map<string, Promise<TranslateOutcome>>();
 
 export function translateSongLines(req: TranslateRequest): Promise<TranslateOutcome> {
   const unique = uniqueLyricLines(req.texts);
   if (unique.length === 0) return Promise.resolve({ status: "ok", lines: {} });
-  const key = translationCacheKey(req.settings.provider, req.trackId, req.target, unique);
-  // the stored cache key leaves connection settings out; a pending request must not answer for other ones
+  const key = translationCacheKey(cacheProviderId(req.settings), req.trackId, req.target, unique);
+  // the stored cache key leaves the API key and email out; a pending request must not answer for other ones
   const s = req.settings;
   const flightKey = `${key}|${s.libreUrl.trim()}|${s.libreApiKey.trim()}|${s.myMemoryEmail.trim()}`;
   const pending = inflight.get(flightKey);

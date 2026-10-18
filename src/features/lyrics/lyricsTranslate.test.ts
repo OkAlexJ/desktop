@@ -175,6 +175,22 @@ describe("translateSongLines", () => {
     expect(fetchImpl).toHaveBeenCalledTimes(2);
   });
 
+  it("keeps a separate cache per LibreTranslate server", async () => {
+    const fetchImpl = vi.fn(async (url: string, init?: RequestInit) => {
+      const body = JSON.parse(String(init?.body));
+      return jsonResponse({ translatedText: (body.q as string[]).map((s) => `${new URL(url).host}:${s}`) });
+    });
+    const base = { ...myMemory, provider: "libretranslate" as const };
+    const common = { trackId: "servers", texts: russianSong, target: "en", fetchImpl, cache: new MemoryTranslationCache() };
+    const a = await translateSongLines({ ...common, settings: { ...base, libreUrl: "https://a.example.org" } });
+    const b = await translateSongLines({ ...common, settings: { ...base, libreUrl: "https://b.example.org/" } });
+    const aAgain = await translateSongLines({ ...common, settings: { ...base, libreUrl: "https://A.example.org/" } });
+    expect(fetchImpl).toHaveBeenCalledTimes(2);
+    expect(a.status === "ok" && a.lines["Ночь темна"]).toBe("a.example.org:Ночь темна");
+    expect(b.status === "ok" && b.lines["Ночь темна"]).toBe("b.example.org:Ночь темна");
+    expect(aAgain).toEqual(a);
+  });
+
   it("asks for a server when LibreTranslate has none set", async () => {
     const settings: TranslationSettings = { ...myMemory, provider: "libretranslate" };
     const res = await translateSongLines({ trackId: "x", texts: russianSong, target: "en", settings, fetchImpl: vi.fn(), cache: new MemoryTranslationCache() });
