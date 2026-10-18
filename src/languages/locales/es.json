@@ -1046,7 +1046,7 @@
       "romanize_desc": "Muestra cirílico, griego, coreano y kana japonés en letras latinas. Funciona sin conexión.",
       "translate_title": "Traducir letras",
       "translate_desc": "Muestra una línea traducida bajo cada línea.",
-      "target_title": "Traducir al",
+      "target_title": "Traducir a",
       "target_desc": "Por defecto, el idioma de la app.",
       "provider_title": "Servicio de traducción",
       "provider_desc": "El texto de la letra se envía al servicio elegido para traducirlo. La romanización no sale de tu dispositivo.",

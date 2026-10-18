@@ -26,6 +26,18 @@ export interface LyricsExtras {
   hasText: boolean;
 }
 
+// typed connection settings settle before they reach a request, so no request goes to a half-typed host
+const SETTINGS_DEBOUNCE_MS = 700;
+
+function useDebounced<T>(value: T, delayMs: number): T {
+  const [settled, setSettled] = useState(value);
+  useEffect(() => {
+    const timer = setTimeout(() => setSettled(value), delayMs);
+    return () => clearTimeout(timer);
+  }, [value, delayMs]);
+  return settled;
+}
+
 interface Result {
   key: string;
   outcome: TranslateOutcome;
@@ -38,9 +50,9 @@ export function useLyricsExtras(trackId: string | null | undefined, texts: strin
   const showTranslation = useLyricsExtrasStore((s) => s.showTranslation);
   const targetSetting = useLyricsExtrasStore((s) => s.targetLang);
   const provider = useLyricsExtrasStore((s) => s.provider);
-  const myMemoryEmail = useLyricsExtrasStore((s) => s.myMemoryEmail);
-  const libreUrl = useLyricsExtrasStore((s) => s.libreUrl);
-  const libreApiKey = useLyricsExtrasStore((s) => s.libreApiKey);
+  const myMemoryEmail = useDebounced(useLyricsExtrasStore((s) => s.myMemoryEmail), SETTINGS_DEBOUNCE_MS);
+  const libreUrl = useDebounced(useLyricsExtrasStore((s) => s.libreUrl), SETTINGS_DEBOUNCE_MS);
+  const libreApiKey = useDebounced(useLyricsExtrasStore((s) => s.libreApiKey), SETTINGS_DEBOUNCE_MS);
   const targetLang = targetSetting === "auto" ? locale : targetSetting;
 
   const textKey = texts.join("\n");

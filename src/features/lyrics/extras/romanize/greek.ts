@@ -9,8 +9,9 @@ const SINGLE: Record<string, string> = {
 
 const VOICELESS = new Set(["θ", "κ", "ξ", "π", "σ", "ς", "τ", "φ", "χ", "ψ"]);
 const GREEK_RE = /[Ͱ-Ͽἀ-῿]/;
-// stands in for υ with a diaeresis, which never joins a digraph
-const LONE_Y = "";
+// stand in for υ/Υ with a diaeresis, which never join a digraph
+const LONE_Y = "\uE000";
+const LONE_Y_UPPER = "\uE001";
 
 export function hasGreek(text: string): boolean {
   return GREEK_RE.test(text);
@@ -23,7 +24,7 @@ function isLetter(ch: string | undefined): boolean {
 export function romanizeGreek(text: string): string {
   const prepared = text
     .replace(/[ϋΰ]/g, LONE_Y)
-    .replace(/Ϋ/g, LONE_Y.toUpperCase())
+    .replace(/Ϋ/g, LONE_Y_UPPER)
     .normalize("NFD")
     .replace(/[̀-ͯ]/g, "");
   const chars = Array.from(prepared);
@@ -36,7 +37,7 @@ export function romanizeGreek(text: string): string {
     const nextLower = next?.toLowerCase();
     const prevIsLetter = isLetter(chars[i - 1]);
 
-    if (lower === LONE_Y) {
+    if (ch === LONE_Y || ch === LONE_Y_UPPER) {
       out += applyCase("y", ch === LONE_Y ? "υ" : "Υ", next);
       continue;
     }

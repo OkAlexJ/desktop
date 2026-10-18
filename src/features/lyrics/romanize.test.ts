@@ -61,6 +61,11 @@ describe("Greek romanization", () => {
     expect(romanizeGreek("άγγελος")).toBe("angelos");
     expect(romanizeGreek("αυτός ευχαριστώ αύριο")).toBe("aftos efcharisto avrio");
   });
+
+  it("keeps υ with a diaeresis out of digraphs, in either case", () => {
+    expect(romanizeGreek("προϋπόθεση")).toBe("proypothesi");
+    expect(romanizeGreek("ΠΡΟΫΠΟΘΕΣΗ")).toBe("PROYPOTHESI");
+  });
 });
 
 describe("Korean romanization", () => {

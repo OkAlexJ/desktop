@@ -160,6 +160,21 @@ describe("translateSongLines", () => {
     expect(res.status === "ok" && res.lines["Ночь темна"]).toBe("en:Ночь темна");
   });
 
+  it("does not hand a pending request to one with different server settings", async () => {
+    const fetchImpl = vi.fn(async (url: string, init?: RequestInit) => {
+      if (url.startsWith("https://lt.e/")) throw new TypeError("Failed to fetch");
+      const body = JSON.parse(String(init?.body));
+      return jsonResponse({ translatedText: (body.q as string[]).map((s) => `en:${s}`) });
+    });
+    const base = { ...myMemory, provider: "libretranslate" as const };
+    const common = { trackId: "flight", texts: russianSong, target: "en", fetchImpl, cache: new MemoryTranslationCache() };
+    const partial = translateSongLines({ ...common, settings: { ...base, libreUrl: "https://lt.e" } });
+    const full = translateSongLines({ ...common, settings: { ...base, libreUrl: "https://lt.example.org" } });
+    expect(await partial).toEqual({ status: "error", reason: "network" });
+    expect((await full).status).toBe("ok");
+    expect(fetchImpl).toHaveBeenCalledTimes(2);
+  });
+
   it("asks for a server when LibreTranslate has none set", async () => {
     const settings: TranslationSettings = { ...myMemory, provider: "libretranslate" };
     const res = await translateSongLines({ trackId: "x", texts: russianSong, target: "en", settings, fetchImpl: vi.fn(), cache: new MemoryTranslationCache() });
