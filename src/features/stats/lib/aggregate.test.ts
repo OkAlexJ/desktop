@@ -131,6 +131,14 @@ describe("dailyListening", () => {
     expect(days.map((d) => d.ms)).toEqual([0, 0, 0, 0, 60_000, 0, 120_000]);
     expect(days[6].day).toBe("2026-10-18");
   });
+
+  it("covers a history longer than ten years up to today", () => {
+    const from = new Date(2014, 0, 1).getTime();
+    const days = dailyListening([play(new Date(2026, 9, 18, 1), { listenedMs: 5_000 })], from, now);
+    expect(days.length).toBeGreaterThan(3700);
+    expect(days[days.length - 1].day).toBe("2026-10-18");
+    expect(days[days.length - 1].ms).toBe(5_000);
+  });
 });
 
 describe("listeningStreak", () => {

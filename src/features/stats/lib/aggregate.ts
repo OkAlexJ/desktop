@@ -254,7 +254,6 @@ export function dailyListening(plays: PlayRecord[], from: number, now: number): 
     const bucket = { day: dayKey(day), start: day, ms: 0 };
     buckets.push(bucket);
     index.set(bucket.day, bucket);
-    if (buckets.length > 3700) break;
   }
   for (const p of plays) {
     const b = index.get(dayKey(p.playedAt));
