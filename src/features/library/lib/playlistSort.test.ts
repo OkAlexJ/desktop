@@ -110,6 +110,24 @@ describe("applyPlannedMoves", () => {
     expect(progress.mock.calls).toEqual([[0, 2], [1, 2], [2, 2]]);
   });
 
+  it("stops early when shouldContinue turns false", async () => {
+    let keepGoing = true;
+    const move = vi.fn(async () => {
+      keepGoing = false;
+      return { revision: 2 };
+    });
+    await applyPlannedMoves({
+      moves: [
+        { itemId: "a", beforeItemId: null },
+        { itemId: "b", beforeItemId: null },
+      ],
+      revision: 1,
+      move,
+      shouldContinue: () => keepGoing,
+    });
+    expect(move).toHaveBeenCalledTimes(1);
+  });
+
   it("stops at the first failure", async () => {
     const move = vi.fn().mockResolvedValueOnce({ revision: 2 }).mockRejectedValueOnce(new Error("409"));
     await expect(

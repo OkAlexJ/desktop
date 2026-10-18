@@ -128,13 +128,16 @@ export interface ApplyOrderOptions {
   revision: number;
   move: (move: PlannedMove, revision: number) => Promise<{ revision?: number } | void>;
   onProgress?: (done: number, total: number) => void;
+  // checked before each move; returning false stops the run early
+  shouldContinue?: () => boolean;
 }
 
 // runs moves one by one, threading the revision each call returns; stops at the first failure
-export async function applyPlannedMoves({ moves, revision, move, onProgress }: ApplyOrderOptions) {
+export async function applyPlannedMoves({ moves, revision, move, onProgress, shouldContinue }: ApplyOrderOptions) {
   let current = revision;
   onProgress?.(0, moves.length);
   for (let i = 0; i < moves.length; i++) {
+    if (shouldContinue && !shouldContinue()) break;
     const result = await move(moves[i], current);
     current = result?.revision ?? current + 1;
     onProgress?.(i + 1, moves.length);

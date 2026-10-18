@@ -337,6 +337,10 @@ function LibraryPlaylistContent() {
     orderedTracks.length > 1 &&
     orderedTracks.every((track) => track.playlistItemId);
 
+  // the page stays mounted when only the playlist id changes, so a running apply checks this
+  const activePlaylistIdRef = useRef(decodedId);
+  activePlaylistIdRef.current = decodedId;
+
   const handleApplySort = useCallback(async () => {
     if (!decodedId || !viewData || !canApplySort || applyProgress) return;
     const current = orderedTracks.map((track) => track.playlistItemId!);
@@ -347,6 +351,7 @@ function LibraryPlaylistContent() {
       return;
     }
     const playlistId = decodedId;
+    const stillOnPlaylist = () => activePlaylistIdRef.current === playlistId;
     try {
       await applyPlannedMoves({
         moves,
@@ -355,17 +360,23 @@ function LibraryPlaylistContent() {
           const res = await api.movePlaylistItem(playlistId, move.itemId, move.beforeItemId, revision);
           return { revision: res?.playlist?.revision };
         },
-        onProgress: (done, total) => setApplyProgress({ done, total }),
+        onProgress: (done, total) => {
+          if (stillOnPlaylist()) setApplyProgress({ done, total });
+        },
+        shouldContinue: stillOnPlaylist,
       });
+      // left for another playlist: stop here and leave that page's state alone
+      if (!stillOnPlaylist()) return;
       setOptimisticTracks(currentTracks);
       setSort(DEFAULT_PLAYLIST_SORT);
       toast(t("playlist.sort_applied"), "checkmark", { description: viewData.title });
     } catch (err) {
+      if (!stillOnPlaylist()) return;
       toast(t("playlist.sort_apply_failed"), "error", {
         description: err instanceof Error ? err.message : undefined,
       });
     } finally {
-      setApplyProgress(null);
+      if (stillOnPlaylist()) setApplyProgress(null);
       window.dispatchEvent(new Event("library:changed"));
     }
   }, [applyProgress, canApplySort, currentTracks, decodedId, orderedTracks, setSort, t, toast, viewData]);
