@@ -2,6 +2,7 @@ import { describe, it, expect, vi } from "vitest";
 import { chunkLines, utf8Bytes, MYMEMORY_MAX_BYTES, type TranslationSettings } from "./extras/translate/providers";
 import {
   alignToLines,
+  cacheProviderId,
   cleanLyricText,
   translateSongLines,
   uniqueLyricLines,
@@ -189,6 +190,13 @@ describe("translateSongLines", () => {
     expect(a.status === "ok" && a.lines["Ночь темна"]).toBe("a.example.org:Ночь темна");
     expect(b.status === "ok" && b.lines["Ночь темна"]).toBe("b.example.org:Ночь темна");
     expect(aAgain).toEqual(a);
+  });
+
+  it("treats only the scheme and host of a server address as case-insensitive", () => {
+    const lt = (libreUrl: string) => cacheProviderId({ ...myMemory, provider: "libretranslate", libreUrl });
+    expect(lt("HTTPS://LT.Example.org/")).toBe(lt("https://lt.example.org"));
+    expect(lt("https://lt.example.org/tenant/A")).not.toBe(lt("https://lt.example.org/tenant/a"));
+    expect(cacheProviderId(myMemory)).toBe("mymemory");
   });
 
   it("asks for a server when LibreTranslate has none set", async () => {

@@ -69,7 +69,18 @@ export interface TranslateRequest {
 // different LibreTranslate servers can translate differently, so each keeps its own cache entries
 export function cacheProviderId(settings: TranslationSettings): string {
   if (settings.provider !== "libretranslate") return settings.provider;
-  return `libretranslate@${settings.libreUrl.trim().replace(/\/+$/, "").toLowerCase()}`;
+  return `libretranslate@${normalizeServerUrl(settings.libreUrl)}`;
+}
+
+// scheme and host are case-insensitive; the path and query are kept as typed
+function normalizeServerUrl(raw: string): string {
+  const trimmed = raw.trim().replace(/\/+$/, "");
+  try {
+    const url = new URL(trimmed);
+    return `${url.origin}${url.pathname.replace(/\/+$/, "")}${url.search}`;
+  } catch {
+    return trimmed;
+  }
 }
 
 const inflight = new Map<string, Promise<TranslateOutcome>>();
