@@ -6,6 +6,7 @@ import { fetchLrclibLyrics, LRCLIB_PROVIDER } from "./lrclibClient";
 import { mergeLrclibProvider, shouldActivateLrclib } from "./lrclibMerge";
 
 const results = new Map<string, LyricsCandidate | null>();
+const pending = new Set<string>();
 let started = false;
 let applying = false;
 
@@ -42,31 +43,40 @@ function apply() {
   }
 }
 
-function loadFor(track: Track | null) {
-  if (!track || results.has(track.id)) {
-    apply();
-    return;
-  }
-  const trackId = track.id;
+// true once the server lookup for the current track has finished with no providers of its own
+export function serverReturnedNoLyrics(state: {
+  lyricsLoading: boolean;
+  availableProviders: { provider: string }[];
+}): boolean {
+  return !state.lyricsLoading && state.availableProviders.every((p) => p.provider === LRCLIB_PROVIDER);
+}
+
+// asks lrclib only as a fallback, so no track metadata leaves the app when the server has lyrics
+function maybeFetch() {
+  const state = useLyricsStore.getState();
+  const trackId = state.currentLyricsTrackId;
+  if (!trackId || results.has(trackId) || pending.has(trackId)) return;
+  if (!serverReturnedNoLyrics(state)) return;
+  const track = usePlayerStore.getState().currentTrack;
+  if (!track || track.id !== trackId) return;
+
+  pending.add(trackId);
   void fetchLrclibLyrics(queryFor(track)).then((candidate) => {
+    pending.delete(trackId);
     results.set(trackId, candidate);
     apply();
   });
+}
+
+function onLyricsChange() {
+  apply();
+  maybeFetch();
 }
 
 // starts the client-side lrclib provider; safe to call more than once
 export function initLrclibLyrics(): void {
   if (started) return;
   started = true;
-
-  let lastTrackId: string | null = null;
-  const onPlayer = () => {
-    const track = usePlayerStore.getState().currentTrack;
-    if ((track?.id ?? null) === lastTrackId) return;
-    lastTrackId = track?.id ?? null;
-    loadFor(track);
-  };
-  usePlayerStore.subscribe(onPlayer);
-  useLyricsStore.subscribe(apply);
-  onPlayer();
+  useLyricsStore.subscribe(onLyricsChange);
+  onLyricsChange();
 }

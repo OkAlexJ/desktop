@@ -10,6 +10,7 @@ import {
   type LrclibRecord,
 } from "./lrclib/lrclibClient";
 import { mergeLrclibProvider, shouldActivateLrclib, toProviderOption } from "./lrclib/lrclibMerge";
+import { serverReturnedNoLyrics } from "./lrclib/lrclibSync";
 import { parseRawLyrics } from "./engine/lyricsParser";
 import type { LyricsCandidate, LyricsSyncLevel } from "@/shared/contracts/lyrics";
 
@@ -213,5 +214,23 @@ describe("lrclib provider merge", () => {
     const both = mergeLrclibProvider([toProviderOption(makeCandidate("cadence", "word_level", 90))], ours);
     expect(shouldActivateLrclib({ lyricsLoading: false, activeProvider: "cadence", availableProviders: both })).toBe(false);
     expect(shouldActivateLrclib({ lyricsLoading: false, activeProvider: null, availableProviders: [] })).toBe(false);
+  });
+});
+
+describe("serverReturnedNoLyrics", () => {
+  const option = (provider: string) => ({ provider });
+
+  it("waits until the server lookup has finished", () => {
+    expect(serverReturnedNoLyrics({ lyricsLoading: true, availableProviders: [] })).toBe(false);
+    expect(serverReturnedNoLyrics({ lyricsLoading: false, availableProviders: [] })).toBe(true);
+  });
+
+  it("stays quiet when the server has any provider, including its own lrclib", () => {
+    expect(serverReturnedNoLyrics({ lyricsLoading: false, availableProviders: [option("cadence")] })).toBe(false);
+    expect(serverReturnedNoLyrics({ lyricsLoading: false, availableProviders: [option("lrclib")] })).toBe(false);
+  });
+
+  it("ignores the client-side option it added itself", () => {
+    expect(serverReturnedNoLyrics({ lyricsLoading: false, availableProviders: [option(LRCLIB_PROVIDER)] })).toBe(true);
   });
 });
