@@ -96,6 +96,28 @@ describe("PlayerRuntime track transitions", () => {
     expect(runtime.standby).toBe(old);
   });
 
+  it("drops the standby instead of swapping when the queue changed after the timer was armed", async () => {
+    const blob = new Blob([new Uint8Array([1, 2, 3])], { type: "audio/webm" });
+    vi.spyOn(linerDb, "getAudio").mockResolvedValue({ blob, byteSize: 3 } as any);
+    const old: HTMLAudioElement = runtime.audio;
+    runtime.standbyAttempt = null;
+    await runtime.prepareStandby(next);
+    const standby: HTMLAudioElement = runtime.standby;
+    standby.dispatchEvent(new Event("canplay"));
+    expect(runtime.standbyReady).toBe(true);
+
+    // e.g. the user cleared the queue or removed "b" in the last second
+    getUpcomingTrack.mockReturnValueOnce(null as any);
+    setMedia(old, { currentTime: 196, duration: 200, paused: false, playbackRate: 1 });
+    await runtime.startTransition(4);
+
+    expect(runtime.audio).toBe(old);
+    expect(runtime.currentTrackId).toBe("a");
+    expect(runtime.standbyTrack).toBeNull();
+    expect(onTransitionStarted).not.toHaveBeenCalled();
+    expect(HTMLMediaElement.prototype.play).not.toHaveBeenCalled();
+  });
+
   it("skips the transition for repeat-one (engine returns no upcoming track)", () => {
     usePlayerStore.setState({ gaplessPlayback: true });
     getUpcomingTrack.mockReturnValueOnce(null as any);

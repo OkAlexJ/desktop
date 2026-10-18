@@ -59,6 +59,17 @@ describe("radio playback", () => {
     expect(usePlayerStore.getState().queue.map((t) => t.id)).toEqual(["a", "b", "c", "d", "e"]);
   });
 
+  it("refills just as early after a crossfade or gapless advance", async () => {
+    getRadio.mockResolvedValueOnce(radioItems(["b", "c"])); // station start
+    await playerEngine.startRadioStation(mk("a"));
+
+    getRadio.mockResolvedValueOnce(radioItems(["d", "e"]));
+    (playerEngine as any).handleTransitionStarted(mk("b"), 1); // runtime already playing "b"
+    await vi.advanceTimersByTimeAsync(500);
+    expect(usePlayerStore.getState().currentTrack?.id).toBe("b");
+    expect(usePlayerStore.getState().queue.map((t) => t.id)).toEqual(["a", "b", "c", "d", "e"]);
+  });
+
   it("never wraps to the first track; at the end it fetches more and keeps going", async () => {
     getRadio.mockResolvedValueOnce(radioItems([])); // station start returns nothing
     await playerEngine.startRadioStation(mk("a"));

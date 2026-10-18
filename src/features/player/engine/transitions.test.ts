@@ -5,6 +5,7 @@ import {
   clampCrossfade,
   crossfadeGains,
   effectiveFadeSec,
+  formatCrossfadeSeconds,
   planTransition,
   transitionsEnabled,
 } from "./transitions";
@@ -113,5 +114,13 @@ describe("crossfadeGains", () => {
   it("clamps out-of-range progress", () => {
     expect(crossfadeGains(-1)).toEqual({ out: 1, in: 0 });
     expect(crossfadeGains(2).in).toBe(1);
+  });
+});
+
+describe("formatCrossfadeSeconds", () => {
+  it("uses the locale's decimal separator and unit", () => {
+    expect(formatCrossfadeSeconds(4.5, "en")).toMatch(/^4\.5\s?s$/);
+    expect(formatCrossfadeSeconds(4.5, "de")).toMatch(/^4,5\s/);
+    expect(formatCrossfadeSeconds(4, "fr")).not.toContain(".");
   });
 });

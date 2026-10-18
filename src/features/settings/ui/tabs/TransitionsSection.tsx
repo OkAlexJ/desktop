@@ -1,11 +1,11 @@
 import { useTranslation } from "@/languages";
 import { usePlayerStore } from "@/features/player";
 import { Slider, ToggleSwitch } from "@/shared/ui";
-import { MAX_CROSSFADE_SEC } from "@/features/player/engine/transitions";
+import { MAX_CROSSFADE_SEC, formatCrossfadeSeconds } from "@/features/player/engine/transitions";
 import { SettingRow, SettingSection } from "../controls";
 
 export function TransitionsSection({ searchQuery }: { searchQuery?: string }) {
-  const { t } = useTranslation();
+  const { t, locale } = useTranslation();
   const crossfadeSec = usePlayerStore((s) => s.crossfadeSec);
   const setCrossfadeSec = usePlayerStore((s) => s.setCrossfadeSec);
   const gaplessPlayback = usePlayerStore((s) => s.gaplessPlayback);
@@ -28,7 +28,7 @@ export function TransitionsSection({ searchQuery }: { searchQuery?: string }) {
             step={0.5}
             value={crossfadeSec}
             onChange={setCrossfadeSec}
-            formatValue={(v) => (v === 0 ? t("settings.transitions.off") : `${v} s`)}
+            formatValue={(v) => (v === 0 ? t("settings.transitions.off") : formatCrossfadeSeconds(v, locale))}
           />
         }
       />

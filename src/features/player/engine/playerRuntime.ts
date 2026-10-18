@@ -42,7 +42,6 @@ export class PlayerRuntime {
   // Track transitions: a second element ping-pongs with `audio` (see startTransition).
   private standby: HTMLAudioElement | null = null;
   private standbyTrack: Track | null = null;
-  private standbyIndex = -1;
   private standbyBlobUrl: string | null = null;
   private standbyReady = false;
   private standbyGeneration = 0;
@@ -398,7 +397,7 @@ export class PlayerRuntime {
     if (!plan) return;
 
     if (plan.secondsUntilPrepare <= 0 && !this.standbyTrack) {
-      void this.prepareStandby(upcoming.track, upcoming.index);
+      void this.prepareStandby(upcoming.track);
     }
 
     if (plan.secondsUntilStart <= ARM_WINDOW_SEC) {
@@ -425,7 +424,7 @@ export class PlayerRuntime {
   }
 
   /** Loads the next track (already cached by preloadTrack) into the standby element. */
-  private async prepareStandby(track: Track, index: number): Promise<void> {
+  private async prepareStandby(track: Track): Promise<void> {
     const now = Date.now();
     if (this.standbyAttempt?.trackId === track.id && now - this.standbyAttempt.at < 2000) return;
     this.standbyAttempt = { trackId: track.id, at: now };
@@ -445,7 +444,6 @@ export class PlayerRuntime {
       const url = URL.createObjectURL(blob);
       this.standbyBlobUrl = url;
       this.standbyTrack = track;
-      this.standbyIndex = index;
       this.standbyReady = false;
       el.addEventListener(
         "canplay",
@@ -487,7 +485,6 @@ export class PlayerRuntime {
       this.standbyBlobUrl = null;
     }
     this.standbyTrack = null;
-    this.standbyIndex = -1;
     this.standbyReady = false;
   }
 
@@ -501,11 +498,17 @@ export class PlayerRuntime {
   private async startTransition(fadeSec: number): Promise<void> {
     const el = this.standby;
     const track = this.standbyTrack;
-    const index = this.standbyIndex;
     const blobUrl = this.standbyBlobUrl;
     if (!el || !track || !this.standbyReady || this.fadingOut) return;
     const store = usePlayerStore.getState();
     if (store.status !== "playing" || this.audio.paused) return;
+    // The queue may have changed since checkTransition armed the timer.
+    const upcoming = this.getUpcomingTrack?.() ?? null;
+    if (!upcoming || upcoming.track.id !== track.id) {
+      this.discardStandby();
+      return;
+    }
+    const index = upcoming.index;
 
     const old = this.audio;
     const generation = this.standbyGeneration;
@@ -537,12 +540,15 @@ export class PlayerRuntime {
       el.pause();
       return;
     }
+    if (this.getUpcomingTrack?.()?.track.id !== track.id) {
+      this.discardStandby();
+      return;
+    }
 
     // Swap roles: the standby becomes primary, the old primary fades out.
     this.cancelFade();
     this.standby = null;
     this.standbyTrack = null;
-    this.standbyIndex = -1;
     this.standbyBlobUrl = null;
     this.standbyReady = false;
     old.id = FADING_AUDIO_ID;

@@ -690,9 +690,7 @@ class PlayerEngine {
     store.setPosition(0);
     store.setDuration(track.durationMs ?? 0);
     store.setStatus("playing", null);
-    if (resolvedIndex === store.queue.length - 1) {
-      this.scheduleAppendSimilarTracks(mySession, track.id);
-    }
+    this.maybeExtendQueue(mySession, track.id, resolvedIndex, store.queue.length);
   }
 
   public async skipPrevious(): Promise<void> {

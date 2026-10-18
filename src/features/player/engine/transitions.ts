@@ -89,3 +89,13 @@ export function crossfadeGains(progress: number): { out: number; in: number } {
   const p = Math.max(0, Math.min(1, Number.isFinite(progress) ? progress : 1));
   return { out: Math.cos((p * Math.PI) / 2), in: Math.sin((p * Math.PI) / 2) };
 }
+
+/** Slider label for a non-zero crossfade length, e.g. "4.5s" in en and "4,5 Sek." in de. */
+export function formatCrossfadeSeconds(sec: number, locale: string): string {
+  return new Intl.NumberFormat(locale, {
+    style: "unit",
+    unit: "second",
+    unitDisplay: "narrow",
+    maximumFractionDigits: 1,
+  }).format(sec);
+}
