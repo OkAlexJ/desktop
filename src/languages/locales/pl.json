@@ -413,7 +413,20 @@
     "min": "min",
     "sec": "s",
     "empty_title": "Ta playlista jest pusta",
-    "empty_subtitle": "Wyszukaj utwory, aby je dodać"
+    "empty_subtitle": "Wyszukaj utwory, aby je dodać",
+    "sort_custom": "Własna kolejność",
+    "sort_title": "Tytuł",
+    "sort_artist": "Wykonawca",
+    "sort_album": "Album",
+    "sort_duration": "Czas trwania",
+    "sort_added": "Data dodania",
+    "sort_ascending": "Rosnąco",
+    "sort_descending": "Malejąco",
+    "sort_apply": "Zastosuj tę kolejność",
+    "sort_applying": "Zapisywanie kolejności {done}/{total}",
+    "sort_applied": "Zapisano kolejność playlisty",
+    "sort_apply_failed": "Nie udało się zapisać kolejności playlisty",
+    "sort_drag_disabled": "Przeciąganie jest wyłączone podczas sortowania"
   },
   "search": {
     "placeholder": "Szukaj utworów, wykonawców, albumów...",

@@ -41,6 +41,16 @@ import {
   TrackSearchField,
   TrackSearchEmpty,
 } from "./TrackSearch";
+import PlaylistSortControl from "./PlaylistSortControl";
+import {
+  DEFAULT_PLAYLIST_SORT,
+  applyPlannedMoves,
+  loadPlaylistSort,
+  planReorderMoves,
+  savePlaylistSort,
+  sortPlaylistTracks,
+  type PlaylistSort,
+} from "../lib/playlistSort";
 
 interface TrackItemProps {
   track: Track;
@@ -197,9 +207,33 @@ function LibraryPlaylistContent() {
     setOptimisticTracks(null);
   }, [viewData?.revision, decodedId]);
 
-  const currentTracks = useMemo(() => {
+  const orderedTracks = useMemo(() => {
     return optimisticTracks ?? viewData?.tracks ?? [];
   }, [optimisticTracks, viewData?.tracks]);
+
+  const sortId = isLikesMode ? "likes" : decodedId;
+  const [sort, setSortState] = useState<PlaylistSort>(() => loadPlaylistSort(sortId));
+  const [applyProgress, setApplyProgress] = useState<{ done: number; total: number } | null>(null);
+
+  useEffect(() => {
+    setSortState(loadPlaylistSort(sortId));
+    setApplyProgress(null);
+  }, [sortId]);
+
+  const setSort = useCallback(
+    (next: PlaylistSort) => {
+      setSortState(next);
+      savePlaylistSort(sortId, next);
+    },
+    [sortId],
+  );
+
+  const isCustomOrder = sort.key === "custom" && sort.direction === "asc";
+
+  const currentTracks = useMemo(
+    () => sortPlaylistTracks(orderedTracks, sort),
+    [orderedTracks, sort],
+  );
 
   const search = useTrackSearch(currentTracks, id);
   const searchButtonLabel = useTrackSearchButtonLabel();
@@ -296,6 +330,45 @@ function LibraryPlaylistContent() {
     },
     [currentTracks, decodedId, isLikesMode, reorderTracks, viewData],
   );
+
+  const canApplySort =
+    !isLikesMode &&
+    Boolean(decodedId) &&
+    orderedTracks.length > 1 &&
+    orderedTracks.every((track) => track.playlistItemId);
+
+  const handleApplySort = useCallback(async () => {
+    if (!decodedId || !viewData || !canApplySort || applyProgress) return;
+    const current = orderedTracks.map((track) => track.playlistItemId!);
+    const target = currentTracks.map((track) => track.playlistItemId!);
+    const moves = planReorderMoves(current, target);
+    if (moves.length === 0) {
+      setSort(DEFAULT_PLAYLIST_SORT);
+      return;
+    }
+    const playlistId = decodedId;
+    try {
+      await applyPlannedMoves({
+        moves,
+        revision: viewData.revision,
+        move: async (move, revision) => {
+          const res = await api.movePlaylistItem(playlistId, move.itemId, move.beforeItemId, revision);
+          return { revision: res?.playlist?.revision };
+        },
+        onProgress: (done, total) => setApplyProgress({ done, total }),
+      });
+      setOptimisticTracks(currentTracks);
+      setSort(DEFAULT_PLAYLIST_SORT);
+      toast(t("playlist.sort_applied"), "checkmark", { description: viewData.title });
+    } catch (err) {
+      toast(t("playlist.sort_apply_failed"), "error", {
+        description: err instanceof Error ? err.message : undefined,
+      });
+    } finally {
+      setApplyProgress(null);
+      window.dispatchEvent(new Event("library:changed"));
+    }
+  }, [applyProgress, canApplySort, currentTracks, decodedId, orderedTracks, setSort, t, toast, viewData]);
 
   const {
     isDragging,
@@ -694,6 +767,16 @@ function LibraryPlaylistContent() {
                           })()}
                         </span>
                       </div>
+                      {viewData.tracks.length > 1 && (
+                        <PlaylistSortControl
+                          sort={sort}
+                          onChange={setSort}
+                          canApply={canApplySort}
+                          onApply={() => void handleApplySort()}
+                          progress={applyProgress}
+                          hasCustomBg={hasCustomBg}
+                        />
+                      )}
                     </div>
                   }
                   primaryAction={
@@ -903,7 +986,7 @@ function LibraryPlaylistContent() {
 
                   // reordering a filtered view would be ambiguous, so it waits for the full list
                   const canReorder = Boolean(
-                    !isLikesMode && decodedId && track.playlistItemId && !isFiltering,
+                    isCustomOrder && !isLikesMode && decodedId && track.playlistItemId && !isFiltering,
                   );
 
                   return (

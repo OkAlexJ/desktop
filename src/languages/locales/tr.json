@@ -409,7 +409,20 @@
     "min": "dk",
     "sec": "sn",
     "empty_title": "Bu çalma listesi boş",
-    "empty_subtitle": "Eklemek için şarkı ara"
+    "empty_subtitle": "Eklemek için şarkı ara",
+    "sort_custom": "Özel sıra",
+    "sort_title": "Başlık",
+    "sort_artist": "Sanatçı",
+    "sort_album": "Albüm",
+    "sort_duration": "Süre",
+    "sort_added": "Eklenme tarihi",
+    "sort_ascending": "Artan",
+    "sort_descending": "Azalan",
+    "sort_apply": "Bu sırayı uygula",
+    "sort_applying": "Sıra kaydediliyor {done}/{total}",
+    "sort_applied": "Çalma listesi sırası kaydedildi",
+    "sort_apply_failed": "Çalma listesi sırası kaydedilemedi",
+    "sort_drag_disabled": "Sıralama açıkken sürükleyerek yeniden sıralama kapalı"
   },
   "search": {
     "placeholder": "Parça, sanatçı, albüm ara...",

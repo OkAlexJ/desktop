@@ -409,7 +409,20 @@
     "min": "min",
     "sec": "s",
     "empty_title": "Esta playlist está vazia",
-    "empty_subtitle": "Pesquise músicas para adicionar"
+    "empty_subtitle": "Pesquise músicas para adicionar",
+    "sort_custom": "Ordem personalizada",
+    "sort_title": "Título",
+    "sort_artist": "Artista",
+    "sort_album": "Album",
+    "sort_duration": "Duração",
+    "sort_added": "Data de adição",
+    "sort_ascending": "Crescente",
+    "sort_descending": "Decrescente",
+    "sort_apply": "Aplicar esta ordem",
+    "sort_applying": "Salvando ordem {done}/{total}",
+    "sort_applied": "Ordem da playlist salva",
+    "sort_apply_failed": "Não foi possível salvar a ordem da playlist",
+    "sort_drag_disabled": "Arrastar para reordenar fica desativado durante a ordenação"
   },
   "search": {
     "placeholder": "Pesquise faixas, artistas, álbuns...",

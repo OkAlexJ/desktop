@@ -71,7 +71,11 @@ function load(force = false): Promise<void> {
     let cursor: string | undefined;
     do {
       const page = await api.listLikedTracks(100, cursor);
-      tracks.push(...page.items.map(({ track }) => toClientTrack(track)));
+      tracks.push(
+        ...page.items.map(({ track, likedAt }) =>
+          likedAt ? { ...toClientTrack(track), addedAt: likedAt } : toClientTrack(track),
+        ),
+      );
       cursor = page.nextCursor ?? undefined;
     } while (cursor);
     cache = { tracks, total: tracks.length };

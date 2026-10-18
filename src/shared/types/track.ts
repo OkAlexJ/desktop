@@ -17,6 +17,7 @@ export interface Track {
   playCount: number;
   explicit?: boolean;
   releaseDate?: string;
+  addedAt?: string;
   album?: {
     id: string;
     title: string;

@@ -417,7 +417,20 @@
     "sec": "sec",
     "empty_title": "This playlist is empty",
     "empty_subtitle": "Search for songs to add",
-    "likes_empty": "No liked songs yet"
+    "likes_empty": "No liked songs yet",
+    "sort_custom": "Custom order",
+    "sort_title": "Title",
+    "sort_artist": "Artist",
+    "sort_album": "Album",
+    "sort_duration": "Duration",
+    "sort_added": "Date added",
+    "sort_ascending": "Ascending",
+    "sort_descending": "Descending",
+    "sort_apply": "Apply this order",
+    "sort_applying": "Saving order {done}/{total}",
+    "sort_applied": "Playlist order saved",
+    "sort_apply_failed": "Couldn't save the playlist order",
+    "sort_drag_disabled": "Drag to reorder is off while sorted"
   },
   "search": {
     "placeholder": "Search tracks, artists, albums...",

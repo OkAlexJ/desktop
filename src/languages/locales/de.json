@@ -414,7 +414,20 @@
     "min": "Min.",
     "sec": "Sek.",
     "empty_title": "Diese Playlist ist leer",
-    "empty_subtitle": "Suche nach Titeln, die du hinzufügen möchtest"
+    "empty_subtitle": "Suche nach Titeln, die du hinzufügen möchtest",
+    "sort_custom": "Eigene Reihenfolge",
+    "sort_title": "Titel",
+    "sort_artist": "Künstler",
+    "sort_album": "Album",
+    "sort_duration": "Dauer",
+    "sort_added": "Hinzugefügt am",
+    "sort_ascending": "Aufsteigend",
+    "sort_descending": "Absteigend",
+    "sort_apply": "Diese Reihenfolge übernehmen",
+    "sort_applying": "Reihenfolge wird gespeichert {done}/{total}",
+    "sort_applied": "Reihenfolge der Playlist gespeichert",
+    "sort_apply_failed": "Reihenfolge der Playlist konnte nicht gespeichert werden",
+    "sort_drag_disabled": "Ziehen zum Umsortieren ist beim Sortieren deaktiviert"
   },
   "search": {
     "placeholder": "Titel, Künstler oder Alben suchen",
