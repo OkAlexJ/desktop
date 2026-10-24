@@ -365,6 +365,23 @@ button.apple-glass-action:hover,
   color: #000000 !important;
 }
 
+/* custom wallpaper: shell panels turn into tinted glass over it, the tint and
+   blur come from the panel transparency setting (AppFrame sets the vars) */
+[data-wallpaper] {
+  --bg-glass: color-mix(
+    in srgb,
+    var(--bg-primary) var(--wallpaper-tint, 66%),
+    transparent
+  );
+}
+
+.wallpaper-panel {
+  background-color: var(--bg-glass);
+  -webkit-backdrop-filter: blur(var(--wallpaper-glass-blur, 24px))
+    saturate(140%);
+  backdrop-filter: blur(var(--wallpaper-glass-blur, 24px)) saturate(140%);
+}
+
 @keyframes lyric-dot {
   0%,
   100% {

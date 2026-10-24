@@ -20,7 +20,7 @@ import {
 } from "@mingcute/react";
 import Header from "./Header";
 import Sidebar from "./Sidebar";
-import { cn, usePageBackdropStore } from "@/shared/lib";
+import { cn } from "@/shared/lib";
 import WindowControls from "./WindowControls";
 import PageTransition from "./PageTransition";
 import RightDrawer from "./RightDrawer";
@@ -59,6 +59,13 @@ import {
 import { SettingsModal } from "@/features/settings";
 import { UpdateModal, UpdateToastBridge } from "@/features/updater";
 import { YoutubeSignInNotice } from "@/features/youtube-auth";
+import {
+  WallpaperBackground,
+  getPanelGlass,
+  useBackdropMode,
+  useCustomBackgroundStore,
+  useWindowHidden,
+} from "@/features/custom-background";
 
 interface AppFrameProps {
   children: React.ReactNode;
@@ -665,11 +672,27 @@ export default function AppFrame({ children }: AppFrameProps) {
       (document.documentElement.getAttribute("data-theme") === "dark" ||
         (!document.documentElement.getAttribute("data-theme") &&
           window.matchMedia?.("(prefers-color-scheme: dark)")?.matches));
-  const hasPageBackdrop = usePageBackdropStore((s) => Boolean(s.coverUrl));
+  const backdropMode = useBackdropMode();
+  const hasPageBackdrop = backdropMode === "cover";
+  const hasWallpaper = backdropMode === "wallpaper";
+  const windowHidden = useWindowHidden();
+  const panelTransparency = useCustomBackgroundStore(
+    (s) => s.panelTransparency,
+  );
+  const wallpaperStyle = useMemo(() => {
+    if (!hasWallpaper) return undefined;
+    const glass = getPanelGlass(panelTransparency);
+    return {
+      "--wallpaper-tint": `${Math.round(glass.tint * 100)}%`,
+      "--wallpaper-glass-blur": `${glass.blur}px`,
+    } as React.CSSProperties;
+  }, [hasWallpaper, panelTransparency]);
 
   return (
     <div
       ref={appFrameRef}
+      data-wallpaper={hasWallpaper ? "" : undefined}
+      style={wallpaperStyle}
       className={`relative flex flex-col h-full w-full overflow-hidden bg-bg-canvas p-1.5 gap-1.5 ${
         isEdgeToEdge ? "rounded-none" : "rounded-[12px]"
       }`}
@@ -678,7 +701,11 @@ export default function AppFrame({ children }: AppFrameProps) {
         if (e.currentTarget.scrollTop !== 0) e.currentTarget.scrollTop = 0;
       }}
     >
-      <DynamicBlurBackground isDark={isDark} />
+      <WallpaperBackground
+        visible={hasWallpaper && !isFullscreenPlayer}
+        paused={windowHidden || isFullscreenPlayer}
+      />
+      {!hasWallpaper && <DynamicBlurBackground isDark={isDark} />}
 
       <AnimatePresence>
         {!isFullscreenPlayer && (
@@ -718,6 +745,14 @@ export default function AppFrame({ children }: AppFrameProps) {
                 : "[--page-inset-bottom:0px] [--floating-inset-bottom:0px]",
             )}
           >
+            {hasWallpaper && (
+              // sits under the page in the row's stacking context so pages
+              // keep main as their containing block
+              <div
+                aria-hidden="true"
+                className="wallpaper-panel pointer-events-none absolute inset-x-0 top-(--page-inset-top) bottom-0 -z-10 rounded-[12px]"
+              />
+            )}
             <div
               ref={mainScrollRef}
               className={`h-full ${

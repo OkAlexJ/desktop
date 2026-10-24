@@ -39,7 +39,7 @@ import { SpeedPitchPicker } from "./SpeedPitchPicker";
 import { TimelineSlider } from "./TimelineSlider";
 import { useTheme } from "next-themes";
 import { useCoverReady, CoverImage } from "@/features/covers";
-import { usePageBackdropStore } from "@/shared/lib";
+import { useBackdropMode } from "@/features/custom-background";
 import { ArtistLink } from "@/features/artist";
 
 function rgbToHsl(r: number, g: number, b: number): [number, number, number] {
@@ -217,7 +217,8 @@ function MiniPlayer({
   const miniPlayerStyle = usePlayerStore((state) => state.miniPlayerStyle);
   const usesRoundedStyle = !embedded && miniPlayerStyle === "rounded";
   const usesBackgroundProgress = true;
-  const hasPageBackdrop = usePageBackdropStore((s) => Boolean(s.coverUrl));
+  // a cover backdrop or a custom wallpaper both sit behind the bar
+  const hasPageBackdrop = useBackdropMode() !== "none";
   const [accentColor, setAccentColor] = useState(
     isLight ? "rgba(0, 0, 0, 0.06)" : "rgba(255, 255, 255, 0.12)",
   );
