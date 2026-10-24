@@ -652,6 +652,26 @@
       "dark": "Scuro",
       "system": "Sistema"
     },
+    "background": {
+      "title": "Sfondo personalizzato",
+      "description": "Usa una tua immagine, una GIF o un breve video come sfondo della finestra.",
+      "upload_title": "Scegli un'immagine o un video",
+      "upload_hint": "PNG, JPG, WebP, GIF, MP4 o WebM, fino a 30 MB",
+      "change": "Cambia",
+      "remove": "Rimuovi",
+      "blur": "Sfocatura dello sfondo",
+      "dim": "Oscuramento",
+      "panel_transparency": "Trasparenza dei pannelli",
+      "panel_transparency_description": "Quanto sono trasparenti la barra laterale, il contenuto e la barra del player sopra lo sfondo.",
+      "use_covers": "Usa le copertine di album/artisti nelle loro pagine",
+      "use_covers_description": "Le pagine con una copertina la mostrano al posto del tuo sfondo.",
+      "applied": "Sfondo aggiornato",
+      "removed": "Sfondo rimosso",
+      "error_type": "Questo tipo di file non è supportato",
+      "error_size": "Il file è troppo grande (max 30 MB)",
+      "error_save": "Impossibile salvare lo sfondo",
+      "preview_alt": "Anteprima dello sfondo"
+    },
     "branding": {
       "title": "Branding",
       "description": "Scegli il colore d'accento del logo.",

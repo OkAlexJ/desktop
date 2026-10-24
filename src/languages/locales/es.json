@@ -649,6 +649,26 @@
       "dark": "Oscuro",
       "system": "Sistema"
     },
+    "background": {
+      "title": "Fondo personalizado",
+      "description": "Usa tu propia imagen, GIF o video corto como fondo de la ventana.",
+      "upload_title": "Elige una imagen o un video",
+      "upload_hint": "PNG, JPG, WebP, GIF, MP4 o WebM, hasta 30 MB",
+      "change": "Cambiar",
+      "remove": "Quitar",
+      "blur": "Desenfoque del fondo",
+      "dim": "Oscurecer",
+      "panel_transparency": "Transparencia de los paneles",
+      "panel_transparency_description": "Qué tan transparentes se ven la barra lateral, el contenido y la barra del reproductor sobre el fondo.",
+      "use_covers": "Usar portadas de álbum/artista en sus páginas",
+      "use_covers_description": "Las páginas con portada la muestran en lugar de tu fondo.",
+      "applied": "Fondo actualizado",
+      "removed": "Fondo eliminado",
+      "error_type": "Este tipo de archivo no es compatible",
+      "error_size": "El archivo es demasiado grande (máx. 30 MB)",
+      "error_save": "No se pudo guardar el fondo",
+      "preview_alt": "Vista previa del fondo"
+    },
     "branding": {
       "title": "Color de énfasis",
       "description": "Elige el color de acento para el logotipo y detalles.",

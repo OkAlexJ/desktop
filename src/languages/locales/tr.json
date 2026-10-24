@@ -652,6 +652,26 @@
       "dark": "Koyu",
       "system": "Sistem"
     },
+    "background": {
+      "title": "Özel arka plan",
+      "description": "Pencere arka planı olarak kendi görselini, GIF'ini veya kısa bir videoyu kullan.",
+      "upload_title": "Bir görsel veya video seç",
+      "upload_hint": "PNG, JPG, WebP, GIF, MP4 veya WebM, en fazla 30 MB",
+      "change": "Değiştir",
+      "remove": "Kaldır",
+      "blur": "Arka plan bulanıklığı",
+      "dim": "Karartma",
+      "panel_transparency": "Panel saydamlığı",
+      "panel_transparency_description": "Kenar çubuğu, içerik ve oynatıcı çubuğunun arka plan üzerinde ne kadar saydam olacağı.",
+      "use_covers": "Albüm/sanatçı kapaklarını kendi sayfalarında kullan",
+      "use_covers_description": "Kapak görseli olan sayfalar arka planın yerine onu gösterir.",
+      "applied": "Arka plan güncellendi",
+      "removed": "Arka plan kaldırıldı",
+      "error_type": "Bu dosya türü desteklenmiyor",
+      "error_size": "Dosya çok büyük (en fazla 30 MB)",
+      "error_save": "Arka plan kaydedilemedi",
+      "preview_alt": "Arka plan önizlemesi"
+    },
     "branding": {
       "title": "Marka",
       "description": "Logonun vurgu rengini seç.",

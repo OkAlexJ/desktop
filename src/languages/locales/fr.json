@@ -654,6 +654,26 @@
       "dark": "Sombre",
       "system": "Système"
     },
+    "background": {
+      "title": "Arrière-plan personnalisé",
+      "description": "Utilisez votre propre image, GIF ou courte vidéo comme arrière-plan de la fenêtre.",
+      "upload_title": "Choisir une image ou une vidéo",
+      "upload_hint": "PNG, JPG, WebP, GIF, MP4 ou WebM, jusqu'à 30 Mo",
+      "change": "Changer",
+      "remove": "Supprimer",
+      "blur": "Flou de l'arrière-plan",
+      "dim": "Assombrissement",
+      "panel_transparency": "Transparence des panneaux",
+      "panel_transparency_description": "Degré de transparence de la barre latérale, du contenu et de la barre du lecteur sur l'arrière-plan.",
+      "use_covers": "Utiliser les pochettes d'album/d'artiste sur leurs pages",
+      "use_covers_description": "Les pages avec une pochette l'affichent à la place de votre arrière-plan.",
+      "applied": "Arrière-plan mis à jour",
+      "removed": "Arrière-plan supprimé",
+      "error_type": "Ce type de fichier n'est pas pris en charge",
+      "error_size": "Le fichier est trop volumineux (30 Mo max.)",
+      "error_save": "Impossible d'enregistrer l'arrière-plan",
+      "preview_alt": "Aperçu de l'arrière-plan"
+    },
     "branding": {
       "title": "Logo",
       "description": "Choisissez la couleur d'accent du logo.",

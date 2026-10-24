@@ -656,6 +656,26 @@
       "dark": "Ciemny",
       "system": "Systemowy"
     },
+    "background": {
+      "title": "Własne tło",
+      "description": "Ustaw własny obraz, GIF lub krótkie wideo jako tło okna.",
+      "upload_title": "Wybierz obraz lub wideo",
+      "upload_hint": "PNG, JPG, WebP, GIF, MP4 lub WebM, do 30 MB",
+      "change": "Zmień",
+      "remove": "Usuń",
+      "blur": "Rozmycie tła",
+      "dim": "Przyciemnienie",
+      "panel_transparency": "Przezroczystość paneli",
+      "panel_transparency_description": "Jak bardzo pasek boczny, zawartość i pasek odtwarzacza prześwitują nad tłem.",
+      "use_covers": "Używaj okładek albumów/artystów na ich stronach",
+      "use_covers_description": "Strony z okładką pokazują ją zamiast Twojego tła.",
+      "applied": "Tło zaktualizowane",
+      "removed": "Tło usunięte",
+      "error_type": "Ten typ pliku nie jest obsługiwany",
+      "error_size": "Plik jest za duży (maks. 30 MB)",
+      "error_save": "Nie udało się zapisać tła",
+      "preview_alt": "Podgląd tła"
+    },
     "branding": {
       "title": "Logo",
       "description": "Wybierz kolor akcentu logo.",

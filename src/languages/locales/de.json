@@ -596,6 +596,26 @@
       "dark": "Dunkel",
       "system": "System"
     },
+    "background": {
+      "title": "Eigener Hintergrund",
+      "description": "Verwende ein eigenes Bild, GIF oder kurzes Video als Fensterhintergrund.",
+      "upload_title": "Bild oder Video auswählen",
+      "upload_hint": "PNG, JPG, WebP, GIF, MP4 oder WebM, bis 30 MB",
+      "change": "Ändern",
+      "remove": "Entfernen",
+      "blur": "Hintergrundunschärfe",
+      "dim": "Abdunkeln",
+      "panel_transparency": "Transparenz der Bereiche",
+      "panel_transparency_description": "Wie durchsichtig Seitenleiste, Inhalt und Player-Leiste über dem Hintergrund sind.",
+      "use_covers": "Album-/Künstlercover auf ihren Seiten verwenden",
+      "use_covers_description": "Seiten mit Cover zeigen dieses statt deines Hintergrunds.",
+      "applied": "Hintergrund aktualisiert",
+      "removed": "Hintergrund entfernt",
+      "error_type": "Dieser Dateityp wird nicht unterstützt",
+      "error_size": "Die Datei ist zu groß (max. 30 MB)",
+      "error_save": "Hintergrund konnte nicht gespeichert werden",
+      "preview_alt": "Hintergrundvorschau"
+    },
     "branding": {
       "title": "Branding",
       "description": "Wähle die Akzentfarbe des Logos.",

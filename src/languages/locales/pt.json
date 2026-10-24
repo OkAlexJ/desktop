@@ -714,6 +714,26 @@
       "dark": "Escuro",
       "system": "Sistema"
     },
+    "background": {
+      "title": "Fundo personalizado",
+      "description": "Use sua própria imagem, GIF ou vídeo curto como fundo da janela.",
+      "upload_title": "Escolha uma imagem ou um vídeo",
+      "upload_hint": "PNG, JPG, WebP, GIF, MP4 ou WebM, até 30 MB",
+      "change": "Trocar",
+      "remove": "Remover",
+      "blur": "Desfoque do fundo",
+      "dim": "Escurecimento",
+      "panel_transparency": "Transparência dos painéis",
+      "panel_transparency_description": "O quanto a barra lateral, o conteúdo e a barra do player ficam transparentes sobre o fundo.",
+      "use_covers": "Usar capas de álbum/artista nas páginas deles",
+      "use_covers_description": "Páginas com capa mostram a capa em vez do seu fundo.",
+      "applied": "Fundo atualizado",
+      "removed": "Fundo removido",
+      "error_type": "Este tipo de arquivo não é compatível",
+      "error_size": "O arquivo é grande demais (máx. 30 MB)",
+      "error_save": "Não foi possível salvar o fundo",
+      "preview_alt": "Prévia do fundo"
+    },
     "branding": {
       "title": "Marca",
       "description": "Escolha a cor de destaque da logo.",

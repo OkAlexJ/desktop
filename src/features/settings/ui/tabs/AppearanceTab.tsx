@@ -5,6 +5,7 @@ import { MenuSelect } from "@/shared/ui";
 import { revealThemeChange } from "@/shared/lib";
 import { SettingBlock, SettingRow, SettingSection } from "../controls";
 import { ThemeCard } from "./ThemeCard";
+import { CustomBackgroundSection } from "./CustomBackgroundSection";
 
 export function AppearanceTab({ searchQuery }: { searchQuery?: string }) {
   const { t, locale, setLocale } = useTranslation();
@@ -72,6 +73,8 @@ export function AppearanceTab({ searchQuery }: { searchQuery?: string }) {
           </div>
         ) : null}
       </SettingBlock>
+
+      <CustomBackgroundSection searchQuery={searchQuery} />
     </SettingSection>
   );
 }

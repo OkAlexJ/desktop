@@ -731,6 +731,26 @@
       "dark": "Dark",
       "system": "System"
     },
+    "background": {
+      "title": "Custom background",
+      "description": "Use your own image, GIF or short video as the window background.",
+      "upload_title": "Choose an image or video",
+      "upload_hint": "PNG, JPG, WebP, GIF, MP4 or WebM, up to 30 MB",
+      "change": "Change",
+      "remove": "Remove",
+      "blur": "Background blur",
+      "dim": "Dimming",
+      "panel_transparency": "Panel transparency",
+      "panel_transparency_description": "How see-through the sidebar, content and player bar are over the background.",
+      "use_covers": "Use album/artist covers on their pages",
+      "use_covers_description": "Pages with cover art show it instead of your background.",
+      "applied": "Background updated",
+      "removed": "Background removed",
+      "error_type": "This file type isn't supported",
+      "error_size": "The file is too large (max 30 MB)",
+      "error_save": "Couldn't save the background",
+      "preview_alt": "Background preview"
+    },
     "branding": {
       "title": "Branding",
       "description": "Choose the logo accent color.",
